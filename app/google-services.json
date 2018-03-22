@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "64375340118",
+    "firebase_url": "https://kochbuch2018m.firebaseio.com",
+    "project_id": "kochbuch2018m",
+    "storage_bucket": "kochbuch2018m.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64375340118:android:6db8da1b30cd3401",
+        "android_client_info": {
+          "package_name": "com.example.kochbuchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64375340118-uh6p48lgl8mui4pi6u7rh7req16vpls4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kochbuchapp",
+            "certificate_hash": "015b64bc090803ebc044e8e96bcf10aac59e8429"
+          }
+        },
+        {
+          "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwod76tlwxHKSCZqXfCcIL9t1ufQz63cI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64375340118:android:ffdec99cf26382b5",
+        "android_client_info": {
+          "package_name": "com.hwr.kochbuch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64375340118-3vlat4jpbn88l4frhni1ddbo0jr0ngoa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwr.kochbuch",
+            "certificate_hash": "015b64bc090803ebc044e8e96bcf10aac59e8429"
+          }
+        },
+        {
+          "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwod76tlwxHKSCZqXfCcIL9t1ufQz63cI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64375340118:android:dd2517396e796ca3",
+        "android_client_info": {
+          "package_name": "com.hwr.cookbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64375340118-pchq2oq6nvoso3n3dg17l3q87ds8ioer.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwr.cookbook",
+            "certificate_hash": "015b64bc090803ebc044e8e96bcf10aac59e8429"
+          }
+        },
+        {
+          "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwod76tlwxHKSCZqXfCcIL9t1ufQz63cI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64375340118-5nvksl5esq6tlokglaik2uji9n559d8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
