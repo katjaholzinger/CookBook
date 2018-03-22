@@ -27,9 +27,9 @@ class Database {
 
 
     public void setNewUser(String id, String name, String mail) {
-        Log.d("Database", "Erstelle neuen Benutzer...");
+        Log.d("Database", "Creating new user ...");
         User user = new User(name, mail);
-        Log.d("Database", "Füge neuen Benutzer hinzu...");
+        Log.d("Database", "Adding new user ...");
         database.child("users").child(id).setValue(user);
 
     }
@@ -55,4 +55,21 @@ class Database {
         databaseUser.addValueEventListener(userListener);
         return user.username;
     }
+
+    public void setNewRecipe (String userID, String recipeID, Recipe recipe) {
+
+        Log.d("Database", "Adding new recipe ...");
+        database.child("recipes").child(userID).child(recipeID).setValue(recipe);
+    }
+
+    public void setNewPlan (String userID, String planID, Plan plan) {
+        Log.d("Database", "Adding new plan ...");
+        database.child("plans").child(userID).child(planID).setValue(plan);
+    }
+
+    public void setNewMarker (String userID, String planID, String markerID, RecipeMarker marker) {
+        Log.d("Database", "Adding new marker to plan xxx ...");
+        database.child("plans").child(userID).child(planID).child("events").setValue(marker);
+    }
+
 }
