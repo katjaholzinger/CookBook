@@ -9,4 +9,10 @@
     <string name="mail">E-Mail</string>
     <string name="password">Password</string>
     <string name="name">Benutzername</string>
+    <string name="title_planer">Planer</string>
+    <string name="title_bookmarks">Bookmarks</string>
+    <string name="title_discover">Discover</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="discover">Discover</string>
+    <string name="planer">Planer</string>
 </resources>

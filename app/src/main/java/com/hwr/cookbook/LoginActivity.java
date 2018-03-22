@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.hwr.cookbook.UI.MainActivity;
 
 
 public class LoginActivity extends AppCompatActivity implements
@@ -52,12 +52,12 @@ public class LoginActivity extends AppCompatActivity implements
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            einloggen(currentUser.getUid());
+            login(currentUser.getUid());
         }
     }
 
-    private void einloggen(String uid) {
-        Intent intent = new Intent(this, PlanActivity.class);
+    private void login(String uid) {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(UID, uid);
         startActivity(intent);
     }
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            einloggen(user.getUid());
+                            login(user.getUid());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
