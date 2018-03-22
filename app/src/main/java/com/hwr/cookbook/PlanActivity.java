@@ -10,19 +10,26 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 public class PlanActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
     private User userSnapshot;
-    private Plan[] plansSnapshot;
-    private Recipe[] recipesSnapshot;
+    private List<Recipe> recipeList;
+    private List<Plan> planList;
     private Book[] booksSnapshot;
     private String currentUserId;
     private static final String TAG = "LoginActivity";
@@ -59,6 +66,7 @@ public class PlanActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
         DBNewListener();
     }
 
@@ -85,47 +93,40 @@ public class PlanActivity extends AppCompatActivity {
         currentUserRef.addValueEventListener(userListener);
 
         DatabaseReference plansRef = database.child("plans").child(currentUserId);
-        ValueEventListener planListener = new ValueEventListener() {
+        planList = new ArrayList<>();
+        plansRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                //TODO Change to Plan
-                Plan[] plans = new Plan[] {};
-                plansSnapshot = dataSnapshot.getValue(plans.getClass());
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
+            public void onDataChange(DataSnapshot snapshot) {
+                planList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Plan plan = postSnapshot.getValue(Plan.class);
+                    planList.add(plan);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                System.out.println("The read failed: " + databaseError.getMessage());
             }
-        };
-        plansRef.addValueEventListener(planListener);
+        });
 
         DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
-        final Recipe[] recipes = new Recipe[] {};
-
-        ValueEventListener recipesListener = new ValueEventListener() {
+        recipeList = new ArrayList<>();
+        recipesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-
-                recipesSnapshot = dataSnapshot.getValue(recipes.getClass());
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
+            public void onDataChange(DataSnapshot snapshot) {
+                recipeList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Recipe recipe = postSnapshot.getValue(Recipe.class);
+                    recipeList.add(recipe);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                System.out.println("The read failed: " + databaseError.getMessage());
             }
-        };
-        recipesRef.addValueEventListener(recipesListener);
+        });
 
         DatabaseReference booksRef = database.child("books").child(currentUserId);
         final Book[] books = new Book[] {};
