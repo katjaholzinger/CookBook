@@ -1,9 +1,11 @@
 package com.hwr.cookbook;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Created by kholzinger on 11.03.2018.
  */
-
+@IgnoreExtraProperties
 public class User {
 
     public String username;

@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String TAG = "EmailPassword";
     public static final String MAIL = "com.hwr.kochbuch.MESSAGE";
     public static final String PASSWORD = "com.hwr.kochbuch.MESSAGE";
+    public static final String UID = "com.hwr.kochbuch.MESSAGE";
 
 
     private EditText textEmail;
@@ -50,8 +51,16 @@ public class LoginActivity extends AppCompatActivity implements
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            einloggen(currentUser.getUid());
+        }
     }
 
+    private void einloggen(String uid) {
+        Intent intent = new Intent(this, PlanActivity.class);
+        intent.putExtra(UID, uid);
+        startActivity(intent);
+    }
 
 
     private void signIn(String email, String password) {
@@ -68,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            setContentView(R.layout.activity_plan);
+                            einloggen(user.getUid());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

@@ -1,9 +1,9 @@
 package com.hwr.cookbook;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity implements
         View.OnClickListener{
@@ -61,14 +64,14 @@ public class RegisterActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Toast.makeText(RegisterActivity.this, "Deine Registrierung war erfolgreich.",
-                                    Toast.LENGTH_SHORT).show();
 
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String id = user.getUid();
-                            DatabaseOperation d = new DatabaseOperation();
-                           // d.setNewUser(id, name, email);
-                            setContentView(R.layout.activity_plan);
+
+                            Database database = new Database();
+                            database.setNewUser(user.getUid(), name, email);
+                            Toast.makeText(RegisterActivity.this, "Deine Registrierung war erfolgreich.",
+                                    Toast.LENGTH_SHORT).show();
+                            setContentView(R.layout.activity_login);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
