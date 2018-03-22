@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">CookBook</string>
+    <string name="app_name">Kochbuch</string>
+    <string name="login">Login</string>
+    <string name="register">Registrieren</string>
+    <string name="title_activity_plan">PlanActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="mail">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="name">Benutzername</string>
 </resources>
