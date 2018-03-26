@@ -27,10 +27,10 @@ public class PlanActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-    private User userSnapshot;
+    private User user;
     private List<Recipe> recipeList;
     private List<Plan> planList;
-    private Book[] booksSnapshot;
+    private List<Book> bookList;
     private String currentUserId;
     private static final String TAG = "LoginActivity";
 
@@ -73,24 +73,18 @@ public class PlanActivity extends AppCompatActivity {
     private void DBNewListener() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        DatabaseReference currentUserRef = database.child("users").child(currentUserId);
-        ValueEventListener userListener = new ValueEventListener() {
+        DatabaseReference userRef = database.child("users").child(currentUserId);
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                userSnapshot = dataSnapshot.getValue(User.class);
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
+            public void onDataChange(DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                System.out.println("The read failed: " + databaseError.getMessage());
             }
-        };
-        currentUserRef.addValueEventListener(userListener);
+        });
 
         DatabaseReference plansRef = database.child("plans").child(currentUserId);
         planList = new ArrayList<>();
@@ -128,27 +122,23 @@ public class PlanActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference booksRef = database.child("books").child(currentUserId);
-        final Book[] books = new Book[] {};
-
-        ValueEventListener booksListener = new ValueEventListener() {
+        final DatabaseReference booksRef = database.child("books").child(currentUserId);
+        bookList = new ArrayList<>();
+        booksRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-
-                booksSnapshot = dataSnapshot.getValue(books.getClass());
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
+            public void onDataChange(DataSnapshot snapshot) {
+                bookList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Book book = postSnapshot.getValue(Book.class);
+                    bookList.add(book);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                System.out.println("The read failed: " + databaseError.getMessage());
             }
-        };
-        booksRef.addValueEventListener(booksListener);
+        });
     }
 
 }
