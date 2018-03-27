@@ -15,4 +15,6 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="discover">Discover</string>
     <string name="planer">Planer</string>
+    <string name="actionbar_settings">Menu</string>
+    <string name="actionbar_logout">Logout</string>
 </resources>
