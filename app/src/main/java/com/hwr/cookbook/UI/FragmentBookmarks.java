@@ -42,7 +42,7 @@ public class FragmentBookmarks extends Fragment{
 
 
     public void addRecipe(String name, int rating){
-        Bookmarks_Recipe recipe = new Bookmarks_Recipe(getContext());
+        LayoutBookmarksRecipe recipe = new LayoutBookmarksRecipe(getContext());
         recipe.addName(name);
         recipe.addRating(rating);
         linearLayout.addView(recipe);
