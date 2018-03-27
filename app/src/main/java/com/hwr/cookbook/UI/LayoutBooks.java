@@ -43,6 +43,10 @@ public class LayoutBooks extends LinearLayout {
         //set Title
         TextView title = new TextView(getContext());
         title.setText(book.getName());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+
+        title.setLayoutParams(params);
+
         title.setGravity(TextView.TEXT_ALIGNMENT_CENTER);
         this.addView(title);
     }
