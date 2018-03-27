@@ -6,13 +6,26 @@ package com.hwr.cookbook;
 
 public class Book {
 
-    public Recipe[] recipes;
+    private Recipe[] recipes;
+    private String name;
 
     public Book () {
 
     }
 
     public Book (Recipe[] recipes) {
+        this.recipes=recipes;
+    }
 
+    public Recipe[] getRecipes(){
+        return recipes;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 }

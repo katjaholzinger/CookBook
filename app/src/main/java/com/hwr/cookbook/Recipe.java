@@ -23,4 +23,8 @@ public class Recipe {
         this.icon = icon;
         this.description = description;
     }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.hwr.cookbook.Book;
 import com.hwr.cookbook.R;
+import com.hwr.cookbook.Recipe;
 
 
 /**
@@ -35,16 +37,18 @@ public class FragmentBookmarks extends Fragment{
         linearLayout = getActivity().findViewById(R.id.linearLayoutBookmarks);
 
         //add Recipes
-        addRecipe("test",4);
-        addRecipe("test2",5);
-        addRecipe("test3",3);
+        Recipe r1 = new Recipe("Test", null, 1, null, null);
+        Recipe r2 = new Recipe("Test2", null, 1, null, null);
+        Book book = new Book(new Recipe[]{r1,r2});
+        book.setName("Title");
+
+
+        addBook(book);
     }
 
 
-    public void addRecipe(String name, int rating){
-        LayoutBookmarksRecipe recipe = new LayoutBookmarksRecipe(getContext());
-        recipe.addName(name);
-        recipe.addRating(rating);
-        linearLayout.addView(recipe);
+    public void addBook(Book book){
+        LayoutBooks layoutBooks = new LayoutBooks(getContext(), book);
+        linearLayout.addView(layoutBooks);
     }
 }
