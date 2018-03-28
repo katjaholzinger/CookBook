@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
+
 /**
  * Created by kholzinger on 10.03.2018.
  */
@@ -34,41 +36,31 @@ class Database {
 
     }
 
-    public String getUserName (String id) {
-        databaseUser = database.child(id);
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                user = dataSnapshot.getValue(User.class);
-                // [START_EXCLUDE]
-
-                // [END_EXCLUDE]
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        databaseUser.addValueEventListener(userListener);
-        return user.username;
+    public String getUserName (User user) {
+        if (user == null) {
+            return "";
+        }
+        return  user.username;
     }
 
-    public void setNewRecipe (String userID, String recipeID, Recipe recipe) {
+    public void setNewRecipe (String userID, Recipe recipe) {
 
         Log.d("Database", "Adding new recipe ...");
-        database.child("recipes").child(userID).child(recipeID).setValue(recipe);
+        String recipeID = UUID.randomUUID().toString();
+        FirebaseDatabase.getInstance().getReference().setValue("recipes");
+        FirebaseDatabase.getInstance().getReference().child("recipes").setValue(userID);
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(recipeID).setValue(recipe);
     }
 
-    public void setNewPlan (String userID, String planID, Plan plan) {
+    public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
+        String planID = UUID.randomUUID().toString();
         database.child("plans").child(userID).child(planID).setValue(plan);
     }
 
-    public void setNewMarker (String userID, String planID, String markerID, RecipeMarker marker) {
+    public void setNewMarker (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
+        String markerID = UUID.randomUUID().toString();
         database.child("plans").child(userID).child(planID).child("events").setValue(marker);
     }
 

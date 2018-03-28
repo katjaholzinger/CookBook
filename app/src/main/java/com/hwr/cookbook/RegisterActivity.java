@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements
         //showProgressDialog();
 
         // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
 
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             Database database = new Database();
                             database.setNewUser(user.getUid(), name, email);
@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements
                             setContentView(R.layout.activity_login);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Log.d(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

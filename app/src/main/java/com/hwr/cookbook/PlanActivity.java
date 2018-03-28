@@ -62,12 +62,30 @@ public class PlanActivity extends AppCompatActivity {
         Intent intent = getIntent();
         currentUserId = intent.getStringExtra(LoginActivity.UID);
 
+        //DBNewListener();
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Log.d("Database", "Database erstellen...");
+        Database db = new Database();
+        mTextMessage.setText(db.getUserName(user));
+        IngredientList ingredients = new IngredientList();
+        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
+        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
+        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
+        ingredients.normalize(4);
+        Recipe recipe = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        db.setNewRecipe(currentUserId, recipe);
 
+        ausloggen();
 
-        DBNewListener();
+    }
+
+    private void ausloggen() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     private void DBNewListener() {

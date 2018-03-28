@@ -107,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements
             intent.putExtra(MAIL, textEmail.getText().toString());
             intent.putExtra(PASSWORD, textPassword.getText().toString());
             startActivity(intent);
-            setContentView(R.layout.activity_register);
         } else if (i == R.id.user_login) {
             signIn(textEmail.getText().toString(), textPassword.getText().toString());
         }
