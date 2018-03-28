@@ -65,7 +65,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
         int maxRating = getContext().getResources().getInteger(R.integer.maxRating);
         ratingBar.setNumStars(maxRating);
         ratingBar.setRating(rating);
-        //ratingBar.setEnabled(false);
+        ratingBar.setEnabled(false);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
