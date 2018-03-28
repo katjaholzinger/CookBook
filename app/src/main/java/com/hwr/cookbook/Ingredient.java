@@ -1,5 +1,8 @@
 package com.hwr.cookbook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sidney on 22.03.2018.
  */
@@ -21,3 +24,7 @@ public class Ingredient {
     }
 
 }
+
+
+
+

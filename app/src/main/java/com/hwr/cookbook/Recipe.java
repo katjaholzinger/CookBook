@@ -1,5 +1,7 @@
 package com.hwr.cookbook;
 
+import java.util.List;
+
 /**
  * Created by Sidney on 22.03.2018.
  */
@@ -7,21 +9,25 @@ package com.hwr.cookbook;
 public class Recipe {
 
     public String name;
-    public Ingredient[] ingredients;
+    public List ingredients;
     public int defaultPortions;
     public String icon;
     public String description;
+    public float rating;
+    public int raters;
 
     public Recipe() {
 
     }
 
-    public Recipe(String name, Ingredient[] ingredients, int defaultPortions, String icon, String description) {
+    public Recipe(String name, IngredientList ingredients, int defaultPortions, String icon, String description) {
         this.name = name;
         this.ingredients = ingredients;
         this.defaultPortions = defaultPortions;
         this.icon = icon;
         this.description = description;
+        this.raters = 0;
+        this.rating = 0;
     }
 
     public String getName() {
