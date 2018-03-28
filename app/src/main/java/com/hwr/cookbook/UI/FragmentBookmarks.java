@@ -37,8 +37,8 @@ public class FragmentBookmarks extends Fragment{
         linearLayout = getActivity().findViewById(R.id.linearLayoutBookmarks);
 
         //add Recipes
-        /**
-         * Just for testing
+       // /**
+       //  * Just for testing
         Recipe r1 = new Recipe("Test", null, 1, null, null);
         Recipe r2 = new Recipe("Test2", null, 1, null, null);
 
@@ -46,7 +46,8 @@ public class FragmentBookmarks extends Fragment{
             Book book = new Book(new Recipe[]{r1,r2});
             book.setName("Title");
             addBook(book);
-        }*/
+        }
+         //*/
 
     }
 

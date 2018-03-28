@@ -6,8 +6,8 @@ package com.hwr.cookbook;
 
 public class Book {
 
-    private Recipe[] recipes;
-    private String name;
+    public Recipe[] recipes;
+    public String name;
 
     public Book () {
 

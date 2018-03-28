@@ -17,8 +17,6 @@ import com.hwr.cookbook.Recipe;
  */
 
 public class LayoutBookmarksRecipe extends RelativeLayout {
-    private TextView textView;
-    private RatingBar ratingBar;
     private Recipe recipe;
 
 
@@ -26,7 +24,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
         super(context);
     }
 
-    public LayoutBookmarksRecipe(Context context, Recipe recipe) {
+    public LayoutBookmarksRecipe(Context context, final Recipe recipe) {
         super(context);
 
         this.recipe=recipe;
@@ -41,14 +39,14 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 //Add Dialog or Activity instead
-                Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), recipe.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
     public void addText(){
-        textView = new TextView(getContext());
+        TextView textView = new TextView(getContext());
         textView.setText(recipe.getName());
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -63,7 +61,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
 
     //add name, change later to a function add recipe object
     public void addRating(int rating) {
-        ratingBar = new RatingBar(getContext());
+        RatingBar ratingBar = new RatingBar(getContext());
         int maxRating = getContext().getResources().getInteger(R.integer.maxRating);
         ratingBar.setNumStars(maxRating);
         ratingBar.setRating(rating);
