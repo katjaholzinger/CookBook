@@ -18,7 +18,7 @@ import java.util.UUID;
  * Created by kholzinger on 10.03.2018.
  */
 
-class Database {
+public class Database {
     private static final String TAG = "DatabaseOperation";
     DatabaseReference database;
     DatabaseReference databaseUser;
