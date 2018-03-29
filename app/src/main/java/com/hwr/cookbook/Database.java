@@ -64,4 +64,10 @@ public class Database {
         database.child("plans").child(userID).child(planID).child("events").setValue(marker);
     }
 
+    public void setNewBook (String userID, Book book) {
+        Log.d("Database", "Adding new book to user xxx ...");
+        String bookID = UUID.randomUUID().toString();
+        database.child("books").child(userID).child(bookID).setValue(book);
+    }
+
 }

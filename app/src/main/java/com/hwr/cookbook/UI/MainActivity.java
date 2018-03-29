@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Database", "Database erstellen...");
         Database db = new Database();
-        mTextMessage.setText(db.getUserName(user));
+//        mTextMessage.setText(db.getUserName(user));
         IngredientList ingredients = new IngredientList();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
