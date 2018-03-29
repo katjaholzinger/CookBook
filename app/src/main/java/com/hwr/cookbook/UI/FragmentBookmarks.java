@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import com.google.android.gms.common.data.DataBufferObserverSet;
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
+import com.hwr.cookbook.Ingredient;
+import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
@@ -70,9 +72,17 @@ public class FragmentBookmarks extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Recipe r1 = new Recipe("Test2", null, 1, null, null);
+
                 Database db = new Database();
-                db.setNewRecipe("12345",r1);
+
+                IngredientList ingredients = new IngredientList();
+                ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
+                ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
+                ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
+                ingredients.normalize(4);
+                Recipe recipe = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+                db.setNewRecipe("12346", recipe);
+
             }
         });
 
