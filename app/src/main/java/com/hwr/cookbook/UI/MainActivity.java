@@ -38,11 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
 
     private User user;
-    private List<Recipe> recipeList;
-    private List<Plan> planList;
-    private List<Book> bookList;
     private String currentUserId;
     private static final String TAG = "LoginActivity";
+    private Database db;
 
 
 
@@ -65,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         Database db = new Database();
         //mTextMessage.setText(db.getUserName(user));
         /**
+        db = new Database();
+        db.newListener();
+
         IngredientList ingredients = new IngredientList();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override
@@ -144,84 +144,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void logout() {
-        FirebaseAuth.getInstance().signOut();
+        db.logout();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    private void DBNewListener() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        DatabaseReference userRef = database.child("users").child(currentUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-        DatabaseReference plansRef = database.child("plans").child(currentUserId);
-        planList = new ArrayList<>();
-        plansRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                planList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Plan plan = postSnapshot.getValue(Plan.class);
-                    planList.add(plan);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-        DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
-        recipeList = new ArrayList<>();
-        recipesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                recipeList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Recipe recipe = postSnapshot.getValue(Recipe.class);
-                    recipeList.add(recipe);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-        final DatabaseReference booksRef = database.child("books").child(currentUserId);
-        bookList = new ArrayList<>();
-        booksRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                bookList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Book book = postSnapshot.getValue(Book.class);
-                    bookList.add(book);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-    }
 
     public List<Book> getBookList(){
-        return bookList;
+        return db.getBookList();
     }
 
     public User getUser(){

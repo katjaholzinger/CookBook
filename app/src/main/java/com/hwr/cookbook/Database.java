@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,11 +25,86 @@ public class Database {
     DatabaseReference database;
     DatabaseReference databaseUser;
     User user;
+    private String currentUserId;
+    private List<Recipe> recipeList;
+    private List<Plan> planList;
+    private List<Book> bookList;
+
     public Database() {
         database = FirebaseDatabase.getInstance().getReference();
     }
 
+    public void newListener() {
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
+        DatabaseReference userRef = database.child("users").child(currentUserId);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+
+        DatabaseReference plansRef = database.child("plans").child(currentUserId);
+        planList = new ArrayList<>();
+        plansRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                planList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Plan plan = postSnapshot.getValue(Plan.class);
+                    planList.add(plan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+
+        DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
+        recipeList = new ArrayList<>();
+        recipesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                recipeList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Recipe recipe = postSnapshot.getValue(Recipe.class);
+                    recipeList.add(recipe);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+
+        final DatabaseReference booksRef = database.child("books").child(currentUserId);
+        bookList = new ArrayList<>();
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                bookList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Book book = postSnapshot.getValue(Book.class);
+                    bookList.add(book);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+    }
     public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
         User user = new User(name, mail);
@@ -46,10 +123,8 @@ public class Database {
     public void setNewRecipe (String userID, Recipe recipe) {
 
         Log.d("Database", "Adding new recipe ...");
-        String recipeID = UUID.randomUUID().toString();
-        FirebaseDatabase.getInstance().getReference().setValue("recipes");
-        FirebaseDatabase.getInstance().getReference().child("recipes").setValue(userID);
-        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(recipeID).setValue(recipe);
+
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID);
     }
 
     public void setNewPlan (String userID, Plan plan) {
@@ -62,6 +137,19 @@ public class Database {
         Log.d("Database", "Adding new marker to plan xxx ...");
         String markerID = UUID.randomUUID().toString();
         database.child("plans").child(userID).child(planID).child("events").setValue(marker);
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void logout() {
+        FirebaseAuth.getInstance().signOut();
+    }
+    public void setNewBook (String userID, Book book) {
+        Log.d("Database", "Adding new book to user xxx ...");
+        String bookID = UUID.randomUUID().toString();
+        database.child("books").child(userID).child(bookID).setValue(book);
     }
 
 }
