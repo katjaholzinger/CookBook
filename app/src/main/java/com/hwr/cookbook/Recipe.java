@@ -16,9 +16,7 @@ public class Recipe {
     public float rating;
     public int raters;
 
-    public Recipe() {
-
-    }
+    public Recipe() {}
 
     public Recipe(String name, IngredientList ingredients, int defaultPortions, String icon, String description) {
         this.name = name;

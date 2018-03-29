@@ -1,6 +1,7 @@
 package com.hwr.cookbook.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
+import com.hwr.cookbook.RegisterActivity;
 
 /**
  * Created by Thomas on 27.03.2018.
@@ -24,7 +26,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
         super(context);
     }
 
-    public LayoutBookmarksRecipe(Context context, final Recipe recipe) {
+    public LayoutBookmarksRecipe(final Context context, final Recipe recipe) {
         super(context);
 
         this.recipe=recipe;
@@ -39,7 +41,9 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 //Add Dialog or Activity instead
-                Toast.makeText(getContext(), recipe.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, RecipeActivity.class);
+                //intent.putExtra("Recipe", recipe.name);
+                context.startActivity(intent);
             }
         });
     }
