@@ -1,15 +1,13 @@
 package com.hwr.cookbook;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Sidney on 22.03.2018.
  */
 
-public class Recipe {
-    public String id;
-    public String name;
+public class Recipe extends IdentifiableElement{
+
     public List ingredients;
     public int defaultPortions;
     public String icon;
@@ -18,11 +16,11 @@ public class Recipe {
     public int raters;
 
     public Recipe() {
-
+        super();
     }
 
     public Recipe(String name, IngredientList ingredients, int defaultPortions, String icon, String description) {
-        this.id = UUID.randomUUID().toString();
+        super();
         this.name = name;
         this.ingredients = ingredients;
         this.defaultPortions = defaultPortions;
@@ -32,7 +30,4 @@ public class Recipe {
         this.rating = 0;
     }
 
-    public String getName() {
-        return name;
-    }
 }
