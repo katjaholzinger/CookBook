@@ -23,6 +23,7 @@ import java.util.UUID;
 public class Database {
     private static final String TAG = "DatabaseOperation";
     DatabaseReference database;
+    DatabaseReference databaseUser;
     User user;
     private String currentUserId;
     private List<Recipe> recipeList;
@@ -145,4 +146,10 @@ public class Database {
     public void logout() {
         FirebaseAuth.getInstance().signOut();
     }
+    public void setNewBook (String userID, Book book) {
+        Log.d("Database", "Adding new book to user xxx ...");
+        String bookID = UUID.randomUUID().toString();
+        database.child("books").child(userID).child(bookID).setValue(book);
+    }
+
 }
