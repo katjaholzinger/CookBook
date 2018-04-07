@@ -27,7 +27,7 @@ public class Recipe extends IdentifiableElement{
         this.icon = icon;
         this.description = description;
         this.raters = 0;
-        this.rating = 0;
+        this.rating = 3;
     }
 
 }

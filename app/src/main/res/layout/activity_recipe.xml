@@ -33,12 +33,73 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/appBarLayout">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutRecipe"
+        <RelativeLayout
+            android:id="@+id/recipeRelativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:id="@+id/ImageIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+
+            <EditText
+                android:id="@+id/RecipeTitle"
+                style="@style/TitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ImageIcon"
+                android:enabled="false"
+                android:text="Lorem ipsum" />
+
+            <RatingBar
+                android:id="@+id/RecipeRatingBar"
+                style="@style/RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/RecipeTitle"
+                android:numStars="5"
+                android:rating="3"/>
+
+            <LinearLayout
+                android:id="@+id/Ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/RecipeRatingBar">
+                <TextView
+                    style="@style/HeadingTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ingredients" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/DescriptionTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                android:layout_below="@+id/Ingredients"/>
+
+            <EditText
+                style="@style/DisableTextStyle"
+                android:id="@+id/Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DescriptionTitle"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
+            </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>
