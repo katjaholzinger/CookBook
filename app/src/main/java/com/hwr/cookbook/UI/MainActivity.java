@@ -11,23 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
-import com.hwr.cookbook.Ingredient;
-import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.LoginActivity;
-import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
-import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -148,17 +138,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
-
-
-    public List<Book> getBookList(){
-        return db.getBookList();
-    }
-
-    public User getUser(){
-        return user;
-    }
-
-
 
 }

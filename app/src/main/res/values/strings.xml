@@ -18,4 +18,6 @@
     <string name="actionbar_settings">Menu</string>
     <string name="actionbar_logout">Logout</string>
     <string name="actionbar_account">Account Settings</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="description">Description</string>
 </resources>

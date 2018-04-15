@@ -124,19 +124,17 @@ public class Database {
 
         Log.d("Database", "Adding new recipe ...");
 
-        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID);
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).setValue(recipe);
     }
 
     public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
-        String planID = UUID.randomUUID().toString();
-        database.child("plans").child(userID).child(planID).setValue(plan);
+        database.child("plans").child(userID).child(plan.getID()).setValue(plan);
     }
 
-    public void setNewMarker (String userID, String planID, RecipeMarker marker) {
+    public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
-        String markerID = UUID.randomUUID().toString();
-        database.child("plans").child(userID).child(planID).child("events").setValue(marker);
+        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()).setValue(marker);
     }
 
     public List<Book> getBookList() {
@@ -146,10 +144,17 @@ public class Database {
     public void logout() {
         FirebaseAuth.getInstance().signOut();
     }
+
     public void setNewBook (String userID, Book book) {
         Log.d("Database", "Adding new book to user xxx ...");
-        String bookID = UUID.randomUUID().toString();
-        database.child("books").child(userID).child(bookID).setValue(book);
+        database.child("books").child(userID).child(book.getID()).setValue(book);
     }
+
+    public void addRecipeToBook (String userID, Book book, Recipe recipe) {
+        Log.d("Database", "Adding new recipe to book xxx of user xxx ...");
+        database.child("books").child(userID).child(book.getID()).setValue(recipe.getID());
+    }
+
+    //public void
 
 }

@@ -1,5 +1,6 @@
 package com.hwr.cookbook.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -72,6 +73,9 @@ public class FragmentBookmarks extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), RecipeActivity.class);
+                getContext().startActivity(intent);
 
                 Database db = new Database();
 

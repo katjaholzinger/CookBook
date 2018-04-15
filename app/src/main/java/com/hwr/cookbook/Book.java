@@ -1,19 +1,21 @@
 package com.hwr.cookbook;
 
+import java.util.UUID;
+
 /**
  * Created by Sidney on 22.03.2018.
  */
 
-public class Book {
+public class Book extends IdentifiableElement {
 
     public Recipe[] recipes;
-    public String name;
 
     public Book () {
-
+        super();
     }
 
     public Book (Recipe[] recipes) {
+        super();
         this.recipes=recipes;
     }
 
@@ -21,11 +23,4 @@ public class Book {
         return recipes;
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
 }
