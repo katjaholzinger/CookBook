@@ -19,49 +19,47 @@ import com.hwr.cookbook.Recipe;
  */
 
 public class RecipeActivity extends AppCompatActivity {
-    private EditText descriptionText;
-    private EditText recipeTitle;
-    private RatingBar ratingBar;
-    private LinearLayout ingredientsLayout;
+    public static Recipe recipe = null;
+
+    public RecipeActivity() {
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe);
 
         createLayouts();
     }
 
     private void createLayouts() {
+
+        if (recipe==null){
+            setContentView(R.layout.activity_recipe_editable);
+        } else {
+            setContentView(R.layout.activity_recipe_show);
+            setRecipe();
+        }
+
         // set Toolbar
         Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
 
-        // example Ingredient
-        IngredientList ing = new IngredientList();
-        ing.add(new Ingredient("Salz", 5, "Teelöffel" ));
-        ing.add(new Ingredient("Wasser", 3, "Liter" ));
-        ing.add(new Ingredient("Spaghetti", 500, "Gramm" ));
-        ing.normalize(4);
-        Recipe recipe = new Recipe("Spaghetti", ing, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
-
-        // find Views
-        recipeTitle = findViewById(R.id.RecipeTitle);
-        ratingBar = findViewById(R.id.RecipeRatingBar);
-        ingredientsLayout = findViewById(R.id.Ingredients);
-        descriptionText = findViewById(R.id.Description);
-
-        setRecipe(recipe);
     }
 
-    private void setRecipe(Recipe recipe) {
+    private void setRecipe() {
         //set title
+        TextView recipeTitle = findViewById(R.id.RecipeTitle);
         recipeTitle.setText(recipe.name);
 
         //set rating
+        RatingBar ratingBar = findViewById(R.id.RecipeRatingBar);
+        ratingBar.setEnabled(false);
         ratingBar.setRating(recipe.rating);
 
+
         //set ingredients
+        LinearLayout ingredientsLayout = findViewById(R.id.Ingredients);
         IngredientList ingredients = (IngredientList) recipe.ingredients;
 
         for(Object o: ingredients){
@@ -72,22 +70,11 @@ public class RecipeActivity extends AppCompatActivity {
         }
 
         //set description
+        TextView descriptionText = findViewById(R.id.Description);
         descriptionText.setText(recipe.description);
 
-        setEnable();
     }
 
-    private void setEnable(){
-        ratingBar.setEnabled(true);
-        recipeTitle.setEnabled(true);
-        descriptionText.setEnabled(true);
-    }
-
-    private void setDisable(){
-        ratingBar.setEnabled(false);
-        recipeTitle.setEnabled(false);
-        descriptionText.setEnabled(false);
-    }
 
 
 }

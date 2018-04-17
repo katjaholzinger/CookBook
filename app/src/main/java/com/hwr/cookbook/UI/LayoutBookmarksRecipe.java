@@ -2,17 +2,14 @@ package com.hwr.cookbook.UI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
-import com.hwr.cookbook.RegisterActivity;
 
 /**
  * Created by Thomas on 27.03.2018.
@@ -42,7 +39,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
             public void onClick(View v) {
                 //Add Dialog or Activity instead
                 Intent intent = new Intent(context, RecipeActivity.class);
-                //intent.putExtra("Recipe", recipe.name);
+                RecipeActivity.recipe = recipe;
                 context.startActivity(intent);
             }
         });
@@ -65,7 +62,7 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
 
     //add name, change later to a function add recipe object
     public void addRating(int rating) {
-        RatingBar ratingBar = new RatingBar(getContext());
+        RatingBar ratingBar = new RatingBar(getContext(),null, R.style.RatingBar);
         int maxRating = getContext().getResources().getInteger(R.integer.maxRating);
         ratingBar.setNumStars(maxRating);
         ratingBar.setRating(rating);
@@ -77,5 +74,4 @@ public class LayoutBookmarksRecipe extends RelativeLayout {
         ratingBar.setLayoutParams(params);
         this.addView(ratingBar);
     }
-
 }

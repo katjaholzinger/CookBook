@@ -20,4 +20,6 @@
     <string name="actionbar_account">Account Settings</string>
     <string name="ingredients">Ingredients</string>
     <string name="description">Description</string>
+    <string name="recipe_title">Insert Recipe Title</string>
+    <string name="insert_description">Insert Description</string>
 </resources>

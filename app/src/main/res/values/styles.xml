@@ -15,7 +15,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/primary_dark</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -28,18 +27,9 @@
     </style>
 
     <style name="RatingBar"
-        parent="android:style/Widget.Material.RatingBar.Small">
+        parent="@android:style/Widget.Holo.RatingBar">
         <item name="colorControlNormal">@color/primary_light</item>
         <item name="colorControlActivated">@color/primary_dark</item>
-    </style>
-
-    <style name="DisableTextStyle">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:enabled">false</item>
-    </style>
-
-    <style name="EnableTextStyle" parent="android:Widget.EditText">
-        <item name="android:enabled">true</item>
     </style>
 
 </resources>
