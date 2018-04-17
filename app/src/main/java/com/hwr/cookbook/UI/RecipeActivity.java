@@ -65,7 +65,8 @@ public class RecipeActivity extends AppCompatActivity {
         for(Object o: ingredients){
             TextView ingredientView = new TextView(this);
             Ingredient ingredient = (Ingredient) o;
-            ingredientView.setText(ingredient.name);
+            String stringIngredient = String.format("%s (%s %s)", ingredient.name, ingredient.amount, ingredient.unit);
+            ingredientView.setText(stringIngredient);
             ingredientsLayout.addView(ingredientView);
         }
 

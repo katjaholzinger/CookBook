@@ -7,18 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.google.android.gms.common.data.DataBufferObserverSet;
 import com.hwr.cookbook.Book;
-import com.hwr.cookbook.Database;
-import com.hwr.cookbook.Ingredient;
-import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -28,6 +29,13 @@ import java.util.ArrayList;
 public class FragmentBookmarks extends Fragment {
     private LinearLayout linearLayout;
     private User user;
+
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    List<String> expandableListTitle;
+    HashMap<String, List<Recipe>> expandableListDetail;
+    private ArrayList<Book> books;
+
 
     public FragmentBookmarks() {
         // Required empty public constructor
@@ -43,38 +51,17 @@ public class FragmentBookmarks extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //find Linear Layout
-        linearLayout = getActivity().findViewById(R.id.linearLayoutBookmarks);
+        books = TestBook.generateTestBook();
 
-        //       Database db = new Database();
+        createFloatActionButton();
 
-//        ArrayList<Book> books =  db.getBooks();
-
-
-//        for (Book book: books){
-//           addBook(book);
-   //     }
+        createExpandableList();
 
 
-        //add Recipes
-        // /**
-        //  * Just for testing
-        IngredientList ingredients = new IngredientList();
-        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
-        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
-        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
-        ingredients.normalize(4);
-        Recipe r1 = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
-        r1.rating = 4;
-        Recipe r2 = new Recipe("Test2", ingredients, 1, null, "");
 
-        for(int i = 0; i <= 10; i++) {
-            Book book = new Book(new Recipe[]{r1, r2});
-            book.setName("Title");
-            addBook(book);
-        }
-        //*/
+    }
 
+    private void createFloatActionButton() {
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,12 +72,48 @@ public class FragmentBookmarks extends Fragment {
                 getContext().startActivity(intent);
                             }
         });
-
     }
 
-    public void addBook(Book book) {
-        LayoutBooks layoutBooks = new LayoutBooks(getContext(), book);
-        linearLayout.addView(layoutBooks);
+
+    private void createExpandableList () {
+        expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+        expandableListDetail = ExpandableListDataPump.getData(books);
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {}
+        });
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+
+                Intent intent = new Intent(getActivity(), RecipeActivity.class);
+                RecipeActivity.recipe = expandableListDetail.get(
+                        expandableListTitle.get(groupPosition)).get(
+                        childPosition);
+                getActivity().startActivity(intent);
+
+                return false;
+
+            }
+        });
     }
+
+
+
+
+
 
 }

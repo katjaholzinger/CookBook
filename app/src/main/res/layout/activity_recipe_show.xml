@@ -61,7 +61,7 @@
 
             <RatingBar
                 android:id="@+id/RecipeRatingBar"
-                style="@style/RatingBar"
+                style="@android:style/Widget.Holo.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
