@@ -1,12 +1,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-
-<TextView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="@string/planer" />
+    xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto">
+
+
+    <com.github.tibolte.agendacalendarview.AgendaCalendarView
+        android:id="@+id/agenda_calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        agendaCalendar:agendaCurrentDayTextColor="@color/colorAccent"
+        agendaCalendar:calendarColor="@color/primary_lighter"
+        agendaCalendar:calendarCurrentDayTextColor="@color/colorAccent"
+        agendaCalendar:calendarDayTextColor="@color/colorIcon"
+        agendaCalendar:calendarHeaderColor="@color/primary_dark"
+        agendaCalendar:calendarPastDayTextColor="@color/colorIcon"
+        agendaCalendar:fabColor="@color/colorAccent"
+
+        />
 
 </FrameLayout>
