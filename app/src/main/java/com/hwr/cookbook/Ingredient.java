@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Ingredient extends IdentifiableElement {
 
-    public float amount;
-    public String unit;
+    public float amount = 0;
+    public String unit = "l";
 
     public Ingredient() {
         super();

@@ -8,7 +8,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="mail">E-Mail</string>
     <string name="password">Password</string>
-    <string name="name">Benutzername</string>
+    <string name="name">Username</string>
     <string name="title_planer">Planer</string>
     <string name="title_bookmarks">Bookmarks</string>
     <string name="title_discover">Discover</string>
@@ -22,4 +22,43 @@
     <string name="description">Description</string>
     <string name="recipe_title">Insert Recipe Title</string>
     <string name="insert_description">Insert Description</string>
+    <string name="portions">Portions</string>
+    <string name="Decrement">-</string>
+    <string name="Increment">+</string>
+    <string name="DefaultPortion">4</string>
+    <string name="addIngredient">Add Ingredient</string>
+    <string name="IngredientName">Name</string>
+    <string name="unit">Unit</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="amount">Amount</string>
+
+
+    <string-array name="units_short_array">
+        <item>tsp</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>g</item>
+        <item>kg</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>lb</item>
+        <item>mg</item>
+    </string-array>
+
+    <string-array name="units_long_array">
+        <item>tsp</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>g</item>
+        <item>kg</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>lb</item>
+        <item>mg</item>
+    </string-array>
+
+
+    <!-- UNITS -->
+
 </resources>

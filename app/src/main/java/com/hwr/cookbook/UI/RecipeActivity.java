@@ -1,13 +1,19 @@
 package com.hwr.cookbook.UI;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
 import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.R;
@@ -18,8 +24,10 @@ import com.hwr.cookbook.Recipe;
  *
  */
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
     public static Recipe recipe = null;
+    private boolean isEditAble;
+
 
     public RecipeActivity() {
     }
@@ -29,22 +37,34 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        isEditAble = (recipe == null);
+
         createLayouts();
     }
 
     private void createLayouts() {
 
-        if (recipe==null){
+        if (isEditAble){
+            recipe=new Recipe();
             setContentView(R.layout.activity_recipe_editable);
+            addEditButtons();
         } else {
             setContentView(R.layout.activity_recipe_show);
             setRecipe();
+            addPortionsButtons();
         }
 
         // set Toolbar
         Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
+    }
 
+    private void addEditButtons() {
+        ImageButton addIngredient = (ImageButton) findViewById(R.id.ButtonAddIngredient);
+        FloatingActionButton saveButton = findViewById(R.id.fab);
+
+        saveButton.setOnClickListener(this);
+        addIngredient.setOnClickListener(this);
     }
 
     private void setRecipe() {
@@ -56,19 +76,8 @@ public class RecipeActivity extends AppCompatActivity {
         RatingBar ratingBar = findViewById(R.id.RecipeRatingBar);
         ratingBar.setEnabled(false);
         ratingBar.setRating(recipe.rating);
+        updateIngredientsView();
 
-
-        //set ingredients
-        LinearLayout ingredientsLayout = findViewById(R.id.Ingredients);
-        IngredientList ingredients = (IngredientList) recipe.ingredients;
-
-        for(Object o: ingredients){
-            TextView ingredientView = new TextView(this);
-            Ingredient ingredient = (Ingredient) o;
-            String stringIngredient = String.format("%s (%s %s)", ingredient.name, ingredient.amount, ingredient.unit);
-            ingredientView.setText(stringIngredient);
-            ingredientsLayout.addView(ingredientView);
-        }
 
         //set description
         TextView descriptionText = findViewById(R.id.Description);
@@ -76,8 +85,106 @@ public class RecipeActivity extends AppCompatActivity {
 
     }
 
+    private void addPortionsButtons(){
+        Button buttonDec = findViewById(R.id.buttonDecrement);
+        Button buttonInc = findViewById(R.id.buttonIncrement);
+
+        TextView textViewPortions = this.findViewById(R.id.Portions);
+        textViewPortions.setText(String.valueOf(this.recipe.defaultPortions));
+
+        buttonDec.setOnClickListener(this);
+        buttonInc.setOnClickListener(this);
+    }
+
+    private void changePortions(int portions){
+        if (portions>=1){
+            this.recipe.defaultPortions = portions;
+            TextView viewNumber = this.findViewById(R.id.Portions);
+            viewNumber.setText(String.valueOf(this.recipe.defaultPortions));
+
+            updateIngredientsView();
+        }
+    }
 
 
+    public void updateIngredientsView() {
+        // clean Layout
+        LinearLayout linearLayout = this.findViewById(R.id.Ingredients);
+        linearLayout.removeAllViews();
+
+        //set ingredients
+        IngredientList ingredients = (IngredientList) recipe.ingredients;
+
+
+        for (final Ingredient ingredient: ingredients.toArray()){
+            TextView textView = new TextView(this);
+
+            String text = String.format("%s (%s %s)", ingredient.name, ingredient.amount*recipe.defaultPortions, ingredient.unit);
+            textView.setText(text);
+
+            if (isEditAble) {
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog(ingredient);
+                    }
+                });
+            }
+
+            linearLayout.addView(textView);
+        }
+    }
+
+    private void alertDialog(Ingredient ingredient) {
+        DialogIngredient dialogIngredient = new DialogIngredient(this, ingredient);
+        dialogIngredient.show();
+    }
+
+    public void addToList(Ingredient ing){
+        IngredientList ingredientList = recipe.ingredients;
+        ingredientList.add(ing);
+        recipe.ingredients = ingredientList;
+        updateIngredientsView();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.buttonDecrement:
+                changePortions(recipe.defaultPortions -1);
+                break;
+            case R.id.buttonIncrement:
+                changePortions(recipe.defaultPortions +1);
+                break;
+            case R.id.fab:
+                pushRecipe();
+                break;
+            case R.id.ButtonAddIngredient:
+                DialogIngredient dialogIngredient = new DialogIngredient(this, null);
+                dialogIngredient.show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void pushRecipe() {
+
+        EditText title = this.findViewById(R.id.RecipeTitle);
+        recipe.name=title.getText().toString();
+
+        EditText description = this.findViewById(R.id.Description);
+        recipe.description=description.getText().toString();
+
+        RatingBar ratingBar = this.findViewById(R.id.RecipeRatingBar);
+        recipe.rating = ratingBar.getRating();
+
+        recipe.ingredients.normalize(recipe.defaultPortions);
+        Database db = new Database();
+        db.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() ,this.recipe);
+        this.finish();
+    }
 }
 
 

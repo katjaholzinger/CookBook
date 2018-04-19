@@ -56,9 +56,6 @@ public class FragmentBookmarks extends Fragment {
         createFloatActionButton();
 
         createExpandableList();
-
-
-
     }
 
     private void createFloatActionButton() {

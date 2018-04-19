@@ -71,18 +71,55 @@
                 android:rating="3"
                 android:clickable="false"/>
 
+
+            <TextView
+                android:id="@+id/portionsText"
+                style="@style/HeadingTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/portions"
+                android:layout_below="@+id/RecipeRatingBar"
+                />
+
+
+            <Button
+                android:id="@+id/buttonDecrement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/portionsText"
+                android:text="@string/Decrement" />
+
+            <TextView
+                android:id="@+id/Portions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/portionsText"
+                android:layout_toEndOf="@+id/buttonDecrement"
+                android:layout_toRightOf="@+id/buttonDecrement"/>
+
+            <Button
+                android:id="@+id/buttonIncrement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Increment"
+                android:layout_below="@+id/portionsText"
+                android:layout_toEndOf="@+id/Portions"
+                android:layout_toRightOf="@+id/Portions"/>
+
+            <TextView
+                android:id="@+id/IngredientsTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingredients"
+                android:layout_below="@+id/buttonIncrement"/>
+
             <LinearLayout
                 android:id="@+id/Ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@+id/RecipeRatingBar">
-                <TextView
-                    style="@style/HeadingTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ingredients" />
-            </LinearLayout>
+                android:layout_below="@+id/IngredientsTitle"/>
 
             <TextView
                 android:id="@+id/DescriptionTitle"
@@ -98,7 +135,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/DescriptionTitle"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
-            </RelativeLayout>
+
+
+        </RelativeLayout>
 
     </ScrollView>
 

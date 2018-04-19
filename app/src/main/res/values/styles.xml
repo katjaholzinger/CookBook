@@ -1,5 +1,5 @@
 <!-- Base application theme. -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- inherit from the AppCompat theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- your app branding color for the app bar -->

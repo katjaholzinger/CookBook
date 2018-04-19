@@ -69,18 +69,31 @@
                 android:numStars="5"
                 android:rating="3" />
 
+            <TextView
+                android:id="@+id/IngredientsTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingredients"
+                android:layout_below="@+id/RecipeRatingBar"/>
+
             <LinearLayout
                 android:id="@+id/Ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@+id/RecipeRatingBar">
-                <TextView
-                    style="@style/HeadingTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ingredients" />
-            </LinearLayout>
+                android:layout_below="@+id/IngredientsTitle"/>
+
+            <ImageButton
+                android:id="@+id/ButtonAddIngredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/Ingredients"
+                android:background="@android:color/transparent"
+                app:srcCompat="@android:drawable/ic_input_add"
+                android:contentDescription="@string/addIngredient" />
 
             <TextView
                 android:id="@+id/DescriptionTitle"
@@ -88,16 +101,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/description"
-                android:layout_below="@+id/Ingredients"/>
+                android:layout_below="@+id/ButtonAddIngredient"/>
 
             <EditText
                 android:id="@+id/Description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/DescriptionTitle"
-                android:hint="@string/insert_description"/>
+                android:hint="@string/insert_description" />
+
+
         </RelativeLayout>
 
+
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_save_black_24dp"
+        tools:ignore="VectorDrawableCompat"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
+
 
 </RelativeLayout>

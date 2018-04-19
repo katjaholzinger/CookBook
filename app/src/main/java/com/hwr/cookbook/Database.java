@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -22,27 +23,30 @@ import java.util.UUID;
 
 public class Database {
     private static final String TAG = "DatabaseOperation";
-    DatabaseReference database;
-    DatabaseReference databaseUser;
-    User user;
-    private String currentUserId;
-    private List<Recipe> recipeList;
-    private List<Plan> planList;
-    private List<Book> bookList;
+    static DatabaseReference database;
+    static DatabaseReference databaseUser;
+    static User user;
+    static private String currentUserId;
+    static private List<Recipe> recipeList;
+    static private List<Plan> planList;
+    static private List<Book> bookList;
 
-    public Database() {
-        database = FirebaseDatabase.getInstance().getReference();
-    }
 
-    public void newListener() {
+    static public void newListener() {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        DatabaseReference userRef = database.child("users").child(currentUserId);
+        DatabaseReference userRef = database.child("users");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
+                for (DataSnapshot usersnapshot: snapshot.getChildren()
+                     ) {
+                    user= usersnapshot.getValue(User.class);
+                    Log.d("ValueListener", usersnapshot.getValue().toString());
+                }
+                //user = snapshot.getValue(User.class);
+                Log.d("ValueListener", snapshot.getValue().toString());
             }
 
             @Override
@@ -69,17 +73,27 @@ public class Database {
             }
         });
 
-        DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
-        recipeList = new ArrayList<>();
-        recipesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                recipeList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Recipe recipe = postSnapshot.getValue(Recipe.class);
-                    recipeList.add(recipe);
-                }
-            }
+                final DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
+                recipeList = new ArrayList<>();
+                recipesRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        //recipeList.clear();
+                        // for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                        //     Recipe recipe = postSnapshot.getValue(Recipe.class);
+                        //    recipeList.add(recipe);
+                        //}
+                        int i= 0;
+                        recipeList.clear();
+                        for (DataSnapshot recipeSnapshot:  snapshot.getChildren()
+                                ) {
+                            i++;
+                            //Map<String,Object> recipe = (Map<String,Object>) recipeSnapshot.getValue();
+                            //Log.d("ValueListener", i+ ". :" + recipeSnapshot.getValue().toString());
+                            //Log.d("ValueListener", i+ ". :" + recipe.values().toString());
+                        }
+
+                    }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -105,56 +119,67 @@ public class Database {
             }
         });
     }
-    public void setNewUser(String id, String name, String mail) {
+    static public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
         User user = new User(name, mail);
         Log.d("Database", "Adding new user ...");
-        database.child("users").child(id).setValue(user);
+        FirebaseDatabase.getInstance().getReference().child("users").child(id).setValue(user);
 
     }
 
-    public String getUserName (User user) {
+    static public String getUserName (User user) {
         if (user == null) {
             return "";
         }
         return  user.username;
     }
 
-    public void setNewRecipe (String userID, Recipe recipe) {
+    static public void setNewRecipe (String userID, Recipe recipe) {
 
         Log.d("Database", "Adding new recipe ...");
 
-        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).setValue(recipe);
+        String id= FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
+        recipe.setID(id);
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
     }
 
-    public void setNewPlan (String userID, Plan plan) {
+    static  public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
         database.child("plans").child(userID).child(plan.getID()).setValue(plan);
     }
 
-    public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
+    static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
-        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()).setValue(marker);
+        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
     }
 
-    public List<Book> getBookList() {
+    static public List<Book> getBookList() {
         return bookList;
     }
 
-    public void logout() {
+    static public void logout() {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public void setNewBook (String userID, Book book) {
+    static public void setNewBook (String userID, Book book) {
         Log.d("Database", "Adding new book to user xxx ...");
-        database.child("books").child(userID).child(book.getID()).setValue(book);
+        database.child("books").child(userID).child(book.getID()).push().setValue(book);
     }
 
-    public void addRecipeToBook (String userID, Book book, Recipe recipe) {
+
+
+    static public void addRecipeToBook (String userID, Book book, Recipe recipe) {
         Log.d("Database", "Adding new recipe to book xxx of user xxx ...");
-        database.child("books").child(userID).child(book.getID()).setValue(recipe.getID());
+        database.child("books").child(userID).child(book.getID()).push().setValue(recipe.getID());
     }
 
-    //public void
+    static public Recipe findRecipe(String id) {
+        for (Recipe r: recipeList) {
+           if (r.getID() == id) {
+               return r;
+           }
+        }
+        return new Recipe();
+    }
 
 }

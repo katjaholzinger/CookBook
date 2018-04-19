@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Recipe extends IdentifiableElement{
 
-    public List ingredients;
-    public int defaultPortions;
-    public String icon;
-    public String description;
-    public float rating;
-    public int raters;
+    public IngredientList ingredients = new IngredientList();
+    public int defaultPortions = 2;
+    public String icon = "";
+    public String description ="";
+    public float rating = 3;
+    public int raters = 0;
 
     public Recipe() {
         super();
