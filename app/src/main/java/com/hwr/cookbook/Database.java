@@ -88,9 +88,9 @@ public class Database {
                         for (DataSnapshot recipeSnapshot:  snapshot.getChildren()
                                 ) {
                             i++;
-                            Map<String,Object> recipe = (Map<String,Object>) recipeSnapshot.getValue();
-                            Log.d("ValueListener", i+ ". :" + recipeSnapshot.getValue().toString());
-                            Log.d("ValueListener", i+ ". :" + recipe.values().toString());
+                            //Map<String,Object> recipe = (Map<String,Object>) recipeSnapshot.getValue();
+                            //Log.d("ValueListener", i+ ". :" + recipeSnapshot.getValue().toString());
+                            //Log.d("ValueListener", i+ ". :" + recipe.values().toString());
                         }
 
                     }
