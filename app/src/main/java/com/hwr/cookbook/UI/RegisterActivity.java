@@ -1,4 +1,4 @@
-package com.hwr.cookbook;
+package com.hwr.cookbook.UI;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,9 +14,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-
-import java.util.UUID;
+import com.hwr.cookbook.Database;
+import com.hwr.cookbook.LoginActivity;
+import com.hwr.cookbook.R;
 
 public class RegisterActivity extends AppCompatActivity implements
         View.OnClickListener{
@@ -67,8 +67,7 @@ public class RegisterActivity extends AppCompatActivity implements
 
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            Database database = new Database();
-                            database.setNewUser(user.getUid(), name, email);
+                            Database.setNewUser(user.getUid(), name, email);
                             Toast.makeText(RegisterActivity.this, "Deine Registrierung war erfolgreich.",
                                     Toast.LENGTH_SHORT).show();
                             setContentView(R.layout.activity_login);

@@ -21,4 +21,8 @@ public abstract class IdentifiableElement {
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
+
+    public void setID(String id) {
+        this.ID = id;
+    }
 }

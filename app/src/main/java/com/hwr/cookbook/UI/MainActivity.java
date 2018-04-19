@@ -14,8 +14,11 @@ import android.widget.TextView;
 
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
+import com.hwr.cookbook.Ingredient;
+import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.LoginActivity;
 import com.hwr.cookbook.R;
+import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
 import java.util.List;
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Database", "Database erstellen...");
         Database db = new Database();
         //mTextMessage.setText(db.getUserName(user));
-        /**
+
         db = new Database();
         db.newListener();
 
@@ -61,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
         ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
         ingredients.normalize(4);
-        Recipe recipe = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        Recipe recipe = new Recipe("Spaghetti2", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
         db.setNewRecipe(currentUserId, recipe);
-        */
+
 
         // creates TabLayout and Actionbar
         createLayouts();
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search_black_24dp)); //ICON TAB
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_collections_bookmark_black_24dp));  //TEXT TAB
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_date_range_black_24dp));  //TEXT TAB
+
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
