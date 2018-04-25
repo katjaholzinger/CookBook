@@ -101,7 +101,7 @@ public class RecipeMarker extends IdentifiableElement implements CalendarEvent{
 
     @Override
     public CalendarEvent copy() {
-        String title = recipe.getName();
+        String title = recipe.name;
         String description = "Description";
         String location = persons + " persons";
         int color = R.color.primary_dark;

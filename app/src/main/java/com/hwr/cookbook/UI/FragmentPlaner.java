@@ -11,6 +11,7 @@ import com.github.tibolte.agendacalendarview.CalendarPickerController;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.DayItem;
 import com.hwr.cookbook.Book;
+import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.RecipeMarker;
 
@@ -75,11 +76,11 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
         Book book = TestBook.generateTestBook().get(0);
         Calendar today = Calendar.getInstance();
-        RecipeMarker marker1 = new RecipeMarker ( book.getRecipes()[0], 5, today);
+        RecipeMarker marker1 = new RecipeMarker ( Database.getRecipeList().get(0), 5, today);
         eventList.add(marker1);
 
         today.add(Calendar.DAY_OF_MONTH, 1);
-        RecipeMarker marker2 = new RecipeMarker( book.getRecipes()[0], 5, today);
+        RecipeMarker marker2 = new RecipeMarker(Database.getRecipeList().get(0), 5, today);
         eventList.add(marker2);
 
 

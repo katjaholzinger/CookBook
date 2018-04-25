@@ -15,9 +15,10 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
-import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
+
+import java.util.ArrayList;
 
 /**
  * Created by Thomas on 29.03.2018.
@@ -113,10 +114,10 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         linearLayout.removeAllViews();
 
         //set ingredients
-        IngredientList ingredients = (IngredientList) recipe.ingredients;
+        ArrayList ingredients = recipe.ingredients;
 
 
-        for (final Ingredient ingredient: ingredients.toArray()){
+        for (final Ingredient ingredient: recipe.toIngredientArray()){
             TextView textView = new TextView(this);
 
             String text = String.format("%s (%s %s)", ingredient.name, ingredient.amount*recipe.defaultPortions, ingredient.unit);
@@ -141,9 +142,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void addToList(Ingredient ing){
-        IngredientList ingredientList = recipe.ingredients;
-        ingredientList.add(ing);
-        recipe.ingredients = ingredientList;
+        recipe.ingredients.add(ing);
         updateIngredientsView();
     }
 
@@ -180,7 +179,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         RatingBar ratingBar = this.findViewById(R.id.RecipeRatingBar);
         recipe.rating = ratingBar.getRating();
 
-        recipe.ingredients.normalize(recipe.defaultPortions);
+        recipe.normalizeIngredients(recipe.defaultPortions);
         Database db = new Database();
         db.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() ,this.recipe);
         this.finish();
