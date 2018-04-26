@@ -32,6 +32,12 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="amount">Amount</string>
+    <string name="dislike">Dislike</string>
+    <string name="reload">Reload</string>
+    <string name="like">Like</string>
+    <string name="NewBook">New Book</string>
+    <string name="BookName">Name</string>
+    <string name="AddIngTitle">Ingredient</string>
 
 
     <string-array name="units_short_array">

@@ -42,4 +42,23 @@ public class TestBook {
         }
         return books;
     }
+
+
+    public static ArrayList<Recipe> generateRecipes(){
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
+        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
+        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
+
+        Recipe r1 = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        r1.rating = 4;
+        Recipe r2 = new Recipe("Test2", ingredients, 1, null, "");
+
+        recipes.add(r1);
+        recipes.add(r2);
+
+        return recipes;
+    }
+
 }

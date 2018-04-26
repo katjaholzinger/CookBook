@@ -29,7 +29,7 @@ public class DialogIngredient extends Dialog implements
     private boolean isModify;
 
     public DialogIngredient(RecipeActivity a, Ingredient ingredient) {
-        super(a);
+        super(a,R.style.CustomeDialog);
         // TODO Auto-generated constructor stub
         this.c = a;
         isModify = ingredient != null;
@@ -47,10 +47,10 @@ public class DialogIngredient extends Dialog implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.setTitle(R.string.AddIngTitle);
         setContentView(R.layout.dialog_add_ingredient);
-        yes = (Button) findViewById(R.id.btn_add);
-        no = (Button) findViewById(R.id.btn_cancel);
+        yes = findViewById(R.id.btn_add);
+        no = findViewById(R.id.btn_cancel);
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
 
@@ -65,8 +65,6 @@ public class DialogIngredient extends Dialog implements
         editTextAmount.setText(String.valueOf(ingredient.amount));
         editTextName = findViewById(R.id.ingredientName);
         editTextName.setText(ingredient.name);
-
-
     }
 
     @Override

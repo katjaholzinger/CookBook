@@ -1,6 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/tools">
 
 
 
@@ -13,12 +15,39 @@
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
 
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/addBook"
+        app:backgroundTint="@color/gray_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_black_24dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:scaleType="center"
+        android:scaleY="0.9"
+        android:scaleX="0.9"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addRecipe"
+        app:backgroundTint="@color/gray_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_collections_bookmark_black_24dp"
+        android:scaleType="center"
+        android:scaleY="0.9"
+        android:scaleX="0.9"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:padding="15dp"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>
 
 </FrameLayout>

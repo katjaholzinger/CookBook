@@ -9,9 +9,22 @@
         <!-- theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!--costumeButtonStyle-->
+        <item name="buttonStyle">@style/CostumeButton</item>
+
         <!--Colors for Ratingbar-->
         <item name="colorControlNormal">@color/primary_light</item>
         <item name="colorControlActivated">@color/primary_dark</item>
+    </style>
+
+
+    <style name="CustomeDialog" parent="Animation.AppCompat.Dialog">
+        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:titleTextStyle">@style/HeadingTextStyle</item>
+    </style>
+
+    <style name="CostumeButton" parent="Widget.AppCompat.Light.ActionButton">
+        <item name="android:background">@drawable/default_button</item>
     </style>
 
     <style name="TitleTextStyle">
