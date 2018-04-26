@@ -12,9 +12,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
 import com.hwr.cookbook.LoginActivity;
+import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
@@ -31,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     private String currentUserId;
     private static final String TAG = "LoginActivity";
-    private Database db;
+    private ViewPager viewPager;
+    public ArrayList<Recipe> recipeList;
+    public ArrayList<Plan> planList;
+    public ArrayList<Book> bookList;
 
 
 
@@ -45,30 +57,118 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         currentUserId = intent.getStringExtra(LoginActivity.UID);
 
-        //DBNewListener();
 
         mTextMessage = (TextView) findViewById(R.id.message);
-
-
-        Log.d("Database", "Database erstellen...");
-        Database db = new Database();
-        //mTextMessage.setText(db.getUserName(user));
-
-        db = new Database();
-        db.newListener();
-
-        ArrayList<Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
-        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
-        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
-        Recipe recipe = new Recipe("Spaghetti2", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
-        recipe.normalizeIngredients(4);
-        db.setNewRecipe(currentUserId, recipe);
 
 
         // creates TabLayout and Actionbar
         createLayouts();
 
+    }
+
+    public void createListener() {
+        DatabaseReference plansRef = FirebaseDatabase.getInstance().getReference().child("plans").child(currentUserId);
+        planList = new ArrayList<>();
+        plansRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                planList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Plan plan = postSnapshot.getValue(Plan.class);
+                    planList.add(plan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+
+
+        final DatabaseReference recipesRef = FirebaseDatabase.getInstance().getReference().child("recipes").child(currentUserId);
+        recipeList = new ArrayList<>();
+        recipesRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String s) {
+                int i= 0;
+                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
+                Recipe recipe = snapshot.getValue(Recipe.class);
+                recipeList.add(recipe);
+
+                for (Recipe r: recipeList
+                        ) {
+                    Log.d("RecipeListe", r.name);
+                }
+                viewPager.;
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String s) {
+                //Search Recipe in RecipeList
+                //Change Attributes
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                for (Recipe r: recipeList
+                        ) {
+                    if (r.id == recipe.id) {
+                        recipeList.remove(r);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
+
+        final DatabaseReference booksRef = FirebaseDatabase.getInstance().getReference().child("books").child(currentUserId);
+        bookList = new ArrayList<>();
+        booksRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String s) {
+                int i= 0;
+                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
+                Book book = snapshot.getValue(Book.class);
+                Log.d("Bookname:", book.name);
+                bookList.add(book);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String s) {
+                //Search Recipe in RecipeList
+                //Change Attributes
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                bookList.remove(book);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
     }
 
 
@@ -86,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
 
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
@@ -110,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Log.d("Database", "Listener erstellen...");
+        createListener();
     }
 
     @Override
@@ -136,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void logout() {
-        db.logout();
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

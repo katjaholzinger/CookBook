@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.hwr.cookbook.Book;
+import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
@@ -34,7 +35,6 @@ public class FragmentBookmarks extends Fragment {
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<Recipe>> expandableListDetail;
-    private ArrayList<Book> books;
 
 
     public FragmentBookmarks() {
@@ -51,7 +51,6 @@ public class FragmentBookmarks extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        books = TestBook.generateTestBook();
 
         createFloatActionButton();
 
@@ -74,7 +73,10 @@ public class FragmentBookmarks extends Fragment {
 
     private void createExpandableList () {
         expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
-        expandableListDetail = ExpandableListDataPump.getData(books);
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+        expandableListDetail = ExpandableListDataPump.getData(mainActivity.bookList);
+
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
@@ -109,8 +111,7 @@ public class FragmentBookmarks extends Fragment {
     }
 
 
-
-
-
-
+    public void updateList() {
+        expandableListView.
+    }
 }

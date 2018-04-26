@@ -33,31 +33,12 @@ public class Database {
     static private String currentUserId;
     static private ArrayList<Recipe> recipeList;
     static private ArrayList<Plan> planList;
-    static private ArrayList<Book> bookList;
+    static public ArrayList<Book> bookList;
 
 
     static public void newListener() {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-        DatabaseReference userRef = database.child("users");
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot usersnapshot: snapshot.getChildren()
-                     ) {
-                    user= usersnapshot.getValue(User.class);
-                    Log.d("ValueListener", usersnapshot.getValue().toString());
-                }
-                //user = snapshot.getValue(User.class);
-                Log.d("ValueListener", snapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
 
         DatabaseReference plansRef = database.child("plans").child(currentUserId);
         planList = new ArrayList<>();
@@ -132,6 +113,7 @@ public class Database {
                 int i= 0;
                 Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
                 Book book = snapshot.getValue(Book.class);
+                Log.d("Bookname:", book.name);
                 bookList.add(book);
 
             }
@@ -195,7 +177,7 @@ public class Database {
         FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
     }
 
-    static public List<Book> getBookList() {
+    static public ArrayList<Book> getBookList() {
         return bookList;
     }
 

@@ -74,14 +74,14 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
     private void mockList(List<CalendarEvent> eventList) {
 
-        Book book = TestBook.generateTestBook().get(0);
+        //Book book = TestBook.generateTestBook().get(0);
         Calendar today = Calendar.getInstance();
-        RecipeMarker marker1 = new RecipeMarker ( Database.getRecipeList().get(0), 5, today);
+        /*RecipeMarker marker1 = new RecipeMarker ( Database.getRecipeList().get(0), 5, today);
         eventList.add(marker1);
 
         today.add(Calendar.DAY_OF_MONTH, 1);
         RecipeMarker marker2 = new RecipeMarker(Database.getRecipeList().get(0), 5, today);
-        eventList.add(marker2);
+        eventList.add(marker2);*/
 
 
 

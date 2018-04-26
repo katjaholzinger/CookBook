@@ -1,5 +1,7 @@
 package com.hwr.cookbook;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ public class Book {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
      for (String rId: recipes
              ) {
+
         Recipe r = Database.findRecipe(rId);
         if (r != null) {
             recipeArrayList.add(r);
