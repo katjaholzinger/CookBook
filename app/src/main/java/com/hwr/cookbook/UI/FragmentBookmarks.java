@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class FragmentBookmarks extends Fragment {
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<Recipe>> expandableListDetail;
+    boolean created = false;
 
 
     public FragmentBookmarks() {
@@ -55,6 +57,7 @@ public class FragmentBookmarks extends Fragment {
         createFloatActionButton();
 
         createExpandableList();
+        created = true;
     }
 
     private void createFloatActionButton() {
@@ -75,8 +78,7 @@ public class FragmentBookmarks extends Fragment {
         expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
 
         MainActivity mainActivity = (MainActivity)getActivity();
-        expandableListDetail = ExpandableListDataPump.getData(mainActivity.bookList);
-
+        expandableListDetail = ExpandableListDataPump.getData(mainActivity.bookList, mainActivity.recipeList);
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
@@ -112,6 +114,13 @@ public class FragmentBookmarks extends Fragment {
 
 
     public void updateList() {
-        expandableListView.
+        if (created) {
+            Log.d("Fragment Bookmark", "updateList");
+
+            MainActivity mainActivity = (MainActivity)getActivity();
+            Log.d("Fragment Bookmark", "Lade expandableListView neu");
+
+            createExpandableList();
+        }
     }
 }

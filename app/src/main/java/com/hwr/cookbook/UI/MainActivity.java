@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
 
     private User user;
-    private String currentUserId;
     private static final String TAG = "LoginActivity";
     private ViewPager viewPager;
+    private PagerAdapter pagerAdapter;
     public ArrayList<Recipe> recipeList;
     public ArrayList<Plan> planList;
     public ArrayList<Book> bookList;
@@ -51,12 +51,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //bookList = TestBook.generateTestBook();
         setContentView(R.layout.activity_main);
-
-
-        Intent intent = getIntent();
-        currentUserId = intent.getStringExtra(LoginActivity.UID);
-
 
         mTextMessage = (TextView) findViewById(R.id.message);
 
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createListener() {
-        DatabaseReference plansRef = FirebaseDatabase.getInstance().getReference().child("plans").child(currentUserId);
+        DatabaseReference plansRef = FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         planList = new ArrayList<>();
         plansRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -86,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        final DatabaseReference recipesRef = FirebaseDatabase.getInstance().getReference().child("recipes").child(currentUserId);
+        final DatabaseReference recipesRef = FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         recipeList = new ArrayList<>();
         recipesRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -100,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         ) {
                     Log.d("RecipeListe", r.name);
                 }
-                viewPager.;
 
             }
 
@@ -133,17 +128,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final DatabaseReference booksRef = FirebaseDatabase.getInstance().getReference().child("books").child(currentUserId);
+        final DatabaseReference booksRef = FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         bookList = new ArrayList<>();
         booksRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
                 int i= 0;
-                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
                 Book book = snapshot.getValue(Book.class);
                 Log.d("Bookname:", book.name);
                 bookList.add(book);
-
+                FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
+                Log.d("Bookrecipes size:", "" +book.recipes.get(0));
+                Log.d("Fragmentbookmark", fb.toString());
+                fb.updateList();
             }
 
             @Override
@@ -156,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Book book = dataSnapshot.getValue(Book.class);
                 bookList.remove(book);
+                FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
+                Log.d("Fragmentbookmark", fb.toString());
+                fb.updateList();
             }
 
             @Override
@@ -188,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.pager);
 
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

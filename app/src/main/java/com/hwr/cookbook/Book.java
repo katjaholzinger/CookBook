@@ -22,14 +22,21 @@ public class Book {
         this.name = name;
         this.recipes=recipes;
     }
- public ArrayList<Recipe> getFullRecipes() {
+ public ArrayList<Recipe> getFullRecipes(ArrayList<Recipe> recipeList) {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-     for (String rId: recipes
+        Recipe recipe = null;
+     for (String rId: this.recipes
              ) {
+         for (Recipe r: recipeList) {
+             if (r.id.equals(rId)) {
+                 recipe = r;
+             }
+         }
 
-        Recipe r = Database.findRecipe(rId);
-        if (r != null) {
-            recipeArrayList.add(r);
+        if (recipe != null) {
+            recipeArrayList.add(recipe);
+            Log.d("Book", "Add recipe");
+            recipe = null;
         }
      }
      return recipeArrayList;

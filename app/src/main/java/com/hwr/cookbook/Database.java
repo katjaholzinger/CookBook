@@ -111,9 +111,7 @@ public class Database {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
                 int i= 0;
-                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
                 Book book = snapshot.getValue(Book.class);
-                Log.d("Bookname:", book.name);
                 bookList.add(book);
 
             }
