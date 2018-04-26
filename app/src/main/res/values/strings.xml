@@ -32,6 +32,9 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="amount">Amount</string>
+    <string name="choose_recipe_title">Recipe</string>
+    <string name="choose_date_title">Date</string>
+    <string name="input_persons_title">Persons</string>
 
 
     <string-array name="units_short_array">

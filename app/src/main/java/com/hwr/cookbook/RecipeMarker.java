@@ -7,23 +7,34 @@ import com.github.tibolte.agendacalendarview.models.WeekItem;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Sidney on 22.03.2018.
  */
 
-public class RecipeMarker extends IdentifiableElement implements CalendarEvent{
+public class RecipeMarker implements CalendarEvent{
 
     public Recipe recipe;
     public int persons;
     public Calendar calendar;
+    public String name;
+    private String ID;
 
-    public RecipeMarker () {
-        super();
+    public String getID() { return ID; }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public void setID(String id) {
+        this.ID = id;
     }
 
+    public RecipeMarker () {}
+
     public RecipeMarker (Recipe recipe, int persons, Calendar calendar) {
-        super();
+        ID = UUID.randomUUID().toString();
         this.recipe = recipe;
         this.persons = persons;
         this.calendar = calendar;

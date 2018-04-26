@@ -28,7 +28,7 @@ public class Database {
     static User user;
     static private String currentUserId;
     static private List<Recipe> recipeList;
-    static private List<Plan> planList;
+    static private Plan plan;
     static private List<Book> bookList;
 
 
@@ -56,14 +56,13 @@ public class Database {
         });
 
         DatabaseReference plansRef = database.child("plans").child(currentUserId);
-        planList = new ArrayList<>();
+        plan = new Plan();
         plansRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                planList.clear();
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Plan plan = postSnapshot.getValue(Plan.class);
-                    planList.add(plan);
+                    Plan newPlan = postSnapshot.getValue(Plan.class);
+                    plan=newPlan;
                 }
             }
 
@@ -119,6 +118,7 @@ public class Database {
             }
         });
     }
+
     static public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
         User user = new User(name, mail);
@@ -180,6 +180,10 @@ public class Database {
            }
         }
         return new Recipe();
+    }
+
+    static public Plan getPlan() {
+        return plan;
     }
 
 }
