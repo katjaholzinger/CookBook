@@ -1,53 +1,83 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
+        <ExpandableListView
+            android:id="@+id/expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <ExpandableListView
-        android:id="@+id/expandableListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
-
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addBook"
-        app:backgroundTint="@color/gray_light"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/addRecipeLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        android:scaleType="center"
-        android:scaleY="0.9"
-        android:scaleX="0.9"/>
+        android:layout_gravity="end|bottom">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addRecipe"
-        app:backgroundTint="@color/gray_light"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/addRecipeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/NewRecipe"
+            android:visibility="invisible"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addRecipeFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            app:backgroundTint="@color/gray_light"
+            app:srcCompat="@drawable/ic_list_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/addBookLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_collections_bookmark_black_24dp"
-        android:scaleType="center"
-        android:scaleY="0.9"
-        android:scaleX="0.9"/>
+        android:layout_gravity="end|bottom">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:padding="15dp"
-        app:srcCompat="@drawable/ic_add_black_24dp"/>
+        <TextView
+            android:id="@+id/addBookText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/NewBook"
+            android:visibility="invisible"/>
 
-</FrameLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addBookFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            app:backgroundTint="@color/gray_light"
+            app:srcCompat="@drawable/ic_collections_bookmark_black_24dp" />
+    </LinearLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:background="@color/colorAccent"
+            android:padding="15dp"
+            app:srcCompat="@drawable/ic_add_24dp" />
+
+ </FrameLayout>

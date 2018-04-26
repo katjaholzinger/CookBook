@@ -45,7 +45,7 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         maxDate.add(Calendar.YEAR, 1);
 
         List<CalendarEvent> eventList = new ArrayList<>();
-        mockList(eventList);
+//        mockList(eventList);
 
 
         View view = inflater.inflate(R.layout.fragment_planer, container, false);

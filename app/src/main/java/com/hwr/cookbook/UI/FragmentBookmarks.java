@@ -3,7 +3,6 @@ package com.hwr.cookbook.UI;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -109,7 +108,7 @@ public class FragmentBookmarks extends Fragment {
 
     public void createFloatActionButton() {
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab1 = getActivity().findViewById(R.id.addRecipe);
+        fab1 = getActivity().findViewById(R.id.addRecipeFab);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +118,7 @@ public class FragmentBookmarks extends Fragment {
             }
         });
 
-        fab2 = getActivity().findViewById(R.id.addBook);
+        fab2 = getActivity().findViewById(R.id.addBookFab);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,14 +165,21 @@ public class FragmentBookmarks extends Fragment {
 
     private void showFABMenu() {
         isFABOpen = true;
-        fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.VISIBLE);
     }
 
     private void closeFABMenu() {
         isFABOpen = false;
-        fab1.animate().translationY(0);
-        fab2.animate().translationY(0);
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(0);
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(0);
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.GONE);
+
     }
 
 }

@@ -3,10 +3,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
 
     <com.yuyakaido.android.cardstackview.CardStackView
         android:id="@+id/card_staple"
@@ -18,7 +14,7 @@
 
 
         <LinearLayout
-            android:layout_alignBottom="@+id/card_staple"
+            android:layout_gravity="center|bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
@@ -29,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:contentDescription="@string/dislike"
                 app:srcCompat="@drawable/ic_thumb_down_24dp"/>
 
@@ -38,6 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:contentDescription="@string/reload"
                 app:srcCompat="@drawable/ic_autorenew_24dp"/>
 
@@ -47,10 +45,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:contentDescription="@string/like"
                 app:srcCompat="@drawable/ic_thumb_up_24dp"/>
 
         </LinearLayout>
-    </RelativeLayout>
 
 </FrameLayout>

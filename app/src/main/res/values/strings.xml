@@ -38,6 +38,8 @@
     <string name="NewBook">New Book</string>
     <string name="BookName">Name</string>
     <string name="AddIngTitle">Ingredient</string>
+    <string name="Error">\"Oops, something went wrong!\"</string>
+    <string name="NewRecipe">New Recipe</string>
 
 
     <string-array name="units_short_array">

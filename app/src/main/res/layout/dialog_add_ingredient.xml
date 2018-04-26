@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:padding="@dimen/content_padding_normal">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom">
 
 
-    <EditText
-        android:id="@+id/amountInput"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+    <AutoCompleteTextView
+        android:id="@+id/amountInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/amount"
         android:inputType="numberDecimal"
-        android:hint="@string/amount"/>
+        />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
         android:id="@+id/ingredientUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/amountInput"
-        android:layout_alignBottom="@+id/amountInput"
-        android:layout_toEndOf="@+id/amountInput"
-        android:layout_toRightOf="@+id/amountInput"
         android:entries="@array/units_short_array"
-        android:prompt="@string/unit" />
+        android:prompt="@string/unit"
+        android:layout_gravity="center"/>
 
-    <EditText
-        android:id="@+id/ingredientName"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ingredientUnit"
-        android:layout_toRightOf="@+id/ingredientUnit"
-        android:hint="@string/IngredientName"/>
+        android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/amountInput"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_cancel"
+        <AutoCompleteTextView
+            android:id="@+id/ingredientName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel" />
+            android:hint="@string/IngredientName" />
 
-        <Button
-            android:id="@+id/btn_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add"
-            />
+    </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+</LinearLayout>
 
-</RelativeLayout>
+
+
+
+
+
+</FrameLayout>
