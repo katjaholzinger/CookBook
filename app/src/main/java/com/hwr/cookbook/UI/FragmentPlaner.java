@@ -19,6 +19,7 @@ import com.hwr.cookbook.RecipeMarker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -53,9 +54,13 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         Calendar minDate = Calendar.getInstance();
         Calendar maxDate = Calendar.getInstance();
 
-        minDate.add(Calendar.WEEK_OF_MONTH, -1);
+        minDate.add(Calendar.MONTH, -2);
         minDate.set(Calendar.DAY_OF_MONTH, 1);
-        maxDate.add(Calendar.MONTH, 2);
+        maxDate.add(Calendar.YEAR, 1);
+
+        List<CalendarEvent> eventList = new ArrayList<>();
+        mockList(eventList);
+
 
         View view = inflater.inflate(R.layout.fragment_planer, container, false);
         AgendaCalendarView acview = view.findViewById(R.id.agenda_calendar_view);

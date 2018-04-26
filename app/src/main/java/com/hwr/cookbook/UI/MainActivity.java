@@ -12,16 +12,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
-import com.hwr.cookbook.IngredientList;
 import com.hwr.cookbook.LoginActivity;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Thomas on 18.03.2018.
@@ -59,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         db = new Database();
         db.newListener();
 
-        IngredientList ingredients = new IngredientList();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
         ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
-        ingredients.normalize(4);
         Recipe recipe = new Recipe("Spaghetti2", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        recipe.normalizeIngredients(4);
         db.setNewRecipe(currentUserId, recipe);
 
 
