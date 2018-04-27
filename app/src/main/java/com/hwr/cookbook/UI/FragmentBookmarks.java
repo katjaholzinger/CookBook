@@ -59,7 +59,7 @@ public class FragmentBookmarks extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        books = TestBook.generateTestBook();
+        books = TestBook.generateTestBook(false);
 
         createFloatActionButton();
 

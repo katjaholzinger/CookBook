@@ -29,7 +29,7 @@ public class Database {
     static User user;
     static private String currentUserId;
     static private ArrayList<Recipe> recipeList;
-    static private ArrayList<Plan> planList;
+    static private Plan plan;
     static private ArrayList<Book> bookList;
 
 
@@ -57,14 +57,15 @@ public class Database {
         });
 
         DatabaseReference plansRef = database.child("plans").child(currentUserId);
-        planList = new ArrayList<>();
+        // plan = new Plan();
         plansRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                planList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Plan plan = postSnapshot.getValue(Plan.class);
-                    planList.add(plan);
+                //planList.clear();
+                for (DataSnapshot planSnapshot: snapshot.getChildren()) {
+                    plan = planSnapshot.getValue(Plan.class);
+
+                    //planList.add(plan);
                 }
             }
 
@@ -147,14 +148,13 @@ public class Database {
         FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
     }
 
-    static  public void setNewPlan (String userID, Plan plan) {
-        Log.d("Database", "Adding new plan ...");
-        database.child("plans").child(userID).child(plan.getID()).setValue(plan);
-    }
-
     static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
-        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Long id =  Long.parseLong(ref.child("plans").child(userID).push().getKey());
+        marker.setID(id);
+        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()+"").push().setValue(marker);
     }
 
     static public List<Book> getBookList() {
@@ -194,7 +194,21 @@ public class Database {
     }
 
     static public Plan getPlan() {
-            return new Plan(new ArrayList<RecipeMarker>());
+        if (plan == null) {
+            Plan newPlan = new Plan(new ArrayList<RecipeMarker>());
+            setNewPlan(currentUserId, newPlan);
+            return newPlan;
+        } else {
+            return plan;
+        }
+    }
+
+    static public void setNewPlan (String userID, Plan plan) {
+        Log.d("Database", "Adding new plan to user xxx ...");
+
+        String id= FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
+        plan.setID(id);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
     }
 
 }

@@ -1,13 +1,14 @@
 package com.hwr.cookbook.UI;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,6 +16,8 @@ import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.RecipeMarker;
+
+import java.util.Calendar;
 
 public class EventActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     public static RecipeMarker marker = null;
@@ -29,17 +32,22 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_event);
 
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         createSpinnerAdapter();
+        DatePicker datePicker = findViewById(R.id.DatePicker);
+        datePicker.updateDate(
+                marker.calendar.get(Calendar.YEAR),
+                marker.calendar.get(Calendar.MONTH),
+                marker.calendar.get(Calendar.DAY_OF_MONTH
+                ));
 
+        EditText persons = findViewById(R.id.personsInput);
+        persons.setText(String.valueOf(0));
+
+        FloatingActionButton floatingButton = findViewById(R.id.addMarkerFab);
+        floatingButton.setOnClickListener(this);
         // set Toolbar
         Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     private void createSpinnerAdapter() {
@@ -68,9 +76,44 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         Recipe recipe = (Recipe)spinner.getSelectedItem();
 
         // Now do something with it.
+        marker.recipeId = recipe.id;
+        marker.name = recipe.name;
+
     }
 
     public void onNothingSelected(AdapterView<?> parent )
     {
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+
+            case R.id.addMarkerFab:
+                pushEvent();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void pushEvent() {
+
+
+
+        DatePicker datePicker = this.findViewById(R.id.DatePicker);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth());
+        marker.calendar = calendar;
+
+        EditText persons = this.findViewById(R.id.personsInput);
+        marker.persons = Integer.parseInt(persons.getText().toString());
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String planId = Database.getPlan().getID();
+        Database.setNewMarkerInPlan(userId, planId , marker);
+        this.finish();
     }
 }
