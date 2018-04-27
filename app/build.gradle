@@ -37,6 +37,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:appcompat-v7:26.0.2'
     implementation 'com.github.tibolte:agendacalendarview:1.0.4'
+    implementation 'com.yuyakaido.android:card-stack-view:1.0.0-beta9'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
 }
 
 

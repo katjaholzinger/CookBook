@@ -1,18 +1,23 @@
 package com.hwr.cookbook.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Book;
+import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
@@ -29,6 +34,9 @@ import java.util.List;
 public class FragmentBookmarks extends Fragment {
     private LinearLayout linearLayout;
     private User user;
+
+    private FloatingActionButton fab1, fab2;
+    private boolean isFABOpen= false;
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -58,22 +66,10 @@ public class FragmentBookmarks extends Fragment {
         createExpandableList();
     }
 
-    private void createFloatActionButton() {
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getContext(), RecipeActivity.class);
-                RecipeActivity.recipe=null;
-                getContext().startActivity(intent);
-                            }
-        });
-    }
 
 
-    private void createExpandableList () {
-        expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+    private void createExpandableList() {
+        expandableListView = getActivity().findViewById(R.id.expandableListView);
         expandableListDetail = ExpandableListDataPump.getData(books);
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
@@ -82,7 +78,8 @@ public class FragmentBookmarks extends Fragment {
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
-            public void onGroupExpand(int groupPosition) {}
+            public void onGroupExpand(int groupPosition) {
+            }
         });
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
@@ -109,8 +106,80 @@ public class FragmentBookmarks extends Fragment {
     }
 
 
+    public void createFloatActionButton() {
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab1 = getActivity().findViewById(R.id.addRecipeFab);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RecipeActivity.class);
+                RecipeActivity.recipe = null;
+                getActivity().startActivity(intent);
+            }
+        });
 
+        fab2 = getActivity().findViewById(R.id.addBookFab);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("AddBook");
+                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.text_input_new_book, (ViewGroup) getView(), false);
 
+                final EditText input = viewInflated.findViewById(R.id.input);
+                builder.setView(viewInflated);
 
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Book book = new Book();
+                        book.name =input.getText().toString();
+                        Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View view) {
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
+            }
+        });
+    }
+
+    private void showFABMenu() {
+        isFABOpen = true;
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.VISIBLE);
+    }
+
+    private void closeFABMenu() {
+        isFABOpen = false;
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(0);
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(0);
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.GONE);
+
+    }
 
 }

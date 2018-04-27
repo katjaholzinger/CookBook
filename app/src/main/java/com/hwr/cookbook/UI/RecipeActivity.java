@@ -2,9 +2,12 @@ package com.hwr.cookbook.UI;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,7 +64,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void addEditButtons() {
-        ImageButton addIngredient = (ImageButton) findViewById(R.id.ButtonAddIngredient);
+        ImageButton addIngredient = findViewById(R.id.ButtonAddIngredient);
         FloatingActionButton saveButton = findViewById(R.id.fab);
 
         saveButton.setOnClickListener(this);
@@ -91,7 +94,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         Button buttonInc = findViewById(R.id.buttonIncrement);
 
         TextView textViewPortions = this.findViewById(R.id.Portions);
-        textViewPortions.setText(String.valueOf(this.recipe.defaultPortions));
+        textViewPortions.setText(String.valueOf(recipe.defaultPortions));
 
         buttonDec.setOnClickListener(this);
         buttonInc.setOnClickListener(this);
@@ -99,9 +102,9 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void changePortions(int portions){
         if (portions>=1){
-            this.recipe.defaultPortions = portions;
+            recipe.defaultPortions = portions;
             TextView viewNumber = this.findViewById(R.id.Portions);
-            viewNumber.setText(String.valueOf(this.recipe.defaultPortions));
+            viewNumber.setText(String.valueOf(recipe.defaultPortions));
 
             updateIngredientsView();
         }
@@ -124,10 +127,11 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
             textView.setText(text);
 
             if (isEditAble) {
+
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        alertDialog(ingredient);
+                        new DialogIngredient(RecipeActivity.this, ingredient);
                     }
                 });
             }
@@ -136,10 +140,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void alertDialog(Ingredient ingredient) {
-        DialogIngredient dialogIngredient = new DialogIngredient(this, ingredient);
-        dialogIngredient.show();
-    }
+
 
     public void addToList(Ingredient ing){
         recipe.ingredients.add(ing);
@@ -160,8 +161,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 pushRecipe();
                 break;
             case R.id.ButtonAddIngredient:
-                DialogIngredient dialogIngredient = new DialogIngredient(this, null);
-                dialogIngredient.show();
+                new DialogIngredient(this, null);
                 break;
             default:
                 break;
@@ -181,7 +181,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
         recipe.normalizeIngredients(recipe.defaultPortions);
         Database db = new Database();
-        db.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() ,this.recipe);
+        Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() , recipe);
         this.finish();
     }
 }
