@@ -1,25 +1,22 @@
 package com.hwr.cookbook;
 import android.util.Log;
 
+import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.json.JSONObject;
 
 /**
  * Created by kholzinger on 10.03.2018.
@@ -80,77 +77,42 @@ public class Database {
 
                 final DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
                 recipeList = new ArrayList<>();
-                recipesRef.addChildEventListener(new ChildEventListener() {
+                recipesRef.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(DataSnapshot snapshot, String s) {
+                    public void onDataChange(DataSnapshot snapshot) {
+                        //recipeList.clear();
+                        // for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                        //     Recipe recipe = postSnapshot.getValue(Recipe.class);
+                        //    recipeList.add(recipe);
+                        //}
                         int i= 0;
-                        Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
-                        Recipe recipe = snapshot.getValue(Recipe.class);
-                        recipeList.add(recipe);
-
-                        for (Recipe r: recipeList
-                             ) {
-                            Log.d("RecipeListe", r.name);
-                        }
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot snapshot, String s) {
-                        //Search Recipe in RecipeList
-                        //Change Attributes
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                        for (Recipe r: recipeList
+                        recipeList.clear();
+                        for (DataSnapshot recipeSnapshot:  snapshot.getChildren()
                                 ) {
-                            if (r.id == recipe.id) {
-                                recipeList.remove(r);
-                            }
+                            i++;
+                            //Map<String,Object> recipe = (Map<String,Object>) recipeSnapshot.getValue();
+                            //Log.d("ValueListener", i+ ". :" + recipeSnapshot.getValue().toString());
+                            //Log.d("ValueListener", i+ ". :" + recipe.values().toString());
                         }
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                        System.out.println("The read failed: " + databaseError.getMessage());
-                    }
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
 
         final DatabaseReference booksRef = database.child("books").child(currentUserId);
         bookList = new ArrayList<>();
-        booksRef.addChildEventListener(new ChildEventListener() {
+        booksRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String s) {
-                int i= 0;
-                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
-                Book book = snapshot.getValue(Book.class);
-                bookList.add(book);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String s) {
-                //Search Recipe in RecipeList
-                //Change Attributes
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Book book = dataSnapshot.getValue(Book.class);
-                bookList.remove(book);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot snapshot) {
+                bookList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Book book = postSnapshot.getValue(Book.class);
+                    bookList.add(book);
+                }
             }
 
             @Override
@@ -181,18 +143,18 @@ public class Database {
         Log.d("Database", "Adding new recipe ...");
 
         String id= FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
-        recipe.id = (id);
+        recipe.id = id;
         FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
     }
 
     static  public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(plan.getID()).setValue(plan);
+        database.child("plans").child(userID).child(plan.getID()).setValue(plan);
     }
 
     static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
+        database.child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
     }
 
     static public List<Book> getBookList() {
@@ -207,7 +169,7 @@ public class Database {
         Log.d("Database", "Adding new book to user xxx ...");
 
         String id= FirebaseDatabase.getInstance().getReference().child("books").child(userID).push().getKey();
-        book.id = (id);
+        book.id = id;
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(id).setValue(book);
     }
 
@@ -230,4 +192,9 @@ public class Database {
     public static ArrayList<Recipe> getRecipeList() {
         return recipeList;
     }
+
+    static public Plan getPlan() {
+            return new Plan(new ArrayList<RecipeMarker>());
+    }
+
 }

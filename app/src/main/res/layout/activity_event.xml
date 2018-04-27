@@ -1,0 +1,113 @@
+<RelativeLayout
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:id="@+id/main_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appBarLayout">
+
+        <RelativeLayout
+            android:id="@+id/recipeRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+
+            <TextView
+                android:id="@+id/ChooseRecipeTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_recipe_title" />
+
+
+            <Spinner
+                android:id="@+id/RecipeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ChooseRecipeTitle" />
+
+
+            <TextView
+                android:id="@+id/ChooseDateTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RecipeSpinner"
+                android:text="@string/choose_date_title" />
+
+            <DatePicker
+                android:id="@+id/DatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ChooseDateTitle">
+
+
+            </DatePicker>
+
+            <TextView
+                android:id="@+id/PersonsTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DatePicker"
+                android:text="@string/input_persons_title" />
+
+            <EditText
+                android:id="@+id/personsInput"
+                android:layout_width="59dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/PersonsTitle"
+                android:inputType="number" />
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_save_black_24dp"
+        tools:ignore="VectorDrawableCompat"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
+
+
+</RelativeLayout>

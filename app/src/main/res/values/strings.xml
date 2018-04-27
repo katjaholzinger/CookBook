@@ -40,6 +40,9 @@
     <string name="AddIngTitle">Ingredient</string>
     <string name="Error">\"Oops, something went wrong!\"</string>
     <string name="NewRecipe">New Recipe</string>
+    <string name="choose_recipe_title">Recipe</string>
+    <string name="choose_date_title">Date</string>
+    <string name="input_persons_title">Persons</string>
 
 
     <string-array name="units_short_array">
