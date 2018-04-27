@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements
         String password = intent.getStringExtra(LoginActivity.PASSWORD);
 
 
-        textEmail = findViewById(R.id.textmail);
+        textEmail = findViewById(R.id.textMail);
         textPassword = findViewById(R.id.textPassword);
         textName = findViewById(R.id.textName);
 
