@@ -121,4 +121,8 @@ public class RecipeMarker implements CalendarEvent{
         boolean allDay = true;
         return new BaseCalendarEvent(title, description, location, color,  startTime,  endTime, allDay);
     }
+
+    public String toString() {
+        return recipe.name;
+    }
 }

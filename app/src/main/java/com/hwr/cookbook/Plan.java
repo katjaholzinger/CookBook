@@ -13,13 +13,13 @@ import java.util.Calendar;
 
 public class Plan extends IdentifiableElement {
 
-    public ArrayList<CalendarEvent> Markers;
+    public ArrayList<RecipeMarker> Markers;
 
     public Plan () {
         super();
     }
 
-    public Plan (ArrayList<CalendarEvent> Markers) {
+    public Plan (ArrayList<RecipeMarker> Markers) {
         super();
         this.Markers = Markers;
     }

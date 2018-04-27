@@ -78,4 +78,9 @@ public class Recipe{
         }
         return arrayIngredient;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

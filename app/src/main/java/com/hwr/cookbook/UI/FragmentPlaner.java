@@ -2,6 +2,7 @@ package com.hwr.cookbook.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,14 @@ import android.view.ViewGroup;
 
 import com.github.tibolte.agendacalendarview.AgendaCalendarView;
 import com.github.tibolte.agendacalendarview.CalendarPickerController;
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.DayItem;
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
+import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.RecipeMarker;
 
 import java.util.ArrayList;
@@ -47,6 +50,11 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
             mockPlan(plan);
         }
 
+        ArrayList<CalendarEvent> eventlist = new ArrayList<CalendarEvent>();
+        for (RecipeMarker marker : plan.Markers) {
+            eventlist.add(marker);
+        }
+
         // Inflate the layout for this fragment
 
         // minimum and maximum date of our calendar
@@ -54,17 +62,13 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         Calendar minDate = Calendar.getInstance();
         Calendar maxDate = Calendar.getInstance();
 
-        minDate.add(Calendar.MONTH, -2);
+        minDate.add(Calendar.DAY_OF_MONTH, -3);
         minDate.set(Calendar.DAY_OF_MONTH, 1);
-        maxDate.add(Calendar.YEAR, 1);
+        maxDate.add(Calendar.WEEK_OF_MONTH, 3);
 
-        List<CalendarEvent> eventList = new ArrayList<>();
-//        mockList(eventList);
-
-
-        View view = inflater.inflate(R.layout.fragment_planer, container, false);
+                View view = inflater.inflate(R.layout.fragment_planer, container, false);
         AgendaCalendarView acview = view.findViewById(R.id.agenda_calendar_view);
-        acview.init(plan.Markers, minDate, maxDate, Locale.getDefault(), this);
+        acview.init( eventlist, minDate, maxDate, Locale.getDefault(), this);
 
         return view;
     }
@@ -76,17 +80,35 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
     @Override
     public void onEventSelected(CalendarEvent event) {
-        if (event.getTitle().equals("No events")) {
-            //new marker
 
-        } else {
-            //show marker, editable
 
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        getActivity().startActivity(intent);
+        if (event.getTitle().equals("No events")) {
+            //new marker
+            EventActivity.marker = new RecipeMarker(null, 1, event.getInstanceDay());
+
+        } else {
+            String id = "";
+            //show marker, editable
+            for (Recipe recipe: Database.getRecipeList()) {
+                if (recipe.name == event.getTitle()) {
+                    id = recipe.id;
+                }
+            }
+
+            for (RecipeMarker marker : Database.getPlan().Markers) {
+                if (marker.recipe.id.equals(id)) {
+
+                    EventActivity.marker = marker;
+                }
+            }
+
 
 
         }
+
+        getActivity().startActivity(intent);
+
     }
 
     @Override
@@ -96,15 +118,15 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
     private void mockPlan(Plan plan) {
 
-        plan.Markers = new ArrayList<CalendarEvent>();
+        plan.Markers = new ArrayList<RecipeMarker>();
         Book book = TestBook.generateTestBook().get(0);
         Calendar today = Calendar.getInstance();
-        RecipeMarker marker1 = new RecipeMarker ( book.getRecipes()[0], 5, today);
+        RecipeMarker marker1 = new RecipeMarker ( book.getFullRecipes().get(0), 5, today);
         plan.Markers.add(marker1);
 
         Calendar newCal = Calendar.getInstance();
         newCal.add(Calendar.DAY_OF_MONTH, 1);
-        RecipeMarker marker2 = new RecipeMarker( book.getRecipes()[1], 5, newCal);
+        RecipeMarker marker2 = new RecipeMarker( book.getFullRecipes().get(1), 5, newCal);
         plan.Markers.add(marker2);
 
     }

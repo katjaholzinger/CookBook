@@ -1,6 +1,7 @@
 package com.hwr.cookbook;
 import android.util.Log;
 
+import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -142,7 +143,7 @@ public class Database {
         Log.d("Database", "Adding new recipe ...");
 
         String id= FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
-        recipe.setID(id);
+        recipe.id = id;
         FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
     }
 
@@ -168,7 +169,7 @@ public class Database {
         Log.d("Database", "Adding new book to user xxx ...");
 
         String id= FirebaseDatabase.getInstance().getReference().child("books").child(userID).push().getKey();
-        book.setID(id);
+        book.id = id;
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(id).setValue(book);
     }
 
@@ -181,7 +182,7 @@ public class Database {
 
     static public Recipe findRecipe(String id) {
         for (Recipe r: recipeList) {
-           if (r.getID() == id) {
+           if (r.id == id) {
                return r;
            }
         }
@@ -193,7 +194,7 @@ public class Database {
     }
 
     static public Plan getPlan() {
-        return planList;
+            return new Plan(new ArrayList<RecipeMarker>());
     }
 
 }
