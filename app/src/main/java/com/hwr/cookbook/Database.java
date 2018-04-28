@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.hwr.cookbook.UI.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,136 +32,12 @@ public class Database {
     static DatabaseReference databaseUser;
     static User user;
     static private String currentUserId;
-    static private ArrayList<Recipe> recipeList;
-    static private ArrayList<Plan> planList;
-    static private ArrayList<Book> bookList;
+    static  private ArrayList<Recipe> recipeList = new ArrayList<>();
+    static  private Plan plan;
+    private static ArrayList<Book> bookList = new ArrayList<>();
+    private static ArrayList<Plan> planList = new ArrayList<>();
 
 
-    static public void newListener() {
-        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-        DatabaseReference userRef = database.child("users");
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot usersnapshot: snapshot.getChildren()
-                     ) {
-                    user= usersnapshot.getValue(User.class);
-                    Log.d("ValueListener", usersnapshot.getValue().toString());
-                }
-                //user = snapshot.getValue(User.class);
-                Log.d("ValueListener", snapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-        DatabaseReference plansRef = database.child("plans").child(currentUserId);
-        planList = new ArrayList<>();
-        plansRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                planList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Plan plan = postSnapshot.getValue(Plan.class);
-                    planList.add(plan);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-
-                final DatabaseReference recipesRef = database.child("recipes").child(currentUserId);
-                recipeList = new ArrayList<>();
-                recipesRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot snapshot, String s) {
-                        int i= 0;
-                        Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
-                        Recipe recipe = snapshot.getValue(Recipe.class);
-                        recipeList.add(recipe);
-
-                        for (Recipe r: recipeList
-                             ) {
-                            Log.d("RecipeListe", r.name);
-                        }
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot snapshot, String s) {
-                        //Search Recipe in RecipeList
-                        //Change Attributes
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                        for (Recipe r: recipeList
-                                ) {
-                            if (r.id == recipe.id) {
-                                recipeList.remove(r);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                        System.out.println("The read failed: " + databaseError.getMessage());
-                    }
-                });
-
-        final DatabaseReference booksRef = database.child("books").child(currentUserId);
-        bookList = new ArrayList<>();
-        booksRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String s) {
-                int i= 0;
-                Log.d("ValueListener", i+ ". :" + snapshot + " : " + s);
-                Book book = snapshot.getValue(Book.class);
-                bookList.add(book);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String s) {
-                //Search Recipe in RecipeList
-                //Change Attributes
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Book book = dataSnapshot.getValue(Book.class);
-                bookList.remove(book);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-
-    }
     static public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
         User user = new User(name, mail);
@@ -187,16 +64,15 @@ public class Database {
 
     static  public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(plan.getID()).setValue(plan);
+        String id= FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
+        plan.setID(id);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
     }
 
     static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan xxx ...");
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(marker.getID()).push().setValue(marker);
-    }
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(String.valueOf(marker.getID())).setValue(marker);
 
-    static public List<Book> getBookList() {
-        return bookList;
     }
 
     static public void logout() {
@@ -218,16 +94,48 @@ public class Database {
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(book.id).push().setValue(recipe.id);
     }
 
-    static public Recipe findRecipe(String id) {
-        for (Recipe r: recipeList) {
-           if (r.id == id) {
-               return r;
-           }
+    public static Recipe findRecipe(String recipeId) {
+        for (Recipe r: recipeList
+             ) {
+            if (r.id.equals(recipeId)) {
+                return r;
+            }
         }
         return null;
     }
 
+    public static Plan getPlan() {
+        return plan;
+    }
+
+    public static void setPlan(Plan p) {
+        plan = p;
+    }
+
+    public static void setBookList(ArrayList<Book> booklist) {
+        Database.bookList = booklist;
+    }
+
+    public static void setRecipeList(ArrayList<Recipe> recipes) {
+        recipeList = recipes;
+    }
+
     public static ArrayList<Recipe> getRecipeList() {
         return recipeList;
+    }
+
+    public static ArrayList<Book> getBookList() {
+        return bookList;
+    }
+
+    public static ArrayList<Plan> getPlanList() {
+        return planList;
+    }
+
+    public static void setPlanList(ArrayList<Plan> planList) {
+        Database.planList = planList;
+
+        //Workarround: Nur einen Plan vorerst
+        plan = planList.get(0);
     }
 }

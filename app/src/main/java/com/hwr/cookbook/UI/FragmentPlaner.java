@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ import java.util.Locale;
 
 public class FragmentPlaner extends Fragment implements CalendarPickerController {
 
-    private Database db;
 
     public FragmentPlaner() {
         // Required empty public constructor
@@ -43,19 +43,29 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        db = new Database();
-        Database.newListener();
-
         Plan plan = Database.getPlan();
-        if (plan.Markers == null) {
+        /*if (plan != null){
+
+            Log.d("FragmentPlaner", plan.name);
+            if (plan.Markers == null) {
+                mockPlan(plan);
+            }
+        } else {
+            plan = new Plan();
             mockPlan(plan);
         }
 
+        */
+
         ArrayList<CalendarEvent> eventlist = new ArrayList<CalendarEvent>();
-        for (RecipeMarker marker : plan.Markers) {
-            eventlist.add(marker);
+        if (plan == null) {
+
+        } else {
+            for (RecipeMarker marker : plan.Markers) {
+                eventlist.add(marker);
+            }
         }
+
 
         // Inflate the layout for this fragment
 
@@ -118,8 +128,15 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         plan.Markers = new ArrayList<RecipeMarker>();
 
 
-        Book book = TestBook.generateTestBook(false).get(0);
+        ArrayList<Book> books = TestBook.generateTestBook(false);
         Calendar today = Calendar.getInstance();
+        Book book = null;
+        if (books.get(0).name.equals("Eingang")) {
+            book = books.get(1);
+        }
+        else {
+            book = books.get(0);
+        }
         RecipeMarker marker1 = new RecipeMarker ( book.getFullRecipes().get(0).id, 5, today);
         plan.Markers.add(marker1);
 

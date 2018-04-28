@@ -35,7 +35,7 @@ public class FragmentBookmarks extends Fragment {
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<Recipe>> expandableListDetail;
-    private ArrayList<Book> books;
+    public ArrayList<Book> books;
 
 
     public FragmentBookmarks() {
@@ -52,7 +52,6 @@ public class FragmentBookmarks extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        books = TestBook.generateTestBook();
 
         createFloatActionButton();
 
@@ -75,8 +74,15 @@ public class FragmentBookmarks extends Fragment {
 
     private void createExpandableList () {
         expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+        MainActivity ma = (MainActivity) getActivity();
         expandableListDetail = ExpandableListDataPump.getData(books);
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        if (expandableListDetail != null ) {
+            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        } else {
+            ArrayList<String> emptyList = new ArrayList<>();
+            emptyList.add("Bücher werden noch geladen.");
+            expandableListTitle = emptyList;
+        }
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
@@ -107,6 +113,18 @@ public class FragmentBookmarks extends Fragment {
 
             }
         });
+    }
+
+    public void updateExpandableList(ArrayList<Book> books) {
+        this.books = books;
+
+        expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+        MainActivity ma = (MainActivity) getActivity();
+        expandableListDetail = ExpandableListDataPump.getData(books);
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+
     }
 
 

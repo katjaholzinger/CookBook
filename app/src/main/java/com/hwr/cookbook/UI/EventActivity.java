@@ -35,9 +35,9 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         createSpinnerAdapter();
         DatePicker datePicker = findViewById(R.id.DatePicker);
         datePicker.updateDate(
-                marker.calendar.get(Calendar.YEAR),
-                marker.calendar.get(Calendar.MONTH),
-                marker.calendar.get(Calendar.DAY_OF_MONTH
+                marker.getCalender().get(Calendar.YEAR),
+                marker.getCalender().get(Calendar.MONTH),
+                marker.getCalender().get(Calendar.DAY_OF_MONTH
                 ));
 
         EditText persons = findViewById(R.id.personsInput);
@@ -77,7 +77,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
         // Now do something with it.
         marker.recipeId = recipe.id;
-        marker.name = recipe.name;
+        marker.setName(recipe.name);
 
     }
 
@@ -106,7 +106,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         DatePicker datePicker = this.findViewById(R.id.DatePicker);
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth());
-        marker.calendar = calendar;
+        marker.setCalendar(calendar);
 
         EditText persons = this.findViewById(R.id.personsInput);
         marker.persons = Integer.parseInt(persons.getText().toString());

@@ -1,6 +1,7 @@
 package com.hwr.cookbook;
 
 import android.provider.ContactsContract;
+import android.support.v7.widget.AppCompatDrawableManager;
 
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
@@ -19,9 +20,10 @@ public class RecipeMarker implements CalendarEvent{
 
     public String recipeId;
     public int persons;
-    public Calendar calendar;
-    public String name;
+    private Calendar calendar;
+    private String name;
     private long ID;
+    private Calendar calender;
 
     public long getID() { return ID; }
 
@@ -133,5 +135,13 @@ public class RecipeMarker implements CalendarEvent{
             return Database.findRecipe(recipeId).name;
         }
         return "";
+    }
+
+    public Calendar getCalender() {
+        return calender;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
 }
