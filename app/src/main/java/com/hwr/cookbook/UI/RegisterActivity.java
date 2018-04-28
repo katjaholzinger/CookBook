@@ -18,6 +18,8 @@ import com.hwr.cookbook.Database;
 import com.hwr.cookbook.LoginActivity;
 import com.hwr.cookbook.R;
 
+import java.lang.reflect.Array;
+
 public class RegisterActivity extends AppCompatActivity implements
         View.OnClickListener{
 
@@ -27,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity implements
     private EditText textEmail;
     private EditText textPassword;
     private EditText textName;
+    public static final String MAIL = "com.hwr.kochbuch.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,11 @@ public class RegisterActivity extends AppCompatActivity implements
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String mail = intent.getStringExtra(LoginActivity.MAIL);
-        String password = intent.getStringExtra(LoginActivity.PASSWORD);
+        Bundle intentBundle = intent.getExtras();
+
+        String[] intentStrings = (String[]) intentBundle.getSerializable(MAIL);
+        String mail = intentStrings[0];
+        String password = intentStrings[1];
 
 
         textEmail = findViewById(R.id.textMail);

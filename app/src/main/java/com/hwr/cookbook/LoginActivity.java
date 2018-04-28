@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static final String TAG = "LoginActivity";
     public static final String MAIL = "com.hwr.kochbuch.MESSAGE";
-    public static final String PASSWORD = "com.hwr.kochbuch.MESSAGE";
     public static final String UID = "com.hwr.kochbuch.MESSAGE";
 
 
@@ -105,8 +104,7 @@ public class LoginActivity extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.user_register) {
             Intent intent = new Intent(this, RegisterActivity.class);
-            intent.putExtra(MAIL, textEmail.getText().toString());
-            intent.putExtra(PASSWORD, textPassword.getText().toString());
+            intent.putExtra(MAIL, new String[]{textEmail.getText().toString(), textPassword.getText().toString()});
             startActivity(intent);
         } else if (i == R.id.user_login) {
             signIn(textEmail.getText().toString(), textPassword.getText().toString());
