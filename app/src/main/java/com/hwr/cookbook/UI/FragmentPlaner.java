@@ -58,12 +58,15 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         */
 
         ArrayList<CalendarEvent> eventlist = new ArrayList<CalendarEvent>();
-        if (plan == null) {
+        if (plan.Markers == null) {
 
         } else {
-            for (RecipeMarker marker : plan.Markers) {
-                eventlist.add(marker);
+            if (plan.Markers.size() > 0 ) {
+                for (RecipeMarker marker : plan.Markers) {
+                    eventlist.add(marker);
+                }
             }
+
         }
 
 

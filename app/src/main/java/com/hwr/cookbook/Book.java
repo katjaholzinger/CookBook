@@ -26,20 +26,25 @@ public class Book {
      ArrayList<Recipe> recipeList = Database.getRecipeList();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         Recipe recipe = null;
-     for (String rId: this.recipes
-             ) {
-         for (Recipe r: recipeList) {
-             if (r.id.equals(rId)) {
-                 recipe = r;
-             }
-         }
+        if(recipes.size() == 0) {
+            recipeArrayList = null;
+        } else {
+            for (String rId: this.recipes
+                    ) {
+                for (Recipe r: recipeList) {
+                    if (r.id.equals(rId)) {
+                        recipe = r;
+                    }
+                }
 
-        if (recipe != null) {
-            recipeArrayList.add(recipe);
-            Log.d("Book", "Add recipe");
-            recipe = null;
+                if (recipe != null) {
+                    recipeArrayList.add(recipe);
+                    Log.d("Book", "Add recipe");
+                    recipe = null;
+                }
+            }
         }
-     }
+
      return recipeArrayList;
  }
 

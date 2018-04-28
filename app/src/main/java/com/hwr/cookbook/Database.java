@@ -1,4 +1,5 @@
 package com.hwr.cookbook;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,6 @@ public class Database {
     static  private Plan plan;
     private static ArrayList<Book> bookList = new ArrayList<>();
     private static ArrayList<Plan> planList = new ArrayList<>();
-
 
     static public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
@@ -91,7 +91,8 @@ public class Database {
 
     static public void addRecipeToBook (String userID, Book book, Recipe recipe) {
         Log.d("Database", "Adding new recipe to book xxx of user xxx ...");
-        FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(book.id).push().setValue(recipe.id);
+        book.recipes.add(recipe.id);
+        FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(book.id).setValue(book);
     }
 
     public static Recipe findRecipe(String recipeId) {
@@ -118,6 +119,7 @@ public class Database {
 
     public static void setRecipeList(ArrayList<Recipe> recipes) {
         recipeList = recipes;
+
     }
 
     public static ArrayList<Recipe> getRecipeList() {
@@ -137,5 +139,15 @@ public class Database {
 
         //Workarround: Nur einen Plan vorerst
         plan = planList.get(0);
+    }
+
+    public static Book findDefaultBook(Context ctx) {
+        for (Book book: bookList
+             ) {
+            if (book.name.equals(ctx.getString(R.string.defaultBook))) {
+                return book;
+            }
+        }
+        return null;
     }
 }

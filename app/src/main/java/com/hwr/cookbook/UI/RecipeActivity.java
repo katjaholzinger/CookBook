@@ -16,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
 import com.hwr.cookbook.R;
@@ -182,6 +183,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         recipe.normalizeIngredients(recipe.defaultPortions);
         Database db = new Database();
         Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() , recipe);
+        Book book = Database.findDefaultBook(this);
+        Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe);
         this.finish();
     }
 }

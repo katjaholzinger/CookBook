@@ -65,20 +65,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LoadData() {
+
         FirebaseDatabase.getInstance().getReference().child("books").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Book> bookList = new ArrayList<>();
                 Log.d("LoadData", dataSnapshot.toString());
                 for (DataSnapshot child:dataSnapshot.getChildren()
-                     ) {
+                        ) {
                     Book book = child.getValue(Book.class);
                     Log.d("Book", book.name);
                     bookList.add(book);
                 }
                 Database.setBookList(bookList);
-                FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
-                fb.updateExpandableList(bookList);
+
+                FirebaseDatabase.getInstance().getReference().child("recipes").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<Recipe> recipeList = new ArrayList<>();
+                        for (DataSnapshot child:dataSnapshot.getChildren()
+                                ) {
+                            Recipe recipe = child.getValue(Recipe.class);
+                            recipeList.add(recipe);
+                        }
+                        Database.setRecipeList(recipeList);
+                        FirebaseDatabase.getInstance().getReference().child("plans").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ArrayList<Plan> planList = new ArrayList<>();
+                                for (DataSnapshot child:dataSnapshot.getChildren()
+                                        ) {
+                                    Plan recipe = child.getValue(Plan.class);
+                                    planList.add(recipe);
+                                }
+                                Database.setPlanList(planList);
+
+                                FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
+                                fb.updateExpandableList(Database.getBookList());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -86,23 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        FirebaseDatabase.getInstance().getReference().child("recipes").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Recipe> recipeList = new ArrayList<>();
-                for (DataSnapshot child:dataSnapshot.getChildren()
-                        ) {
-                    Recipe recipe = child.getValue(Recipe.class);
-                    recipeList.add(recipe);
-                }
-                Database.setRecipeList(recipeList);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+
     }
 
     public void createListener() {

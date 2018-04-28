@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             Database.setNewUser(user.getUid(), name, email);
-                            Database.setNewBook(user.getUid(), new Book("Eingang", new ArrayList<String>()));
+                            Database.setNewBook(user.getUid(), new Book(getString(R.string.defaultBook), new ArrayList<String>()));
                             Database.setNewPlan(user.getUid(), new Plan(new ArrayList<RecipeMarker>()));
                             Toast.makeText(RegisterActivity.this, "Deine Registrierung war erfolgreich.",
                                     Toast.LENGTH_SHORT).show();
