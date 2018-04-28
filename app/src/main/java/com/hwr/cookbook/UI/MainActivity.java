@@ -56,6 +56,29 @@ public class MainActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.message);
 
+        Intent intent = getIntent();
+        currentUserId = intent.getStringExtra(LoginActivity.UID);
+
+        //DBNewListener();
+
+        mTextMessage = findViewById(R.id.message);
+
+
+        Log.d("Database", "Database erstellen...");
+        Database db = new Database();
+        //mTextMessage.setText(db.getUserName(user));
+
+        db = new Database();
+        Database.newListener();
+
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
+        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
+        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
+        Recipe recipe = new Recipe("Spaghetti2", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        recipe.normalizeIngredients(4);
+        Database.setNewRecipe(currentUserId, recipe);
+
 
         // creates TabLayout and Actionbar
         createLayouts();
@@ -174,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createLayouts() {
         // Set Toolbar
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
 
         // Define the TabLayout and add Items

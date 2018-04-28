@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 
 public class TestBook {
-    public static ArrayList<Book> generateTestBook(){
+    public static ArrayList<Book> generateTestBook(boolean safeToDB){
         ArrayList<Book> books = new ArrayList<>();
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
@@ -25,7 +25,9 @@ public class TestBook {
         Recipe r1 = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
         r1.rating = 4;
         r1.normalizeIngredients(4);
-        Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), r1);
+        if (safeToDB) {
+            Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), r1);
+        }
         Recipe r2 = new Recipe("Test2", ingredients, 1, null, "");
         r2.normalizeIngredients(4);
 
@@ -38,8 +40,29 @@ public class TestBook {
         }
         for (Book book: books
              ) {
-            Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
+            if (safeToDB) {
+                Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
+            }
         }
         return books;
     }
+
+
+    public static ArrayList<Recipe> generateRecipes(){
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
+        ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
+        ingredients.add(new Ingredient("Spaghetti", 500, "Gramm" ));
+
+        Recipe r1 = new Recipe("Spaghetti", ingredients, 4, "pasta", "Wasser mit Salz zum kochen bringen. Wenn das Wasser kocht, die Spaghettis dazugeben. Nach 8 Minuten das Wasser abgießen und die Nudeln abschrecken.");
+        r1.rating = 4;
+        Recipe r2 = new Recipe("Test2", ingredients, 1, null, "");
+
+        recipes.add(r1);
+        recipes.add(r2);
+
+        return recipes;
+    }
+
 }

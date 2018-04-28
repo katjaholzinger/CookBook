@@ -1,5 +1,7 @@
 package com.hwr.cookbook;
 
+import android.provider.ContactsContract;
+
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.DayItem;
@@ -7,24 +9,35 @@ import com.github.tibolte.agendacalendarview.models.WeekItem;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Sidney on 22.03.2018.
  */
 
-public class RecipeMarker extends IdentifiableElement implements CalendarEvent{
+public class RecipeMarker implements CalendarEvent{
 
-    public Recipe recipe;
+    public String recipeId;
     public int persons;
     public Calendar calendar;
+    public String name;
+    private long ID;
 
-    public RecipeMarker () {
-        super();
+    public long getID() { return ID; }
+
+    public void setID(long id) {
+        this.ID = id;
     }
 
-    public RecipeMarker (Recipe recipe, int persons, Calendar calendar) {
-        super();
-        this.recipe = recipe;
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public RecipeMarker () {}
+
+    public RecipeMarker (String recipeId, int persons, Calendar calendar) {
+        ID = System.currentTimeMillis();
+        this.recipeId = recipeId;
         this.persons = persons;
         this.calendar = calendar;
     }
@@ -101,13 +114,24 @@ public class RecipeMarker extends IdentifiableElement implements CalendarEvent{
 
     @Override
     public CalendarEvent copy() {
-        String title = recipe.name;
+        String title = toString();
         String description = "Description";
         String location = persons + " persons";
         int color = R.color.primary_dark;
         Calendar startTime = calendar;
+        long dateStart = calendar.getTimeInMillis();
         Calendar endTime = calendar;
-        boolean allDay = true;
-        return new BaseCalendarEvent(title, description, location, color,  startTime,  endTime, allDay);
+        long dateEnd = calendar.getTimeInMillis();
+        int allDay = 1;
+        String duration = "";
+        //return new BaseCalendarEvent(title, description, location, color,  startTime,  endTime, allDay);
+        return new BaseCalendarEvent(ID, color, title, description, location, dateStart, dateEnd, allDay, duration);
+    }
+
+    public String toString() {
+        if (Database.findRecipe(recipeId) != null) {
+            return Database.findRecipe(recipeId).name;
+        }
+        return "";
     }
 }

@@ -37,80 +37,58 @@
             android:id="@+id/recipeRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
-            <ImageView
-                android:id="@+id/ImageIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
-
-
-            <EditText
-                android:id="@+id/RecipeTitle"
-                style="@style/TitleTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ImageIcon"
-                android:hint="@string/recipe_title" />
-
-            <RatingBar
-                android:id="@+id/RecipeRatingBar"
-                style="@android:style/Widget.Holo.RatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/RecipeTitle"
-                android:numStars="5"
-                android:rating="3" />
 
             <TextView
-                android:id="@+id/IngredientsTitle"
+                android:id="@+id/ChooseRecipeTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ingredients"
-                android:layout_below="@+id/RecipeRatingBar"/>
+                android:text="@string/choose_recipe_title" />
 
-            <LinearLayout
-                android:id="@+id/Ingredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/IngredientsTitle"/>
 
-            <ImageButton
-                android:id="@+id/ButtonAddIngredient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/Ingredients"
-                android:background="@drawable/image_button"
-                app:srcCompat="@drawable/ic_add_24dp"
-                android:contentDescription="@string/addIngredient"
-                android:scaleX="0.7"
-                android:scaleY="0.7"/>
-
-            <TextView
-                android:id="@+id/DescriptionTitle"
-                style="@style/HeadingTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/description"
-                android:layout_below="@+id/ButtonAddIngredient"/>
-
-            <EditText
-                android:id="@+id/Description"
+            <Spinner
+                android:id="@+id/RecipeSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/DescriptionTitle"
-                android:hint="@string/insert_description" />
+                android:layout_below="@+id/ChooseRecipeTitle" />
+
+
+            <TextView
+                android:id="@+id/ChooseDateTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RecipeSpinner"
+                android:text="@string/choose_date_title" />
+
+            <DatePicker
+                android:id="@+id/DatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ChooseDateTitle">
+
+
+            </DatePicker>
+
+            <TextView
+                android:id="@+id/PersonsTitle"
+                style="@style/HeadingTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DatePicker"
+                android:text="@string/input_persons_title" />
+
+            <EditText
+                android:id="@+id/personsInput"
+                android:layout_width="59dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/PersonsTitle"
+                android:inputType="number" />
 
 
         </RelativeLayout>
@@ -119,7 +97,7 @@
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/addMarkerFab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

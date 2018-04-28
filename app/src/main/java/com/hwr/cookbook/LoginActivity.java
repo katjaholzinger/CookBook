@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
         // Views
-        textEmail = findViewById(R.id.textmail);
+        textEmail = findViewById(R.id.textMail);
         textPassword = findViewById(R.id.textPassword);
 
         // Buttons

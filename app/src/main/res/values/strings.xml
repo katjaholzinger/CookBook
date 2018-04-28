@@ -32,6 +32,18 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="amount">Amount</string>
+    <string name="dislike">Dislike</string>
+    <string name="reload">Reload</string>
+    <string name="like">Like</string>
+    <string name="NewBook">New Book</string>
+    <string name="BookName">Name</string>
+    <string name="AddIngTitle">Ingredient</string>
+    <string name="Error">\"Oops, something went wrong!\"</string>
+    <string name="NewRecipe">New Recipe</string>
+    <string name="choose_recipe_title">Recipe</string>
+    <string name="choose_date_title">Date</string>
+    <string name="input_persons_title">Persons</string>
+    <string name="welcome">Welcome</string>
 
 
     <string-array name="units_short_array">

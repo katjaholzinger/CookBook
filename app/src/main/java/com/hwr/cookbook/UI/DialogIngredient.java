@@ -1,97 +1,109 @@
 package com.hwr.cookbook.UI;
 
-import android.app.Dialog;
-import android.content.res.Resources;
-import android.os.Bundle;
+
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.hwr.cookbook.Ingredient;
 import com.hwr.cookbook.R;
 
 import java.util.Arrays;
 
+/**
+ * Created by Thomas on 26.04.2018.
+ */
 
-public class DialogIngredient extends Dialog implements
-        android.view.View.OnClickListener {
+public class DialogIngredient extends AlertDialog.Builder {
 
-    private RecipeActivity c;
-    private Button yes, no;
 
-    private Ingredient ingredient;
+    private boolean isModify;
     private EditText editTextAmount;
     private Spinner spinnerUnit;
     private EditText editTextName;
+    private Ingredient ingredient;
 
-    private boolean isModify;
+    private RecipeActivity context;
 
-    public DialogIngredient(RecipeActivity a, Ingredient ingredient) {
-        super(a);
-        // TODO Auto-generated constructor stub
-        this.c = a;
+
+    public DialogIngredient(@NonNull RecipeActivity context, Ingredient ingredient) {
+        super(context);
+
+        this.ingredient = ingredient;
+        this.context = context;
+
+        View dialog_layout = createBuilder();
+
         isModify = ingredient != null;
 
-        if (isModify){
-            this.ingredient = ingredient;
-        }else{
-            this.ingredient=new Ingredient();
+
+        editTextName = dialog_layout.findViewById(R.id.ingredientName);
+        editTextAmount = dialog_layout.findViewById(R.id.amountInput);
+        spinnerUnit = dialog_layout.findViewById(R.id.ingredientUnit);
+
+        setValues();
+
+        show();
+    }
+
+    private View createBuilder() {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialog_layout = inflater.inflate(R.layout.dialog_add_ingredient, (ViewGroup) context.findViewById(R.id.addRecipeFab));
+
+        setView(dialog_layout);
+        setTitle("settings");
+
+        setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                save();
+            }
+        });
+
+        setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        return dialog_layout;
+    }
+
+
+    private void setValues() {
+        if (isModify) {
+            String[] units = getContext().getResources().getStringArray(R.array.units_short_array);
+            spinnerUnit.setSelection(Arrays.asList(units).indexOf(ingredient.unit), true);
+            editTextAmount.setText(String.valueOf(ingredient.amount));
+            editTextName.setText(ingredient.name);
+        } else {
+            this.ingredient = new Ingredient();
         }
-
-
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add_ingredient);
-        yes = (Button) findViewById(R.id.btn_add);
-        no = (Button) findViewById(R.id.btn_cancel);
-        yes.setOnClickListener(this);
-        no.setOnClickListener(this);
-
-
-        spinnerUnit = findViewById(R.id.ingredientUnit);
-
-        Resources res = c.getResources();
-        String[] units = res.getStringArray(R.array.units_short_array);
-
-        spinnerUnit.setSelection( Arrays.asList(units).indexOf(ingredient.unit), true);
-        editTextAmount = findViewById(R.id.amountInput);
-        editTextAmount.setText(String.valueOf(ingredient.amount));
-        editTextName = findViewById(R.id.ingredientName);
-        editTextName.setText(ingredient.name);
-
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_add:
+    private void save() {
+        try {
+            if (isModify) {
                 ingredient.name = editTextName.getText().toString();
                 ingredient.unit = spinnerUnit.getSelectedItem().toString();
                 ingredient.amount = Float.parseFloat(editTextAmount.getText().toString().trim());
 
-                if (isModify){
-                    c.updateIngredientsView();
-                }
-                else{
-                    c.addToList(ingredient);
-                }
-
-                break;
-            case R.id.btn_cancel:
-
-                break;
-            default:
-                break;
+                context.updateIngredientsView();
+            } else {
+                context.addToList(DialogIngredient.this.ingredient);
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.Error,
+                    Toast.LENGTH_SHORT).show();
         }
-        dismiss();
+
     }
+
 
 }

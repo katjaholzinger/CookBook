@@ -4,5 +4,10 @@
     <color name="primary_light">#009900</color>
     <color name="primary_dark">#007100</color>
     <color name="colorAccent">#99004c</color>
+    <color name="colorAccent2">#ff00bbff</color>
+    <color name="colorAccent3">#ff005599</color>
     <color name="colorIcon">#FFFFFFFF</color>
+    <color name="gray_light">#FF999999</color>
+    <color name="gray_lighter">#FFcccccc</color>
+    <color name="shadow">#FFd6d6d6</color>
 </resources>
