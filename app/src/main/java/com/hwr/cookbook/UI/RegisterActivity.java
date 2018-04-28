@@ -42,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
+
         String mail = intent.getStringExtra(LoginActivity.MAIL);
         String password = intent.getStringExtra(LoginActivity.PASSWORD);
 

@@ -59,7 +59,7 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
         ArrayList<CalendarEvent> eventlist = new ArrayList<CalendarEvent>();
         if (plan.Markers == null) {
-
+            Toast.makeText(getContext(), "markers NULL !", Toast.LENGTH_SHORT).show();
         } else {
             if (plan.Markers.size() > 0 ) {
                 for (RecipeMarker marker : plan.Markers) {
@@ -96,25 +96,23 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
     @Override
     public void onEventSelected(CalendarEvent event) {
 
+        BaseCalendarEvent baseCalendarEvent = (BaseCalendarEvent) event;
+
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        if (event.getId() == 0) {
+        if (baseCalendarEvent.getDescription() == null) {
             //new marker
-            Calendar temp = event.getInstanceDay();
-            EventActivity.marker = new RecipeMarker(null, 1, event.getInstanceDay());
+            EventActivity.marker = new RecipeMarker(null, 1, baseCalendarEvent.getInstanceDay());
 
         } else {
             //show marker, editable
 
             for (RecipeMarker rm: Database.getPlan().Markers) {
-                if (rm.getID() == event.getId()) {
+                if (rm.id == baseCalendarEvent.getDescription()) {
 
                     EventActivity.marker = rm;
                     break;
                 }
             }
-
-
-
         }
 
         getActivity().startActivity(intent);

@@ -29,11 +29,14 @@ public class Book {
         if(recipes.size() == 0) {
             recipeArrayList = null;
         } else {
-            for (String rId: this.recipes
-                    ) {
+            for (String rId: this.recipes) {
+
                 for (Recipe r: recipeList) {
-                    if (r.id.equals(rId)) {
-                        recipe = r;
+                    if (r.id != null) {
+                        if (r.id.equals(rId)) {
+                            recipe = r;
+                            break;
+                        }
                     }
                 }
 

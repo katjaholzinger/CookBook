@@ -65,13 +65,16 @@ public class Database {
     static  public void setNewPlan (String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
         String id= FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
-        plan.setID(id);
+        plan.id = (id);
         FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
     }
 
     static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
-        Log.d("Database", "Adding new marker to plan xxx ...");
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(String.valueOf(marker.getID())).setValue(marker);
+        Log.d("Database", "Adding new marker to plan "+planID+" ...");
+        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").push().getKey();
+        marker.id = id;
+
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(String.valueOf(marker.id)).setValue(marker);
 
     }
 
@@ -139,6 +142,12 @@ public class Database {
 
         //Workarround: Nur einen Plan vorerst
         plan = planList.get(0);
+
+        /*
+        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
+        plan.id = id;
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
+        */
     }
 
     public static Book findDefaultBook(Context ctx) {

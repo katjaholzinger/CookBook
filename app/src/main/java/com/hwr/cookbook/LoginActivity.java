@@ -24,9 +24,9 @@ public class LoginActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
 
     private static final String TAG = "LoginActivity";
-    public static final String MAIL = "com.hwr.kochbuch.MESSAGE";
-    public static final String PASSWORD = "com.hwr.kochbuch.MESSAGE";
-    public static final String UID = "com.hwr.kochbuch.MESSAGE";
+    public static final String MAIL = "com.hwr.kochbuch.MESSAGE_MAIL";
+    public static final String PASSWORD = "com.hwr.kochbuch.MESSAGE_PASSWORD";
+    public static final String UID = "com.hwr.kochbuch.MESSAGE_UID";
 
 
     private EditText textEmail;

@@ -59,8 +59,8 @@ public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return this.expandableListDetail.get(this.expandableListTitle.get(listPosition))
-                .size();
+        List<Recipe> recipeList = this.expandableListDetail.get(this.expandableListTitle.get(listPosition));
+        return (recipeList == null) ? recipeList.size() : 0;
     }
 
     @Override

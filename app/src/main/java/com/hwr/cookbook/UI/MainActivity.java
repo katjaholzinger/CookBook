@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainAcitvity", "Wait for data...");
         //bookList.add(new Book("Test", new ArrayList<String>(){}));
         LoadData();
+        createListener();
 
         mTextMessage = findViewById(R.id.message);
 
