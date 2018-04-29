@@ -21,12 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
-import com.hwr.cookbook.Ingredient;
-import com.hwr.cookbook.LoginActivity;
 import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
-import com.hwr.cookbook.User;
 
 import java.util.ArrayList;
 
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mTextMessage = (TextView) findViewById(R.id.message);
+        mTextMessage = findViewById(R.id.message);
         // creates TabLayout and Actionbar
         Log.d("MainAcitvity", "Wait for data...");
         //bookList.add(new Book("Test", new ArrayList<String>(){}));

@@ -14,18 +14,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
-import com.hwr.cookbook.LoginActivity;
 import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
-import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.RecipeMarker;
 
 import java.util.ArrayList;
-
-import java.lang.reflect.Array;
 
 public class RegisterActivity extends AppCompatActivity implements
         View.OnClickListener{

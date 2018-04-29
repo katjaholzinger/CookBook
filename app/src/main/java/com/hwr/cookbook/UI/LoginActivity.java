@@ -1,4 +1,4 @@
-package com.hwr.cookbook;
+package com.hwr.cookbook.UI;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,8 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.hwr.cookbook.UI.MainActivity;
-import com.hwr.cookbook.UI.RegisterActivity;
+import com.hwr.cookbook.R;
 
 
 public class LoginActivity extends AppCompatActivity implements
