@@ -1,5 +1,6 @@
 package com.hwr.cookbook.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Book;
@@ -21,6 +23,7 @@ import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Ingredient;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
+import com.hwr.cookbook.RecipeMarker;
 
 import java.util.ArrayList;
 
@@ -93,10 +96,13 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private void addPortionsButtons(){
         Button buttonDec = findViewById(R.id.buttonDecrement);
         Button buttonInc = findViewById(R.id.buttonIncrement);
+        FloatingActionButton toCalendarButton = findViewById(R.id.fab_to_calendar);
+
 
         TextView textViewPortions = this.findViewById(R.id.Portions);
         textViewPortions.setText(String.valueOf(recipe.defaultPortions));
 
+        toCalendarButton.setOnClickListener(this);
         buttonDec.setOnClickListener(this);
         buttonInc.setOnClickListener(this);
     }
@@ -161,12 +167,22 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.fab:
                 pushRecipe();
                 break;
+            case R.id.fab_to_calendar:
+                makeMarker();
+                break;
             case R.id.ButtonAddIngredient:
                 new DialogIngredient(this, null);
                 break;
             default:
                 break;
         }
+    }
+
+    private void makeMarker() {
+
+        Intent intent = new Intent(this, EventActivity.class);
+        EventActivity.marker = new RecipeMarker(recipe.id, 1, null);
+        this.startActivity(intent);
     }
 
     private void pushRecipe() {

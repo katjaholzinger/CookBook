@@ -2,6 +2,7 @@ package com.hwr.cookbook;
 
 import android.provider.ContactsContract;
 import android.support.v7.widget.AppCompatDrawableManager;
+import android.util.Log;
 
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
@@ -9,6 +10,7 @@ import com.github.tibolte.agendacalendarview.models.DayItem;
 import com.github.tibolte.agendacalendarview.models.WeekItem;
 import com.google.firebase.database.Exclude;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,10 +23,10 @@ import java.util.UUID;
 public class RecipeMarker implements CalendarEvent{
 
     @Exclude
-    public final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 
     public String recipeId;
-    public int persons;
+    public int persons = 0;
     public String date;
     @Exclude
     private Calendar calendar;
@@ -135,7 +137,7 @@ public class RecipeMarker implements CalendarEvent{
 
     }
 
-    @Exclude
+    //@Exclude
     @Override
     public CalendarEvent copy() {
         //Calendar calendar = Calendar.getInstance();
@@ -156,17 +158,32 @@ public class RecipeMarker implements CalendarEvent{
         return new BaseCalendarEvent(0, color, title, description, location, dateStart, dateEnd, allDay, duration);
     }
 
-    @Exclude
+    //@Exclude
     public String toString() {
         return name;
     }
 
+    @Exclude
     public Calendar getCalendar() {
         return calendar;
     }
 
+    @Exclude
     public void setCalendar(Calendar calendar) {
         date = sdf.format(calendar.getTime());
         this.calendar = calendar;
+    }
+
+    //@Exclude
+    public void refreshCalendarByDate() {
+        calendar = Calendar.getInstance();
+        Date tempDate = null;
+        try {
+            tempDate = sdf.parse(date);
+        } catch (ParseException e) {
+            Log.d("Marker", "Could not parse "+date+" into Date format");
+        }
+        calendar.setTime(tempDate);
+
     }
 }

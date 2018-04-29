@@ -1,6 +1,7 @@
 package com.hwr.cookbook.UI;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.Plan;
@@ -37,20 +39,22 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_event);
 
         createSpinnerAdapter();
+
         DatePicker datePicker = findViewById(R.id.DatePicker);
-
-        datePicker.updateDate(
-                marker.getCalendar().get(Calendar.YEAR),
-                marker.getCalendar().get(Calendar.MONTH),
-                marker.getCalendar().get(Calendar.DAY_OF_MONTH
-                ));
-
+        if (marker.getCalendar() != null) {
+            datePicker.updateDate(
+                    marker.getCalendar().get(Calendar.YEAR),
+                    marker.getCalendar().get(Calendar.MONTH),
+                    marker.getCalendar().get(Calendar.DAY_OF_MONTH
+                    ));
+        }
 
         EditText persons = findViewById(R.id.personsInput);
-        persons.setText(String.valueOf(0));
+        persons.setText(String.valueOf(marker.persons));
 
         FloatingActionButton floatingButton = findViewById(R.id.addMarkerFab);
         floatingButton.setOnClickListener(this);
+
         // set Toolbar
         Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
@@ -58,11 +62,12 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
     private void createSpinnerAdapter() {
 
-        spinner = (Spinner) findViewById(R.id.RecipeSpinner);
+        spinner = findViewById(R.id.RecipeSpinner);
 
         // Create an ArrayAdapter using the recipe array and a default spinner layout
 
-        Object[] recipes = Database.getRecipeList().toArray();
+        ArrayList<Recipe> recipeList = Database.getRecipeList();
+        Object[] recipes = recipeList.toArray();
         //Recipe[] recipes = new Recipe[] {new Recipe()};
 
         ArrayAdapter adapter = new ArrayAdapter(this,
@@ -74,6 +79,16 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        if (marker.recipeId != null) {
+            for (int counter=0; counter<recipes.length; counter++) {
+                if (((Recipe) recipes[counter]).id.equals(marker.recipeId)) {
+                    spinner.setSelection(counter);
+                    break;
+                }
+            }
+        }
+
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
