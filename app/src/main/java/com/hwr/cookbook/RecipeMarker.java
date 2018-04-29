@@ -1,12 +1,15 @@
 package com.hwr.cookbook;
 
 import android.provider.ContactsContract;
+import android.support.v7.widget.AppCompatDrawableManager;
 
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.DayItem;
 import com.github.tibolte.agendacalendarview.models.WeekItem;
+import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -17,121 +20,153 @@ import java.util.UUID;
 
 public class RecipeMarker implements CalendarEvent{
 
+    @Exclude
+    public final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+
     public String recipeId;
     public int persons;
-    public Calendar calendar;
+    public String date;
+    @Exclude
+    private Calendar calendar;
     public String name;
-    private long ID;
+    public String id;
 
-    public long getID() { return ID; }
-
-    public void setID(long id) {
-        this.ID = id;
-    }
-
-    public String getName() { return name; }
-
-    public void setName(String name) { this.name = name; }
 
     public RecipeMarker () {}
 
     public RecipeMarker (String recipeId, int persons, Calendar calendar) {
-        ID = System.currentTimeMillis();
+        id = UUID.randomUUID().toString();
         this.recipeId = recipeId;
         this.persons = persons;
         this.calendar = calendar;
     }
 
+    @Exclude
+    public String getName() { return name; }
+
+    @Exclude
+    public void setName(String name) { this.name = name; }
+
+    @Exclude
     @Override
     public long getId() {
         return 0;
     }
 
+    @Exclude
     @Override
     public void setId(long mId) {
 
     }
 
+    @Exclude
     @Override
     public Calendar getStartTime() {
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.setTime(date);
         return calendar;
     }
 
+    @Exclude
     @Override
     public void setStartTime(Calendar mStartTime) {
 
     }
 
+    @Exclude
     @Override
     public Calendar getEndTime() {
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.setTime(date);
         return calendar;
     }
 
+    @Exclude
     @Override
     public void setEndTime(Calendar mEndTime) {
 
     }
 
+    @Exclude
     @Override
     public String getTitle() {
         return null;
     }
 
+    @Exclude
     @Override
     public void setTitle(String mTitle) {
 
     }
 
+    @Exclude
     @Override
     public Calendar getInstanceDay() {
         return null;
     }
 
+    @Exclude
     @Override
     public void setInstanceDay(Calendar mInstanceDay) {
 
     }
 
+    @Exclude
     @Override
     public DayItem getDayReference() {
         return null;
     }
 
+    @Exclude
     @Override
     public void setDayReference(DayItem mDayReference) {
 
     }
 
+    @Exclude
     @Override
     public WeekItem getWeekReference() {
         return null;
     }
 
+    @Exclude
     @Override
     public void setWeekReference(WeekItem mWeekReference) {
 
     }
 
+    @Exclude
     @Override
     public CalendarEvent copy() {
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.setTime(date);
         String title = toString();
-        String description = "Description";
+        // using the description and location fields of BaseCalendarEvent for these non-intended purposes is quite dirty!
+        String description = id;
         String location = persons + " persons";
         int color = R.color.primary_dark;
         Calendar startTime = calendar;
+        long dates = calendar.getTimeInMillis();
         long dateStart = calendar.getTimeInMillis();
         Calendar endTime = calendar;
         long dateEnd = calendar.getTimeInMillis();
         int allDay = 1;
         String duration = "";
         //return new BaseCalendarEvent(title, description, location, color,  startTime,  endTime, allDay);
-        return new BaseCalendarEvent(ID, color, title, description, location, dateStart, dateEnd, allDay, duration);
+        return new BaseCalendarEvent(0, color, title, description, location, dateStart, dateEnd, allDay, duration);
     }
 
+    @Exclude
     public String toString() {
-        if (Database.findRecipe(recipeId) != null) {
-            return Database.findRecipe(recipeId).name;
-        }
-        return "";
+        return name;
+    }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        date = sdf.format(calendar.getTime());
+        this.calendar = calendar;
     }
 }

@@ -14,9 +14,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.LoginActivity;
+import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
+import com.hwr.cookbook.Recipe;
+import com.hwr.cookbook.RecipeMarker;
+
+import java.util.ArrayList;
 
 import java.lang.reflect.Array;
 
@@ -57,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements
         mAuth = FirebaseAuth.getInstance();
 
     }
-    private void createAccount(final String email, String password, final String name) {
+    private void createAccount(final String email, final String password, final String name) {
         Log.d(TAG, "createAccount:" + email);
 
         //showProgressDialog();
@@ -74,9 +81,11 @@ public class RegisterActivity extends AppCompatActivity implements
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             Database.setNewUser(user.getUid(), name, email);
+                            Database.setNewBook(user.getUid(), new Book(getString(R.string.defaultBook), new ArrayList<String>()));
+                            Database.setNewPlan(user.getUid(), new Plan(new ArrayList<RecipeMarker>()));
                             Toast.makeText(RegisterActivity.this, "Deine Registrierung war erfolgreich.",
                                     Toast.LENGTH_SHORT).show();
-                            setContentView(R.layout.activity_login);
+                            goToLogin(email, password);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, "createUserWithEmail:failure", task.getException());
@@ -97,6 +106,14 @@ public class RegisterActivity extends AppCompatActivity implements
         if (i == R.id.user_register) {
             createAccount(textEmail.getText().toString(), textPassword.getText().toString(),textName.getText().toString());
         }
+    }
+
+    private  void goToLogin(String mail, String password) {
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("MAIL", mail);
+        intent.putExtra("PASSWORD", password);
+        startActivity(intent);
     }
 
 }

@@ -17,7 +17,8 @@ import java.util.ArrayList;
 
 public class TestBook {
     public static ArrayList<Book> generateTestBook(boolean safeToDB){
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> bookList = Database.getBookList();
+        ArrayList<Recipe> recipeList = Database.getRecipeList();
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
@@ -28,28 +29,33 @@ public class TestBook {
         if (safeToDB) {
             Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), r1);
         }
+
         Recipe r2 = new Recipe("Test2", ingredients, 1, null, "");
         r2.normalizeIngredients(4);
+        recipeList.add(r1);
+        recipeList.add(r2);
+        Database.setRecipeList(recipeList);
 
         for(int i = 0; i <= 3; i++) {
             ArrayList<String> recipeIdList = new ArrayList<>();
             recipeIdList.add(r1.id);
             recipeIdList.add(r2.id);
             Book book = new Book("Book Title " + i, recipeIdList);
-            books.add(book);
+            bookList.add(book);
         }
-        for (Book book: books
+        for (Book book: bookList
              ) {
             if (safeToDB) {
                 Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
             }
         }
-        return books;
+        Database.setBookList(bookList);
+        return bookList;
     }
 
 
     public static ArrayList<Recipe> generateRecipes(){
-        ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<Recipe> recipes = Database.getRecipeList();
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Salz", 5, "Teelöffel" ));
         ingredients.add(new Ingredient("Wasser", 3, "Liter" ));
@@ -61,7 +67,7 @@ public class TestBook {
 
         recipes.add(r1);
         recipes.add(r2);
-
+        Database.setRecipeList(recipes);
         return recipes;
     }
 

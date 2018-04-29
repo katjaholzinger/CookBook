@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ import java.util.Locale;
 
 public class FragmentPlaner extends Fragment implements CalendarPickerController {
 
-    private Database db;
 
     public FragmentPlaner() {
         // Required empty public constructor
@@ -43,19 +43,32 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        db = new Database();
-        Database.newListener();
-
         Plan plan = Database.getPlan();
-        if (plan.Markers == null) {
+        /*if (plan != null){
+
+            Log.d("FragmentPlaner", plan.name);
+            if (plan.Markers == null) {
+                mockPlan(plan);
+            }
+        } else {
+            plan = new Plan();
             mockPlan(plan);
         }
 
+        */
+
         ArrayList<CalendarEvent> eventlist = new ArrayList<CalendarEvent>();
-        for (RecipeMarker marker : plan.Markers) {
-            eventlist.add(marker);
+        if (plan.Markers == null) {
+            Toast.makeText(getContext(), "markers NULL !", Toast.LENGTH_SHORT).show();
+        } else {
+            if (plan.Markers.size() > 0 ) {
+                for (RecipeMarker marker : plan.Markers) {
+                    eventlist.add(marker);
+                }
+            }
+
         }
+
 
         // Inflate the layout for this fragment
 
@@ -83,25 +96,23 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
     @Override
     public void onEventSelected(CalendarEvent event) {
 
+        BaseCalendarEvent baseCalendarEvent = (BaseCalendarEvent) event;
+
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        if (event.getId() == 0) {
+        if (baseCalendarEvent.getDescription() == null) {
             //new marker
-            Calendar temp = event.getInstanceDay();
-            EventActivity.marker = new RecipeMarker(null, 1, event.getInstanceDay());
+            EventActivity.marker = new RecipeMarker(null, 1, baseCalendarEvent.getInstanceDay());
 
         } else {
             //show marker, editable
 
             for (RecipeMarker rm: Database.getPlan().Markers) {
-                if (rm.getID() == event.getId()) {
+                if (rm.id == baseCalendarEvent.getDescription()) {
 
                     EventActivity.marker = rm;
                     break;
                 }
             }
-
-
-
         }
 
         getActivity().startActivity(intent);
@@ -118,8 +129,15 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         plan.Markers = new ArrayList<RecipeMarker>();
 
 
-        Book book = TestBook.generateTestBook(false).get(0);
+        ArrayList<Book> books = TestBook.generateTestBook(false);
         Calendar today = Calendar.getInstance();
+        Book book = null;
+        if (books.get(0).name.equals("Eingang")) {
+            book = books.get(1);
+        }
+        else {
+            book = books.get(0);
+        }
         RecipeMarker marker1 = new RecipeMarker ( book.getFullRecipes().get(0).id, 5, today);
         plan.Markers.add(marker1);
 

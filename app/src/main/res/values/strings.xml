@@ -44,6 +44,7 @@
     <string name="choose_date_title">Date</string>
     <string name="input_persons_title">Persons</string>
     <string name="welcome">Welcome</string>
+    <string name="defaultBook">Default</string>
 
 
     <string-array name="units_short_array">

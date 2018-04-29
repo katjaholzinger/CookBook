@@ -1,5 +1,7 @@
 package com.hwr.cookbook;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -21,14 +23,31 @@ public class Book {
         this.recipes=recipes;
     }
  public ArrayList<Recipe> getFullRecipes() {
+     ArrayList<Recipe> recipeList = Database.getRecipeList();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-     for (String rId: recipes
-             ) {
-        Recipe r = Database.findRecipe(rId);
-        if (r != null) {
-            recipeArrayList.add(r);
+        Recipe recipe = null;
+        if(recipes.size() == 0) {
+            recipeArrayList = null;
+        } else {
+            for (String rId: this.recipes) {
+
+                for (Recipe r: recipeList) {
+                    if (r.id != null) {
+                        if (r.id.equals(rId)) {
+                            recipe = r;
+                            break;
+                        }
+                    }
+                }
+
+                if (recipe != null) {
+                    recipeArrayList.add(recipe);
+                    Log.d("Book", "Add recipe");
+                    recipe = null;
+                }
+            }
         }
-     }
+
      return recipeArrayList;
  }
 

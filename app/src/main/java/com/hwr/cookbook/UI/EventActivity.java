@@ -13,13 +13,17 @@ import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Database;
+import com.hwr.cookbook.Plan;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.RecipeMarker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class EventActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+    //public static Plan plan = null;
     public static RecipeMarker marker = null;
     private Spinner spinner;
 
@@ -34,11 +38,13 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
         createSpinnerAdapter();
         DatePicker datePicker = findViewById(R.id.DatePicker);
+
         datePicker.updateDate(
-                marker.calendar.get(Calendar.YEAR),
-                marker.calendar.get(Calendar.MONTH),
-                marker.calendar.get(Calendar.DAY_OF_MONTH
+                marker.getCalendar().get(Calendar.YEAR),
+                marker.getCalendar().get(Calendar.MONTH),
+                marker.getCalendar().get(Calendar.DAY_OF_MONTH
                 ));
+
 
         EditText persons = findViewById(R.id.personsInput);
         persons.setText(String.valueOf(0));
@@ -56,8 +62,8 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
         // Create an ArrayAdapter using the recipe array and a default spinner layout
 
-        //Recipe[] recipes = (Recipe[]) Database.getRecipeList().toArray();
-        Recipe[] recipes = new Recipe[] {new Recipe()};
+        Object[] recipes = Database.getRecipeList().toArray();
+        //Recipe[] recipes = new Recipe[] {new Recipe()};
 
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item, recipes);
@@ -77,7 +83,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
         // Now do something with it.
         marker.recipeId = recipe.id;
-        marker.name = recipe.name;
+        marker.setName(recipe.name);
 
     }
 
@@ -106,13 +112,23 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         DatePicker datePicker = this.findViewById(R.id.DatePicker);
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth());
-        marker.calendar = calendar;
+        marker.setCalendar(calendar);
 
         EditText persons = this.findViewById(R.id.personsInput);
         marker.persons = Integer.parseInt(persons.getText().toString());
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String planId = Database.getPlan().getID();
+        String planId = Database.getPlan().id;
+
+        /*
+        if (plan.Markers == null) {
+            plan.Markers = new ArrayList<RecipeMarker>();
+        }
+
+        plan.Markers.add(marker);
+        */
+
+        // Database.setNewPlan(userId, plan);
         Database.setNewMarkerInPlan(userId, planId , marker);
         this.finish();
     }
