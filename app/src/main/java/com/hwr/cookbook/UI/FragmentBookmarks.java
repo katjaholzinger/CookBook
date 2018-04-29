@@ -1,19 +1,22 @@
 package com.hwr.cookbook.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Book;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
@@ -32,6 +35,9 @@ import java.util.List;
 public class FragmentBookmarks extends Fragment {
     private LinearLayout linearLayout;
     private User user;
+
+    private FloatingActionButton fab1, fab2;
+    private boolean isFABOpen= false;
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -60,21 +66,9 @@ public class FragmentBookmarks extends Fragment {
         createExpandableList();
     }
 
-    private void createFloatActionButton() {
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getContext(), RecipeActivity.class);
-                RecipeActivity.recipe=null;
-                getContext().startActivity(intent);
-                            }
-        });
-    }
 
 
-    private void createExpandableList () {
+    private void createExpandableList() {
         expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
         MainActivity ma = (MainActivity) getActivity();
         expandableListDetail = ExpandableListDataPump.getData(books);
@@ -88,14 +82,13 @@ public class FragmentBookmarks extends Fragment {
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
-            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-                @Override
-                public void onGroupExpand(int groupPosition) {
+            @Override
+            public void onGroupExpand(int groupPosition) {
 
-                }
-            });
-
+            }
+        });
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
             @Override
@@ -119,14 +112,80 @@ public class FragmentBookmarks extends Fragment {
 
             }
         });
+    }
 
-        expandableListView.setOnLongClickListener(new View.OnLongClickListener() {
+
+    public void createFloatActionButton() {
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab1 = getActivity().findViewById(R.id.addRecipeFab);
+        fab1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                //TODO öffnen von einem Dialog zum zuweisen der Gruppe
-                return false;
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RecipeActivity.class);
+                RecipeActivity.recipe = null;
+                getActivity().startActivity(intent);
             }
         });
+
+        fab2 = getActivity().findViewById(R.id.addBookFab);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("AddBook");
+                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.text_input_new_book, (ViewGroup) getView(), false);
+
+                final EditText input = viewInflated.findViewById(R.id.input);
+                builder.setView(viewInflated);
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Book book = new Book();
+                        book.name = input.getText().toString();
+                        Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View view) {
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
+            }
+        });
+    }
+    private void showFABMenu() {
+        isFABOpen = true;
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.VISIBLE);
+    }
+
+    private void closeFABMenu() {
+        isFABOpen = false;
+        getActivity().findViewById(R.id.addBookLayout).animate().translationY(0);
+        getActivity().findViewById(R.id.addRecipeLayout).animate().translationY(0);
+
+        getActivity().findViewById(R.id.addBookText).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.addRecipeText).setVisibility(View.GONE);
 
     }
 
