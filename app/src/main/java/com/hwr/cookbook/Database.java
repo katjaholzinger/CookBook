@@ -56,10 +56,11 @@ public class Database {
     static public void setNewRecipe (String userID, Recipe recipe) {
 
         Log.d("Database", "Adding new recipe ...");
-
         String id= FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
         recipe.id = (id);
         FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
+        recipeList.add(recipe);
+
     }
 
     static  public void setNewPlan (String userID, Plan plan) {

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,11 +88,14 @@ public class FragmentBookmarks extends Fragment {
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-            @Override
-            public void onGroupExpand(int groupPosition) {}
-        });
+                @Override
+                public void onGroupExpand(int groupPosition) {
+
+                }
+            });
+
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
             @Override
@@ -103,6 +108,7 @@ public class FragmentBookmarks extends Fragment {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
 
+
                 Intent intent = new Intent(getActivity(), RecipeActivity.class);
                 RecipeActivity.recipe = expandableListDetail.get(
                         expandableListTitle.get(groupPosition)).get(
@@ -113,17 +119,31 @@ public class FragmentBookmarks extends Fragment {
 
             }
         });
+
+        expandableListView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                //TODO öffnen von einem Dialog zum zuweisen der Gruppe
+                return false;
+            }
+        });
+
     }
 
     public void updateExpandableList(ArrayList<Book> books) {
         this.books = books;
+        try {
 
-        expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
-        MainActivity ma = (MainActivity) getActivity();
-        expandableListDetail = ExpandableListDataPump.getData(books);
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
+            expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+            MainActivity ma = (MainActivity) getActivity();
+            expandableListDetail = ExpandableListDataPump.getData(books);
+            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+            expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
+            expandableListView.setAdapter(expandableListAdapter);
+        }
+        catch (Exception e) {
+            Log.d("FragmentBookmarks", "Erste aktualisierung schlägt fehl");
+        }
 
     }
 

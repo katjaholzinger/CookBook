@@ -17,9 +17,7 @@ public class ExpandableListDataPump {
             for (Book book:books){
                 List<Recipe> list = new ArrayList<>();
                 list = book.getFullRecipes();
-                if (list != null) {
-                    Log.d("ExpandableListDump", "" + list.size());
-                }
+                Log.d("ExpandableListDump", ""+list.size());
                 Collections.addAll(list);
                 expandableListDetail.put(book.name, list);
             }

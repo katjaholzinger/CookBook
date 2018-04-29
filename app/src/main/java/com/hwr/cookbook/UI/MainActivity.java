@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadData() {
 
+        //Load Books at the first time
         FirebaseDatabase.getInstance().getReference().child("books").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Book> bookList = new ArrayList<>();
-                Log.d("LoadData", dataSnapshot.toString());
                 for (DataSnapshot child:dataSnapshot.getChildren()
                         ) {
                     Book book = child.getValue(Book.class);
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
                                 fb.updateExpandableList(Database.getBookList());
+                                createListener();
                             }
 
                             @Override
