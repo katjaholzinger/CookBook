@@ -38,8 +38,10 @@ public class FragmentBookmarks extends Fragment {
     private LinearLayout linearLayout;
     private User user;
 
-    private FloatingActionButton fab1, fab2;
+    private SwipeRefreshLayout srl;
+
     private boolean isFABOpen= false;
+
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -115,7 +117,7 @@ public class FragmentBookmarks extends Fragment {
            }
         });
 
-        SwipeRefreshLayout srl = getActivity().findViewById(R.id.swiperefresh);
+        srl = getActivity().findViewById(R.id.swiperefresh);
         srl.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -129,17 +131,18 @@ public class FragmentBookmarks extends Fragment {
 
     public void createFloatActionButton() {
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab1 = getActivity().findViewById(R.id.addRecipeFab);
+        FloatingActionButton fab1 = getActivity().findViewById(R.id.addRecipeFab);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RecipeActivity.class);
                 RecipeActivity.recipe = null;
                 getActivity().startActivity(intent);
+                closeFABMenu();
             }
         });
 
-        fab2 = getActivity().findViewById(R.id.addBookFab);
+        FloatingActionButton fab2 = getActivity().findViewById(R.id.addBookFab);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,12 +160,15 @@ public class FragmentBookmarks extends Fragment {
                         Book book = new Book();
                         book.name = input.getText().toString();
                         Database.setNewBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book);
+                        updateExpandableList(Database.getBookList());
+                        closeFABMenu();
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        closeFABMenu();
                     }
                 });
 
@@ -198,10 +204,10 @@ public class FragmentBookmarks extends Fragment {
 
         getActivity().findViewById(R.id.addBookText).setVisibility(View.GONE);
         getActivity().findViewById(R.id.addRecipeText).setVisibility(View.GONE);
-
     }
 
     public void updateExpandableList(ArrayList<Book> books) {
+        setLoad(true);
         this.books = books;
         try {
 
@@ -214,12 +220,17 @@ public class FragmentBookmarks extends Fragment {
         catch (Exception e) {
             Log.d("FragmentBookmarks", "Erste aktualisierung schlägt fehl");
         }
-
+        setLoad(false);
     }
 
 
+    public void setLoad(boolean load) {
+        try {
+            srl.setRefreshing(load);
+        } catch (Exception e) {
+            Log.d("FragmentBookmarks", "Can't find SwipeRefreshLayout!");
 
-
-
+        }
+    }
 
 }

@@ -32,7 +32,6 @@ import java.util.ArrayList;
  */
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
 
     private String uID;
     private static final String TAG = "LoginActivity";
@@ -41,25 +40,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mTextMessage = findViewById(R.id.message);
         // creates TabLayout and Actionbar
         Log.d("MainAcitvity", "Wait for data...");
         //bookList.add(new Book("Test", new ArrayList<String>(){}));
-        LoadData();
-        createListener();
-
-        mTextMessage = findViewById(R.id.message);
-
         createLayouts();
 
+        FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
+        fb.setLoad(true);
+
+        LoadData();
+        createListener();
     }
 
     private void LoadData() {
@@ -100,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
                                 fb.updateExpandableList(Database.getBookList());
+                                fb.setLoad(false);
+
                                 createListener();
                             }
 
@@ -236,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
                 System.out.println("The read failed: " + databaseError.getMessage());
             }
         });
@@ -264,6 +261,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position==1){
+                    FragmentBookmarks fragmentBookmarks = (FragmentBookmarks) pagerAdapter.getItem(1);
+                    fragmentBookmarks.updateExpandableList(Database.getBookList());
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -310,6 +328,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 
 }

@@ -141,9 +141,12 @@ public class Database {
     public static void setPlanList(ArrayList<Plan> planList) {
         Database.planList = planList;
 
-        //Workarround: Nur einen Plan vorerst
-        plan = planList.get(0);
-
+        try {
+            //Workarround: Nur einen Plan vorerst
+            plan = planList.get(0);
+        }catch (Exception e){
+            Log.d("Database", e.getMessage());
+        }
         /*
         String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
         plan.id = id;

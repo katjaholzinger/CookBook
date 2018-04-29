@@ -15,9 +15,14 @@ public class ExpandableListDataPump {
         HashMap<String, List<Recipe>> expandableListDetail = new HashMap<>();
         if (books != null ) {
             for (Book book:books){
-                List<Recipe> list = new ArrayList<>();
+                List<Recipe> list;
                 list = book.getFullRecipes();
-                Log.d("ExpandableListDump", ""+list.size());
+                if (list == null) {
+                    Log.d("ExpandableListDump", "List is null!");
+                }else{
+                    Log.d("ExpandableListDump", "Size "+book.name+": "+list.size());
+                }
+
                 Collections.addAll(list);
                 expandableListDetail.put(book.name, list);
             }
@@ -25,8 +30,6 @@ public class ExpandableListDataPump {
             return expandableListDetail;
         }
         return  null;
-
-
 
     }
 }

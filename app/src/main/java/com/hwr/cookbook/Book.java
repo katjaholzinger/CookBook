@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Book {
     public String name;
     public String id;
-    public ArrayList<String> recipes = new ArrayList<String>();
+    public ArrayList<String> recipes = new ArrayList<>();
 
     public Book () {
 
@@ -23,7 +23,7 @@ public class Book {
         this.recipes=recipes;
     }
  public ArrayList<Recipe> getFullRecipes() {
-     ArrayList<Recipe> recipeList = Database.getRecipeList();
+        ArrayList<Recipe> recipeList = Database.getRecipeList();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         Recipe recipe = null;
         if(recipes.size() == 0) {
