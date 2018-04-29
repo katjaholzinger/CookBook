@@ -4,10 +4,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,7 +51,9 @@ public class FragmentDiscover extends Fragment {
         setup();
         reload();
 
-        ImageButton imageButtonLike = getActivity().findViewById(R.id.like);
+        Activity activity = getActivity();
+
+        ImageButton imageButtonLike = activity.findViewById(R.id.like);
         imageButtonLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +61,7 @@ public class FragmentDiscover extends Fragment {
             }
         });
 
-        ImageButton imageButtonDislike = getActivity().findViewById(R.id.dislike);
+        ImageButton imageButtonDislike = activity.findViewById(R.id.dislike);
         imageButtonDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +69,7 @@ public class FragmentDiscover extends Fragment {
             }
         });
 
-        ImageButton imageButtonReload = getActivity().findViewById(R.id.reload);
+        ImageButton imageButtonReload = activity.findViewById(R.id.reload);
         imageButtonReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,40 +82,6 @@ public class FragmentDiscover extends Fragment {
 
     private CardStackView cardStackView;
     private StapleCardAdapter adapter;
-
-
-    /*
-    @Override
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_activity_main_reload:
-                reload();
-                break;
-            case R.id.menu_activity_main_add_first:
-                addFirst();
-                break;
-            case R.id.menu_activity_main_add_last:
-                addLast();
-                break;
-            case R.id.menu_activity_main_remove_first:
-                removeFirst();
-                break;
-            case R.id.menu_activity_main_remove_last:
-                removeLast();
-                break;
-            case R.id.menu_activity_main_swipe_left:
-                swipeLeft();
-                break;
-            case R.id.menu_activity_main_swipe_right:
-                swipeRight();
-                break;
-            case R.id.menu_activity_main_reverse:
-                reverse();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
 
     private StapleCardAdapter createStapleCardAdapter() {
@@ -157,6 +127,9 @@ public class FragmentDiscover extends Fragment {
             }
         });
     }
+
+
+
 
     private void reload() {
         cardStackView.setVisibility(View.GONE);

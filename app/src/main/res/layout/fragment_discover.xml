@@ -1,54 +1,53 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:layout_height="match_parent">
 
     <com.yuyakaido.android.cardstackview.CardStackView
         android:id="@+id/card_staple"
-        app:visibleCount="3"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp"
         app:swipeDirection="horizontal"
-        android:paddingBottom="50dp" />
+        app:visibleCount="3" />
 
 
-        <LinearLayout
-            android:layout_gravity="center|bottom"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="10dp">
+
+        <ImageButton
+            android:id="@+id/dislike"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/image_button"
+            android:contentDescription="@string/dislike"
+            app:srcCompat="@drawable/ic_thumb_down_24dp" />
 
-            <ImageButton
-                android:id="@+id/dislike"
-                android:background="@drawable/image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:contentDescription="@string/dislike"
-                app:srcCompat="@drawable/ic_thumb_down_24dp"/>
+        <ImageButton
+            android:id="@+id/reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/image_button"
+            android:contentDescription="@string/reload"
+            app:srcCompat="@drawable/ic_autorenew_24dp" />
 
-            <ImageButton
-                android:id="@+id/reload"
-                android:background="@drawable/image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:contentDescription="@string/reload"
-                app:srcCompat="@drawable/ic_autorenew_24dp"/>
+        <ImageButton
+            android:id="@+id/like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/image_button"
+            android:contentDescription="@string/like"
+            app:srcCompat="@drawable/ic_thumb_up_24dp" />
 
-            <ImageButton
-                android:id="@+id/like"
-                android:background="@drawable/image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:contentDescription="@string/like"
-                app:srcCompat="@drawable/ic_thumb_up_24dp"/>
-
-        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

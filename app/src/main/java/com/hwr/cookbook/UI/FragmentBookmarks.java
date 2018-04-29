@@ -27,7 +27,6 @@ import com.hwr.cookbook.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
 
 /**
@@ -117,7 +116,7 @@ public class FragmentBookmarks extends Fragment {
            }
         });
 
-        srl = getActivity().findViewById(R.id.swiperefresh);
+        srl = getActivity().findViewById(R.id.swipeRefreshBookmarks);
         srl.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
