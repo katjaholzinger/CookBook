@@ -333,8 +333,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
+        this.finishAffinity();
     }
 
 }
