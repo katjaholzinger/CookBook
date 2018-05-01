@@ -45,9 +45,13 @@
     <string name="input_persons_title">Persons</string>
     <string name="welcome">Welcome</string>
     <string name="defaultBook">Default</string>
-    <string name="exploration">Swipe ↍ to reload data.</string>
     <string name="add_recipe_to_calendar">Add recipe to calendar</string>
     <string name="edit">Edit</string>
+    <string name="change">Change</string>
+    <string name="DeleteBookName">Delete Book</string>
+    <string name="EnterNewBookName">Enter New Book Name</string>
+    <string name="delete">Delete</string>
+    <string name="DeleteBookMessage">Are you sure?</string>
 
 
     <string-array name="units_short_array">

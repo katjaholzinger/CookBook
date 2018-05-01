@@ -3,34 +3,8 @@
 
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/account_manage"
-        android:icon="@drawable/ic_person_24dp"
-        android:title="@string/actionbar_account"
-        app:showAsAction="ifRoom"/>
-
-
-    <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_logout"
         android:icon="@drawable/ic_exit_24dp"
         android:title="@string/actionbar_logout"
         app:showAsAction="ifRoom"/>
-
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_logout1"
-        android:icon="@drawable/ic_exit_24dp"
-        android:title="@string/actionbar_logout"
-        app:showAsAction="ifRoom"/>
-
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_logout2"
-        android:icon="@drawable/ic_exit_24dp"
-        android:title="@string/actionbar_logout"
-        app:showAsAction="ifRoom"/>
-
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_logout3"
-        android:icon="@drawable/ic_exit_24dp"
-        android:title="@string/actionbar_logout"
-        app:showAsAction="ifRoom"/>
-
 </menu>

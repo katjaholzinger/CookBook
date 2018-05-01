@@ -92,7 +92,11 @@ public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         Book titleBook = (Book) getGroup(listPosition);
-        String listTitle = titleBook.name + " ("+titleBook.getFullRecipes().size()+")";
+        Integer size = 0;
+        if (titleBook.getFullRecipes() != null){
+            size = titleBook.getFullRecipes().size();
+        }
+        String listTitle = titleBook.name + " ("+size+")";
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);

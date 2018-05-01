@@ -113,6 +113,27 @@ public class FragmentBookmarks extends Fragment {
                                                                   Log.d ("FragmentBookmarks", recipe.name);
                                                                   // Return true as we are handling the event.
                                                                   return true;
+                                                              }else{
+                                                                  int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                                                                  final Book book =  expandableListTitle.get(groupPosition);
+                                                                    if (book.name != "Default"){
+                                                                  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                                                                  alertDialogBuilder.setTitle(R.string.DeleteBookName + ": " + book.name);
+                                                                  alertDialogBuilder.setMessage(R.string.DeleteBookMessage);
+                                                                  alertDialogBuilder.setPositiveButton(R.string.delete,
+                                                                          new DialogInterface.OnClickListener() {
+                                                                              @Override
+                                                                              public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                Database.deleteBook(book);
+                                                                              }
+                                                                          });
+                                                                  alertDialogBuilder.setNegativeButton(R.string.cancel,
+                                                                          new DialogInterface.OnClickListener() {
+                                                                              @Override
+                                                                              public void onClick(DialogInterface dialogInterface, int i) {
+                                                                              }
+                                                                          });
+                                                                    }
                                                               }
                                                               return false;
                                                           }
