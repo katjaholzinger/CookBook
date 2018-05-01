@@ -62,9 +62,9 @@ public class DialogChangeBook extends AlertDialog.Builder {
         View dialog_layout = inflater.inflate(R.layout.dialog_change_book, null);
 
         setView(dialog_layout);
-        setTitle("settings");
+        setTitle(context.getResources().getString(R.string.MoveBookTitle));
 
-        setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+        setPositiveButton(R.string.move, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Book newBook = (Book) spinnerBooks.getSelectedItem();
                 Database.moveToOtherBook(oldBook, newBook, recipe);

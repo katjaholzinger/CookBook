@@ -54,6 +54,7 @@
     <string name="DeleteBookMessage">Are you sure?</string>
     <string name="MoveBookMessage">Select new book:</string>
     <string name="MoveBookTitle">Move Book</string>
+    <string name="move">Move</string>
 
 
     <string-array name="units_short_array">
