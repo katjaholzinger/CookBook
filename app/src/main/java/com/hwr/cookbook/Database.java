@@ -92,6 +92,11 @@ public class Database {
         FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
     }
 
+    public static void deleteMarker(RecipeMarker recipeMarker) {
+        plan.markers.remove(recipeMarker);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
+    }
+
     static public void logout() {
         FirebaseAuth.getInstance().signOut();
     }
