@@ -28,7 +28,7 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
 
 
 
-    private Spinner spinnerBooks;
+    public Spinner spinnerBooks;
     private Book oldBook;
     private Recipe recipe;
 
@@ -47,36 +47,14 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
         spinnerBooks = dialog_layout.findViewById(R.id.bookSpinner);
 
         setValues();
-        show();
     }
 
-    private View createBuilder(ViewGroup parentView) {
+    private View createBuilder(final ViewGroup parentView) {
         LayoutInflater inflater = context.getLayoutInflater();
         View dialog_layout = inflater.inflate(R.layout.dialog_change_book, null);
 
         setView(dialog_layout);
         setTitle(context.getResources().getString(R.string.RecipeGeneralSettings));
-
-        setPositiveButton(R.string.move, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Book newBook = (Book) spinnerBooks.getSelectedItem();
-                Database.moveToOtherBook(oldBook, newBook, recipe);
-            }
-        });
-
-        setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Database.deleteRecipeFromBook(recipe,oldBook);
-            }
-        });
-
-
-        setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
 
         return dialog_layout;
     }

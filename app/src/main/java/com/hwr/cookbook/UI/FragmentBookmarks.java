@@ -108,7 +108,30 @@ public class FragmentBookmarks extends Fragment {
                                                                           childPosition);
 
                                                                   final Book oldBook = expandableListTitle.get(groupPosition);
-                                                                  new DialogEditRecipeGeneral(getActivity(), (ViewGroup) view, oldBook, recipe);
+                                                                  final DialogEditRecipeGeneral dialogEditRecipeGeneral = new DialogEditRecipeGeneral(getActivity(), (ViewGroup) view, oldBook, recipe);
+                                                                  dialogEditRecipeGeneral.setPositiveButton(R.string.move, new DialogInterface.OnClickListener() {
+                                                                      public void onClick(DialogInterface dialog, int which) {
+                                                                          Book newBook = (Book) dialogEditRecipeGeneral.spinnerBooks.getSelectedItem();
+                                                                          Database.moveToOtherBook(oldBook, newBook, recipe);
+                                                                          updateExpandableList(books);
+                                                                      }
+                                                                  });
+                                                                  dialogEditRecipeGeneral.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+                                                                      @Override
+                                                                      public void onClick(DialogInterface dialogInterface, int i) {
+                                                                          Database.deleteRecipeFromBook(recipe,oldBook);
+                                                                          updateExpandableList(books);
+                                                                      }
+                                                                  });
+
+
+                                                                  dialogEditRecipeGeneral.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                                                      @Override
+                                                                      public void onClick(DialogInterface dialogInterface, int i) {
+                                                                      }
+                                                                  });
+                                                                  dialogEditRecipeGeneral.show();
+
 
                                                               } else {
                                                                   int groupPosition = ExpandableListView.getPackedPositionGroup(id);
