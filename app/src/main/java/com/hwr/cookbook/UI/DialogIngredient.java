@@ -38,11 +38,9 @@ public class DialogIngredient extends AlertDialog.Builder {
 
         this.ingredient = ingredient;
         this.context = context;
-
-        View dialog_layout = createBuilder();
-
         isModify = ingredient != null;
 
+        View dialog_layout = createBuilder();
 
         editTextName = dialog_layout.findViewById(R.id.ingredientName);
         editTextAmount = dialog_layout.findViewById(R.id.amountInput);
@@ -72,6 +70,16 @@ public class DialogIngredient extends AlertDialog.Builder {
             }
         });
 
+        if (isModify) {
+            setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    context.deleteIngredient(ingredient);
+                    context.updateIngredientsView();
+                }
+            });
+        }
+
         return dialog_layout;
     }
 
@@ -89,11 +97,11 @@ public class DialogIngredient extends AlertDialog.Builder {
 
     private void save() {
         try {
-            if (isModify) {
-                ingredient.name = editTextName.getText().toString();
-                ingredient.unit = spinnerUnit.getSelectedItem().toString();
-                ingredient.amount = Float.parseFloat(editTextAmount.getText().toString().trim());
+            ingredient.name = editTextName.getText().toString();
+            ingredient.unit = spinnerUnit.getSelectedItem().toString();
+            ingredient.amount = Float.parseFloat(editTextAmount.getText().toString().trim());
 
+            if (isModify) {
                 context.updateIngredientsView();
             } else {
                 context.addToList(DialogIngredient.this.ingredient);

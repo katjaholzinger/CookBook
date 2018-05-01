@@ -148,6 +148,9 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public void deleteIngredient(Ingredient ing){
+       recipe.ingredients.remove(ing);
+    }
 
     public void addToList(Ingredient ing) {
         recipe.ingredients.add(ing);
