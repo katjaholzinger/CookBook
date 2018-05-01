@@ -14,24 +14,25 @@ public class Book {
     public String id;
     public ArrayList<String> recipes = new ArrayList<>();
 
-    public Book () {
+    public Book() {
 
     }
 
-    public Book (String name, ArrayList<String> recipes) {
+    public Book(String name, ArrayList<String> recipes) {
         this.name = name;
-        this.recipes=recipes;
+        this.recipes = recipes;
     }
- public ArrayList<Recipe> getFullRecipes() {
+
+    public ArrayList<Recipe> getFullRecipes() {
         ArrayList<Recipe> recipeList = Database.getRecipeList();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         Recipe recipe = null;
-        if(recipes.size() == 0) {
+        if (recipes.size() == 0) {
             recipeArrayList = null;
         } else {
-            for (String rId: this.recipes) {
+            for (String rId : this.recipes) {
 
-                for (Recipe r: recipeList) {
+                for (Recipe r : recipeList) {
                     if (r.id != null) {
                         if (r.id.equals(rId)) {
                             recipe = r;
@@ -48,7 +49,11 @@ public class Book {
             }
         }
 
-     return recipeArrayList;
- }
+        return recipeArrayList;
+    }
+
+    public String toString() {
+        return name;
+    }
 
 }

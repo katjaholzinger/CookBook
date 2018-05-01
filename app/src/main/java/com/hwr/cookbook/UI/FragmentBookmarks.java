@@ -3,6 +3,7 @@ package com.hwr.cookbook.UI;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,10 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +32,11 @@ import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -42,13 +51,11 @@ public class FragmentBookmarks extends Fragment {
 
     private boolean isFABOpen = false;
 
-
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<Book> expandableListTitle;
     HashMap<Book, List<Recipe>> expandableListDetail;
     public ArrayList<Book> books;
-
 
     public FragmentBookmarks() {
         // Required empty public constructor
@@ -105,37 +112,40 @@ public class FragmentBookmarks extends Fragment {
                                                                   int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                                                                   int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-                                                                  Recipe recipe = expandableListDetail.get(
+                                                                  final Recipe recipe = expandableListDetail.get(
                                                                           expandableListTitle.get(groupPosition)).get(
                                                                           childPosition);
 
-                                                                  Log.d ("Fragment Bookmarks", expandableListTitle.get(groupPosition).name);
-                                                                  Log.d ("FragmentBookmarks", recipe.name);
-                                                                  // Return true as we are handling the event.
-                                                                  return true;
-                                                              }else{
+                                                                  final Book oldBook = expandableListTitle.get(groupPosition);
+                                                                  new DialogChangeBook(getActivity(), (ViewGroup) view, oldBook, recipe);
+
+                                                              } else {
                                                                   int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                                                                  final Book book =  expandableListTitle.get(groupPosition);
-                                                                    if (book.name != "Default"){
-                                                                  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                                                                  alertDialogBuilder.setTitle(R.string.DeleteBookName + ": " + book.name);
-                                                                  alertDialogBuilder.setMessage(R.string.DeleteBookMessage);
-                                                                  alertDialogBuilder.setPositiveButton(R.string.delete,
-                                                                          new DialogInterface.OnClickListener() {
-                                                                              @Override
-                                                                              public void onClick(DialogInterface dialogInterface, int i) {
-                                                                                Database.deleteBook(book);
-                                                                              }
-                                                                          });
-                                                                  alertDialogBuilder.setNegativeButton(R.string.cancel,
-                                                                          new DialogInterface.OnClickListener() {
-                                                                              @Override
-                                                                              public void onClick(DialogInterface dialogInterface, int i) {
-                                                                              }
-                                                                          });
-                                                                    }
+                                                                  final Book book = expandableListTitle.get(groupPosition);
+                                                                  Log.d("Fragment Bookmarks", book.name);
+                                                                  if (!book.name.equals("Default")) {
+                                                                      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                                                                      alertDialogBuilder.setTitle(getActivity().getResources().getString(R.string.DeleteBookName) + ": " + book.name);
+                                                                      alertDialogBuilder.setMessage(getActivity().getResources().getString(R.string.DeleteBookMessage));
+                                                                      alertDialogBuilder.setPositiveButton(R.string.delete,
+                                                                              new DialogInterface.OnClickListener() {
+                                                                                  @Override
+                                                                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                      Database.deleteBook(book);
+                                                                                      updateExpandableList(Database.getBookList());
+                                                                                  }
+                                                                              });
+                                                                      alertDialogBuilder.setNegativeButton(R.string.cancel,
+                                                                              new DialogInterface.OnClickListener() {
+                                                                                  @Override
+                                                                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                  }
+                                                                              });
+
+                                                                      alertDialogBuilder.create().show();
+                                                                  }
                                                               }
-                                                              return false;
+                                                              return true;
                                                           }
                                                       }
         );

@@ -52,6 +52,8 @@
     <string name="EnterNewBookName">Enter New Book Name</string>
     <string name="delete">Delete</string>
     <string name="DeleteBookMessage">Are you sure?</string>
+    <string name="MoveBookMessage">Select new book:</string>
+    <string name="MoveBookTitle">Move Book</string>
 
 
     <string-array name="units_short_array">
