@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed(){
-        finish();
+        this.finishAffinity();
     }
 
 }
