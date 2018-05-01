@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import org.json.JSONObject;
+
+import rx.internal.operators.OnSubscribeFromIterable;
 
 /**
  * Created by kholzinger on 10.03.2018.
@@ -32,11 +35,13 @@ public class Database {
     static DatabaseReference database;
     static DatabaseReference databaseUser;
     static User user;
-    static private String currentUserId;
-    static  private ArrayList<Recipe> recipeList = new ArrayList<>();
-    static  private Plan plan;
+    static private ArrayList<Recipe> recipeList = new ArrayList<>();
+    static private Plan plan;
     private static ArrayList<Book> bookList = new ArrayList<>();
     private static ArrayList<Plan> planList = new ArrayList<>();
+
+
+    private static ArrayList<Recipe> allRecipeList = new ArrayList<>();
 
     static public void setNewUser(String id, String name, String mail) {
         Log.d("Database", "Creating new user ...");
@@ -46,62 +51,65 @@ public class Database {
 
     }
 
-    static public String getUserName (User user) {
+    static public String getUserName(User user) {
         if (user == null) {
             return "";
         }
-        return  user.username;
+        return user.username;
     }
 
-    static public void setNewRecipe (String userID, Recipe recipe) {
+    static public void setNewRecipe(String userID, Recipe recipe) {
 
         Log.d("Database", "Adding new recipe ...");
-        String id= FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
+        String id = FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).push().getKey();
         recipe.id = (id);
         FirebaseDatabase.getInstance().getReference().child("recipes").child(userID).child(id).setValue(recipe);
         recipeList.add(recipe);
 
     }
 
-    static  public void setNewPlan (String userID, Plan plan) {
+    static public void setNewPlan(String userID, Plan plan) {
         Log.d("Database", "Adding new plan ...");
-        String id= FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
+        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
         plan.id = (id);
         FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
     }
 
-    static public void setNewMarkerInPlan (String userID, String planID, RecipeMarker marker) {
-        Log.d("Database", "Adding new marker to plan "+planID+" ...");
+    static public void setNewMarkerInPlan(String userID, String planID, RecipeMarker marker) {
+        Log.d("Database", "Adding new marker to plan " + planID + " ...");
         String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").push().getKey();
         marker.id = id;
 
         FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(String.valueOf(marker.id)).setValue(marker);
+        Log.d("PLanlist", ""+ marker.getCalendar().toString());
 
+        //TOdo Warum kommt NUllPointerException?!
+        //planList.get(0).Markers.add(marker);
     }
 
     static public void logout() {
         FirebaseAuth.getInstance().signOut();
     }
 
-    static public void setNewBook (String userID, Book book) {
+    static public void setNewBook(String userID, Book book) {
         Log.d("Database", "Adding new book to user xxx ...");
 
-        String id= FirebaseDatabase.getInstance().getReference().child("books").child(userID).push().getKey();
+        String id = FirebaseDatabase.getInstance().getReference().child("books").child(userID).push().getKey();
         book.id = (id);
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(id).setValue(book);
+        bookList.add(book);
     }
 
 
-
-    static public void addRecipeToBook (String userID, Book book, Recipe recipe) {
+    static public void addRecipeToBook(String userID, Book book, String recipeId) {
         Log.d("Database", "Adding new recipe to book xxx of user xxx ...");
-        book.recipes.add(recipe.id);
+        book.recipes.add(recipeId);
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(book.id).setValue(book);
     }
 
     public static Recipe findRecipe(String recipeId) {
-        for (Recipe r: recipeList
-             ) {
+        for (Recipe r : recipeList
+                ) {
             if (r.id.equals(recipeId)) {
                 return r;
             }
@@ -144,7 +152,7 @@ public class Database {
         try {
             //Workarround: Nur einen Plan vorerst
             plan = planList.get(0);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("Database", e.getMessage());
         }
         /*
@@ -155,12 +163,100 @@ public class Database {
     }
 
     public static Book findDefaultBook(Context ctx) {
-        for (Book book: bookList
-             ) {
+        for (Book book : bookList
+                ) {
             if (book.name.equals(ctx.getString(R.string.defaultBook))) {
                 return book;
             }
         }
         return null;
+    }
+
+    public static void updateRecipe(Recipe recipe) {
+        for (int i = 0; i<recipeList.size(); i++) {
+
+            if (recipeList.get(i).id.equals(recipe.id)) {
+                recipeList.set(i, recipe);
+            }
+        }
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(recipe.id).setValue(recipe);
+    }
+
+    public static void deleteRecipe(Recipe recipe) {
+        recipeList.remove(recipe);
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(recipe.id).removeValue();
+    }
+
+    public static void deleteRecipeFromBook (Recipe recipe, Book book) {
+        book.recipes.remove(recipe.id);
+        FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(book.id).child("recipes").child(recipe.id).removeValue();
+    }
+
+    public static void deleteBook(Book book) {
+
+        for (String recipeId: book.recipes
+             ) {
+            addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), findDefaultBook(null), recipeId);
+        }
+        bookList.remove(book);
+        FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(book.id).removeValue();
+    }
+
+    public static void copForeignRecipeToBook(Context ctx, Recipe recipe) {
+        String id = FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
+        recipe.id = (id);
+        FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(id).setValue(recipe);
+        recipeList.add(recipe);
+
+        Book defaultBook = findDefaultBook(ctx);
+        addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(),defaultBook , recipe.id);
+        defaultBook.recipes.add(recipe.id);
+    }
+
+    public static void moveToOtherBook(Book oldBook, Book newBook, Recipe r) {
+    deleteRecipeFromBook(r, oldBook);
+    addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), newBook, r.id);
+    }
+
+    public static void getAllRecipes() {
+//Datenkritisch da alle Rezepte runter geladen werden. Besser wäre es zufällig einige Knoten zu selektieren.
+        FirebaseDatabase.getInstance().getReference().child("recipes").orderByKey().
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<Recipe> recipeList = new ArrayList<>();
+                        for (DataSnapshot child : dataSnapshot.getChildren()
+                                ) {
+                            for (DataSnapshot recipes : child.getChildren()
+                                    ) {
+                                allRecipeList.add(recipes.getValue(Recipe.class));
+                                Log.d("AllRecipes", recipes.getValue(Recipe.class).name);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        }
+
+    public static ArrayList<Recipe> getRandomRecipeList() {
+        Log.d("Database", "getRandomRecipeList");
+        if (allRecipeList.size() > 0) {
+            Log.d("RandomRecipe", "größer als 0");
+            Random r = new Random();
+            ArrayList<Recipe> randomRecipeList = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                Recipe re = allRecipeList.get(r.nextInt(allRecipeList.size()));
+                randomRecipeList.add(re);
+                Log.d("RandomRecipe", re.name);
+        }
+            return randomRecipeList;
+        }
+        else {
+            return null;
+        }
     }
 }

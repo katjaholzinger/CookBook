@@ -52,7 +52,12 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         minDate = Calendar.getInstance();
         maxDate = Calendar.getInstance();
         // minimum and maximum date of our calendar
+        // 2 month behind, one year ahead, example: March 2015 <-> May 2015 <-> May 2016
+        Calendar minDate = Calendar.getInstance();
+        Calendar maxDate = Calendar.getInstance();
+
         minDate.add(Calendar.DAY_OF_MONTH, -3);
+        minDate.set(Calendar.DAY_OF_MONTH, 1);
         maxDate.add(Calendar.WEEK_OF_MONTH, 3);
 
         View view = inflater.inflate(R.layout.fragment_planer, container, false);
@@ -82,13 +87,13 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         Intent intent = new Intent(getActivity(), EventActivity.class);
         if (baseCalendarEvent.getDescription() == null) {
             //new marker
-            EventActivity.marker = new RecipeMarker(null, 0, baseCalendarEvent.getInstanceDay());
+            EventActivity.marker = new RecipeMarker(null, 1, baseCalendarEvent.getInstanceDay());
 
         } else {
             //show marker, editable
 
-            for (RecipeMarker rm : Database.getPlan().Markers) {
-                if (rm.id.equals(baseCalendarEvent.getDescription())) {
+            for (RecipeMarker rm: Database.getPlan().Markers) {
+                if (rm.id == baseCalendarEvent.getDescription()) {
 
                     EventActivity.marker = rm;
                     break;
@@ -107,19 +112,20 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
     private void mockPlan(Plan plan) {
 
-        plan.Markers = new ArrayList<>();
+        plan.Markers = new ArrayList<RecipeMarker>();
 
 
         ArrayList<Book> books = TestBook.generateTestBook(false);
         Calendar today = Calendar.getInstance();
-        Book book;
+        Book book = null;
         if (books.get(0).name.equals("Eingang")) {
             book = books.get(1);
         } else {
             book = books.get(0);
         }
-        RecipeMarker marker1 = new RecipeMarker(book.getFullRecipes().get(0).id, 5, today);
+        RecipeMarker marker1 = new RecipeMarker ( book.getFullRecipes().get(0).id, 5, today);
         plan.Markers.add(marker1);
+        //Database.setNewMarkerInPlan(FirebaseAuth.getInstance().getCurrentUser().getUid(), plan.id, marker1);
 
         Calendar newCal = Calendar.getInstance();
         newCal.add(Calendar.DAY_OF_MONTH, 1);

@@ -26,6 +26,7 @@ import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Thomas on 18.03.2018.
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 ArrayList<Plan> planList = new ArrayList<>();
-                                for (DataSnapshot child:dataSnapshot.getChildren()
+                                for (DataSnapshot child : dataSnapshot.getChildren()
                                         ) {
                                     Plan recipe = child.getValue(Plan.class);
                                     planList.add(recipe);
@@ -97,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
                                 fb.updateExpandableList(Database.getBookList());
                                 fb.setLoad(false);
+
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        Database.getAllRecipes();
+                                    }
+                                }).start();
 
                                 createListener();
                             }
@@ -133,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Plan book = dataSnapshot.getValue(Plan.class);
                 ArrayList<Plan> planArrayList = Database.getPlanList();
+                if (book.Markers != null) {
+                    Log.d("PlanChildAdded", book.Markers.get(0).name);
+                }
                 planArrayList.add(book);
                 Database.setPlanList(planArrayList);
             }

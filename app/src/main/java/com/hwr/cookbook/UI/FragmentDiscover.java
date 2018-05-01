@@ -19,11 +19,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.SwipeDirection;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -86,7 +88,13 @@ public class FragmentDiscover extends Fragment {
 
     private StapleCardAdapter createStapleCardAdapter() {
         final StapleCardAdapter adapter = new StapleCardAdapter(getActivity().getApplicationContext());
-        adapter.addAll(TestBook.generateRecipes());
+        ArrayList<Recipe> randomRecipeList = Database.getRandomRecipeList();
+        if (randomRecipeList == null) {
+            //TODO leere Liste abfangen.
+        } else {
+            adapter.addAll(randomRecipeList);
+
+        }
         return adapter;
     }
 
@@ -193,7 +201,13 @@ public class FragmentDiscover extends Fragment {
 
     private void paginate() {
         cardStackView.setPaginationReserved();
-        adapter.addAll(TestBook.generateRecipes());
+        ArrayList<Recipe> randomRecipeList = Database.getRandomRecipeList();
+        if (randomRecipeList == null) {
+            //TODO leere Liste abfangen.
+        } else {
+            adapter.addAll(randomRecipeList);
+
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -233,6 +247,7 @@ public class FragmentDiscover extends Fragment {
         if (recipes.isEmpty()) {
             return;
         }
+
 
         View target = cardStackView.getTopView();
         View targetOverlay = cardStackView.getTopView().getOverlayContainer();

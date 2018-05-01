@@ -200,7 +200,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         Database db = new Database();
         Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() , recipe);
         Book book = Database.findDefaultBook(this);
-        Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe);
+        Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe.id);
         this.finish();
     }
 }
