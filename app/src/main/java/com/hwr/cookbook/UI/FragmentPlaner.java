@@ -92,10 +92,10 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         } else {
             //show marker, editable
 
-            for (RecipeMarker rm: Database.getPlan().markers) {
-                if (rm.id == baseCalendarEvent.getDescription()) {
+            for (RecipeMarker recipeMarker: Database.getPlan().markers) {
+                if (recipeMarker.id.equals(baseCalendarEvent.getDescription())) {
 
-                    EventActivity.marker = rm;
+                    EventActivity.marker = recipeMarker;
                     break;
                 }
             }

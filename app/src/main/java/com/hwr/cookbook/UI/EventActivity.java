@@ -23,6 +23,8 @@ import com.hwr.cookbook.RecipeMarker;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
 
 public class EventActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     //public static Plan plan = null;
@@ -39,7 +41,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_event);
 
         createSpinnerAdapter();
-    marker = new RecipeMarker();
+        //marker = new RecipeMarker();
         DatePicker datePicker = findViewById(R.id.DatePicker);
         if (marker.getCalendar() != null) {
             datePicker.updateDate(
@@ -50,7 +52,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         }
 
         EditText persons = findViewById(R.id.personsInput);
-        persons.setText(String.valueOf(marker.persons));
+        persons.setText(String.format("%1$d", marker.getPersons()));
 
         FloatingActionButton floatingButton = findViewById(R.id.addMarkerFab);
         floatingButton.setOnClickListener(this);
@@ -122,15 +124,13 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
 
     private void pushEvent() {
 
-
-
         DatePicker datePicker = this.findViewById(R.id.DatePicker);
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth());
         marker.setCalendar(calendar);
 
         EditText persons = this.findViewById(R.id.personsInput);
-        marker.persons = Integer.parseInt(persons.getText().toString());
+        marker.setPersons(Integer.parseInt(persons.getText().toString()));
 
         /*
         if (plan.Markers == null) {
@@ -141,7 +141,13 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         */
 
         // Database.setNewPlan(userId, plan);
-        Database.setNewMarkerInPlan(marker);
+
+        if (marker.id != null) {
+            Database.updateMarker(marker);
+        } else {
+            marker.id = UUID.randomUUID().toString();
+            Database.setNewMarkerInPlan(marker);
+        }
         this.finish();
     }
 }
