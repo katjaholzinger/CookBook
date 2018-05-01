@@ -12,17 +12,18 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.hwr.cookbook.Book;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 
 public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> expandableListTitle;
-    private HashMap<String, List<Recipe>> expandableListDetail;
+    private List<Book> expandableListTitle;
+    private HashMap<Book, List<Recipe>> expandableListDetail;
 
-    public BooksExpandableListAdapter(Context context, List<String> expandableListTitle,
-                                      HashMap<String, List<Recipe>> expandableListDetail) {
+    public BooksExpandableListAdapter(Context context, List<Book> expandableListTitle,
+                                      HashMap<Book, List<Recipe>> expandableListDetail) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
@@ -48,10 +49,10 @@ public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item, null);
         }
-        TextView expandedListTextView = (TextView) convertView
+        TextView expandedListTextView = convertView
                 .findViewById(R.id.expandedListItemText);
         expandedListTextView.setText(expandedListRecipe.name);
-        RatingBar expandedListRatingBar = (RatingBar) convertView
+        RatingBar expandedListRatingBar = convertView
                 .findViewById(R.id.expandedListItemRating);
         expandedListRatingBar.setRating(expandedListRecipe.rating);
         expandedListRatingBar.setEnabled(false);
@@ -85,16 +86,19 @@ public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
         return listPosition;
     }
 
+
+
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String listTitle = (String) getGroup(listPosition);
+        Book titleBook = (Book) getGroup(listPosition);
+        String listTitle = titleBook.name;
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
-        TextView listTitleTextView = (TextView) convertView
+        TextView listTitleTextView = convertView
                 .findViewById(R.id.listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);

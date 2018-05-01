@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -44,8 +45,8 @@ public class FragmentBookmarks extends Fragment {
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<Recipe>> expandableListDetail;
+    List<Book> expandableListTitle;
+    HashMap<Book, List<Recipe>> expandableListDetail;
     public ArrayList<Book> books;
 
 
@@ -75,10 +76,9 @@ public class FragmentBookmarks extends Fragment {
 
         expandableListDetail = ExpandableListDataPump.getData(books);
         if (expandableListDetail != null) {
-            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+            expandableListTitle = new ArrayList<Book>(expandableListDetail.keySet());
         } else {
-            ArrayList<String> emptyList = new ArrayList<>();
-            emptyList.add("Bücher werden noch geladen.");
+            ArrayList<Book> emptyList = new ArrayList<>();
             expandableListTitle = emptyList;
         }
         expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
@@ -97,6 +97,27 @@ public class FragmentBookmarks extends Fragment {
             public void onGroupCollapse(int groupPosition) {
             }
         });
+
+        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                                          @Override
+                                                          public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                                                              if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                                                                  int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                                                                  int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                                                                  Recipe recipe = expandableListDetail.get(
+                                                                          expandableListTitle.get(groupPosition)).get(
+                                                                          childPosition);
+
+                                                                  Log.d ("Fragment Bookmarks", expandableListTitle.get(groupPosition).name);
+                                                                  Log.d ("FragmentBookmarks", recipe.name);
+                                                                  // Return true as we are handling the event.
+                                                                  return true;
+                                                              }
+                                                              return false;
+                                                          }
+                                                      }
+        );
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -217,7 +238,7 @@ public class FragmentBookmarks extends Fragment {
 
             expandableListView = getActivity().findViewById(R.id.list);
             expandableListDetail = ExpandableListDataPump.getData(books);
-            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+            expandableListTitle = new ArrayList<Book>(expandableListDetail.keySet());
             expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
             expandableListView.setAdapter(expandableListAdapter);
         } catch (Exception e) {

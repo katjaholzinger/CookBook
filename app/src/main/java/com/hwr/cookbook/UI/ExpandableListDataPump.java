@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListDataPump {
-    public static HashMap<String, List<Recipe>> getData(ArrayList<Book> books) {
-        HashMap<String, List<Recipe>> expandableListDetail = new HashMap<>();
+    public static HashMap<Book, List<Recipe>> getData(ArrayList<Book> books) {
+        HashMap<Book, List<Recipe>> expandableListDetail = new HashMap<>();
         if (books != null ) {
             for (Book book:books){
                 List<Recipe> list;
@@ -24,7 +24,7 @@ public class ExpandableListDataPump {
                 }
 
                 Collections.addAll(list);
-                expandableListDetail.put(book.name, list);
+                expandableListDetail.put(book, list);
             }
 
             return expandableListDetail;
