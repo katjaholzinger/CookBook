@@ -2,6 +2,7 @@ package com.hwr.cookbook.UI;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -32,11 +33,11 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
     private Book oldBook;
     private Recipe recipe;
 
-    private Activity context;
+    private FragmentBookmarks context;
 
 
-    public DialogEditRecipeGeneral(@NonNull Activity context, ViewGroup parentView, Book oldBook, Recipe recipe) {
-        super(context);
+    public DialogEditRecipeGeneral(@NonNull FragmentBookmarks context, ViewGroup parentView, Book oldBook, Recipe recipe) {
+        super(context.getActivity());
 
         this.oldBook = oldBook;
         this.recipe = recipe;
@@ -61,6 +62,7 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
             public void onClick(DialogInterface dialog, int which) {
                 Book newBook = (Book) spinnerBooks.getSelectedItem();
                 Database.moveToOtherBook(oldBook, newBook, recipe);
+                context.updateExpandableList(Database.getBookList());
             }
         });
 
@@ -68,6 +70,7 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Database.deleteRecipeFromBook(recipe,oldBook);
+                context.updateExpandableList(Database.getBookList());
             }
         });
 
@@ -86,7 +89,7 @@ public class DialogEditRecipeGeneral extends AlertDialog.Builder {
         List <Book> books = Database.getBookList();
 
         SpinnerAdapter adapter;
-        adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, books);
+        adapter = new ArrayAdapter<>(context.getActivity(), android.R.layout.simple_spinner_item, books);
         spinnerBooks.setAdapter(adapter);
     }
 
