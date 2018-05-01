@@ -96,5 +96,14 @@
 
         android:layout_margin = "@dimen/activity_horizontal_margin"/>
 
+    <Button
+        android:id="@+id/forgetPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_register"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/forgetPassword" />
+
 
 </RelativeLayout>

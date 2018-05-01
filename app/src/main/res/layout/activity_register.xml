@@ -69,11 +69,25 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/viewPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewPassword">
+
+        <AutoCompleteTextView
+            android:id="@+id/textPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password2"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
     <Button
-        android:layout_below="@+id/viewPassword"
         android:id="@+id/user_register"
         android:layout_width="match_parent"
         android:layout_height="47dp"
+        android:layout_below="@+id/viewPassword2"
         android:text="@string/register"
         tools:layout_editor_absoluteX="23dp"
         tools:layout_editor_absoluteY="277dp" />
