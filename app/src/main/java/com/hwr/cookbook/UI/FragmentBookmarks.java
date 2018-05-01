@@ -3,7 +3,6 @@ package com.hwr.cookbook.UI;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,15 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,11 +26,8 @@ import com.hwr.cookbook.Recipe;
 import com.hwr.cookbook.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
@@ -117,7 +108,7 @@ public class FragmentBookmarks extends Fragment {
                                                                           childPosition);
 
                                                                   final Book oldBook = expandableListTitle.get(groupPosition);
-                                                                  new DialogChangeBook(getActivity(), (ViewGroup) view, oldBook, recipe);
+                                                                  new DialogEditRecipeGeneral(getActivity(), (ViewGroup) view, oldBook, recipe);
 
                                                               } else {
                                                                   int groupPosition = ExpandableListView.getPackedPositionGroup(id);

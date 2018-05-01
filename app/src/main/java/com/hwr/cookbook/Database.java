@@ -190,7 +190,7 @@ public class Database {
 
     public static void deleteRecipeFromBook (Recipe recipe, Book book) {
         book.recipes.remove(recipe.id);
-        FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(book.id).child("recipes").child(recipe.id).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(book.id).setValue(book);
     }
 
     public static void deleteBook(Book book) {

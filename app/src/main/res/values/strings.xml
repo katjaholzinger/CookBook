@@ -55,7 +55,7 @@
     <string name="delete">Delete</string>
     <string name="DeleteBookMessage">Are you sure?</string>
     <string name="MoveBookMessage">Select new book:</string>
-    <string name="MoveBookTitle">Move Book</string>
+    <string name="RecipeGeneralSettings">Recipe Settings</string>
     <string name="move">Move</string>
     <string name="minPasswordLength">The password needs at least six characters.</string>
     <string name="forgetPassword">Forget Password</string>
