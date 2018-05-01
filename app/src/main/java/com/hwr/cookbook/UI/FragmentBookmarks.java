@@ -108,7 +108,7 @@ public class FragmentBookmarks extends Fragment {
                                                                           childPosition);
 
                                                                   final Book oldBook = expandableListTitle.get(groupPosition);
-                                                                  new DialogEditRecipeGeneral(getActivity(), (ViewGroup) view, oldBook, recipe);
+                                                                  new DialogEditRecipeGeneral(FragmentBookmarks.this, (ViewGroup) view, oldBook, recipe);
 
                                                               } else {
                                                                   int groupPosition = ExpandableListView.getPackedPositionGroup(id);

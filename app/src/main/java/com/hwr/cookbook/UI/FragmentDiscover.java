@@ -9,16 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Database;
 import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
@@ -115,6 +112,10 @@ public class FragmentDiscover extends Fragment {
                     Log.d("CardStackView", "Paginate: " + cardStackView.getTopIndex());
                     paginate();
                 }
+                if (direction == SwipeDirection.Right){
+                    likeRecipe();
+                }
+
             }
 
             @Override
@@ -151,7 +152,7 @@ public class FragmentDiscover extends Fragment {
         }, 1000);
     }
 
-    private LinkedList<Recipe> extractRemainingTouristSpots() {
+    private LinkedList<Recipe> extractRemainingRecipes() {
         LinkedList<Recipe> spots = new LinkedList<>();
         for (int i = cardStackView.getTopIndex(); i < adapter.getCount(); i++) {
             spots.add(adapter.getItem(i));
@@ -160,7 +161,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     private void addFirst() {
-        LinkedList<Recipe> spots = extractRemainingTouristSpots();
+        LinkedList<Recipe> spots = extractRemainingRecipes();
         spots.addFirst(TestBook.generateRecipes().get(0));
         adapter.clear();
         adapter.addAll(spots);
@@ -168,7 +169,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     private void addLast() {
-        LinkedList<Recipe> spots = extractRemainingTouristSpots();
+        LinkedList<Recipe> spots = extractRemainingRecipes();
         spots.addLast(TestBook.generateRecipes().get(0));
         adapter.clear();
         adapter.addAll(spots);
@@ -176,7 +177,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     private void removeFirst() {
-        LinkedList<Recipe> spots = extractRemainingTouristSpots();
+        LinkedList<Recipe> spots = extractRemainingRecipes();
         if (spots.isEmpty()) {
             return;
         }
@@ -188,7 +189,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     private void removeLast() {
-        LinkedList<Recipe> spots = extractRemainingTouristSpots();
+        LinkedList<Recipe> spots = extractRemainingRecipes();
         if (spots.isEmpty()) {
             return;
         }
@@ -212,7 +213,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     public void swipeLeft() {
-        List<Recipe> recipes = extractRemainingTouristSpots();
+        List<Recipe> recipes = extractRemainingRecipes();
         if (recipes.isEmpty()) {
             return;
         }
@@ -243,7 +244,7 @@ public class FragmentDiscover extends Fragment {
     }
 
     public void swipeRight() {
-        List<Recipe> recipes = extractRemainingTouristSpots();
+        List<Recipe> recipes = extractRemainingRecipes();
         if (recipes.isEmpty()) {
             return;
         }
@@ -272,6 +273,16 @@ public class FragmentDiscover extends Fragment {
         overlayAnimationSet.playTogether(overlayAnimator);
 
         cardStackView.swipe(SwipeDirection.Right, cardAnimationSet, overlayAnimationSet);
+
+        likeRecipe();
+    }
+
+    //Todo Add Recipe to book
+    private void likeRecipe() {
+        Integer i = cardStackView.getTopIndex();
+        Recipe recipe = adapter.getItem(i);
+        Log.d("Fragment Discover", recipe.name);
+        Database.copForeignRecipeToBook(getActivity(), recipe);
     }
 
     private void reverse() {

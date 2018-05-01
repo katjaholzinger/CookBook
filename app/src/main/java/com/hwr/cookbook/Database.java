@@ -112,7 +112,7 @@ public class Database {
 
 
     static public void addRecipeToBook(String userID, Book book, String recipeId) {
-        Log.d("Database", "Adding new recipe to book xxx of user xxx ...");
+        Log.d("Database", "Adding "+recipeId+" to book "+book.name+" of user xxx ...");
         book.recipes.add(recipeId);
         FirebaseDatabase.getInstance().getReference().child("books").child(userID).child(book.id).setValue(book);
     }
