@@ -79,36 +79,46 @@
                 android:text="@string/portions" />
 
 
-            <Button
-                android:id="@+id/buttonDecrement"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutPortions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/portionsText"
-                android:text="@string/Decrement" />
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/Portions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/portionsText"
-                android:layout_toEndOf="@+id/buttonDecrement"
-                android:layout_toRightOf="@+id/buttonDecrement" />
+                <Button
+                    android:id="@+id/buttonDecrement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_button"
+                    android:text="@string/Decrement"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"/>
 
-            <Button
-                android:id="@+id/buttonIncrement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/portionsText"
-                android:layout_toEndOf="@+id/Portions"
-                android:layout_toRightOf="@+id/Portions"
-                android:text="@string/Increment" />
+
+                <TextView
+                    android:id="@+id/Portions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem Ipsum" />
+
+                <Button
+                    android:id="@+id/buttonIncrement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_button"
+                    android:text="@string/Increment"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/IngredientsTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/buttonIncrement"
+                android:layout_below="@+id/layoutPortions"
                 android:text="@string/ingredients" />
 
             <LinearLayout

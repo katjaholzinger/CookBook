@@ -61,13 +61,14 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             setContentView(R.layout.activity_recipe_show);
             setRecipe();
-            addPortionsButtons();
             createFloatActionButton();
         }
 
         // set Toolbar
         Toolbar toolBar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolBar);
+
+        addPortionsButtons();
     }
 
     private void addEditButtons() {
@@ -99,13 +100,10 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private void addPortionsButtons() {
         Button buttonDec = findViewById(R.id.buttonDecrement);
         Button buttonInc = findViewById(R.id.buttonIncrement);
-        FloatingActionButton toCalendarButton = findViewById(R.id.fabToCalendar);
-
 
         TextView textViewPortions = this.findViewById(R.id.Portions);
         textViewPortions.setText(String.valueOf(recipe.defaultPortions));
 
-        toCalendarButton.setOnClickListener(this);
         buttonDec.setOnClickListener(this);
         buttonInc.setOnClickListener(this);
     }
@@ -192,6 +190,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 setContentView(R.layout.activity_recipe_editable);
                 setRecipe();
                 addEditButtons();
+                addPortionsButtons();
                 break;
             default:
                 break;
@@ -235,8 +234,9 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         FloatingActionButton fab1 = findViewById(R.id.editRecipeFab);
         fab1.setOnClickListener(this);
 
-        FloatingActionButton fab2 = findViewById(R.id.fabToCalendar);
-        fab2.setOnClickListener(this);
+        FloatingActionButton toCalendarButton = findViewById(R.id.fabToCalendar);
+        toCalendarButton.setOnClickListener(this);
+
     }
 
     private void showFABMenu() {

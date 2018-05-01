@@ -1,18 +1,17 @@
-<RelativeLayout
-    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-    android:id="@+id/main_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
     tools:context=".UI.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:id="@+id/appBarLayout">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,8 +20,7 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -37,18 +35,17 @@
             android:id="@+id/recipeRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <ImageView
                 android:id="@+id/ImageIcon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
-
+                android:layout_alignParentStart="true" />
 
             <EditText
                 android:id="@+id/RecipeTitle"
@@ -70,19 +67,62 @@
                 android:rating="3" />
 
             <TextView
+                android:id="@+id/portionsText"
+                style="@style/HeadingTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RecipeRatingBar"
+                android:text="@string/portions" />
+
+            <LinearLayout
+                android:id="@+id/layoutPortions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/portionsText"
+                android:gravity="center_vertical">
+
+                <Button
+                    android:id="@+id/buttonDecrement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_button"
+                    android:text="@string/Decrement"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"/>
+
+
+                <TextView
+                    android:id="@+id/Portions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem Ipsum" />
+
+                <Button
+                    android:id="@+id/buttonIncrement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_button"
+                    android:text="@string/Increment"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"/>
+
+            </LinearLayout>
+
+
+            <TextView
                 android:id="@+id/IngredientsTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ingredients"
-                android:layout_below="@+id/RecipeRatingBar"/>
+                android:layout_below="@+id/layoutPortions"
+                android:text="@string/ingredients" />
 
             <LinearLayout
                 android:id="@+id/Ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/IngredientsTitle"/>
+                android:layout_below="@+id/IngredientsTitle"
+                android:orientation="vertical" />
 
             <ImageButton
                 android:id="@+id/ButtonAddIngredient"
@@ -92,18 +132,18 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/Ingredients"
                 android:background="@drawable/image_button"
-                app:srcCompat="@drawable/ic_add_24dp"
                 android:contentDescription="@string/addIngredient"
                 android:scaleX="0.7"
-                android:scaleY="0.7"/>
+                android:scaleY="0.7"
+                app:srcCompat="@drawable/ic_add_24dp" />
 
             <TextView
                 android:id="@+id/DescriptionTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"
-                android:layout_below="@+id/ButtonAddIngredient"/>
+                android:layout_below="@+id/ButtonAddIngredient"
+                android:text="@string/description" />
 
             <EditText
                 android:id="@+id/Description"
@@ -122,14 +162,12 @@
         android:id="@+id/fabSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_save_black_24dp"
-        tools:ignore="VectorDrawableCompat"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        />
-
+        tools:ignore="VectorDrawableCompat" />
 
 
 </RelativeLayout>
