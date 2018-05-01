@@ -61,6 +61,10 @@
     <string name="forgetPassword">Forget Password</string>
     <string name="checkMail">Check your Mail.</string>
     <string name="enterMail">Please enter your Mail.</string>
+    <string name="showRecipe">Show Recipe</string>
+    <string name="editMarker">Edit</string>
+    <string name="deleteMarker">Delete</string>
+    <string name="EventOptions">Event Options</string>
 
 
     <string-array name="units_short_array">

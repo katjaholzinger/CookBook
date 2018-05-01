@@ -40,7 +40,7 @@ public class RecipeMarker implements CalendarEvent{
     public RecipeMarker () {}
 
     public RecipeMarker (String recipeId, int persons, Calendar calendar) {
-        id = UUID.randomUUID().toString();
+        //id = UUID.randomUUID().toString();
         this.recipeId = recipeId;
         this.persons = persons;
         this.calendar = calendar;

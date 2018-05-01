@@ -1,9 +1,11 @@
 package com.hwr.cookbook.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,10 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
     @Override
     public void onResume() {
         super.onResume();
+        refresh();
+    }
+
+    private void refresh() {
         plan = Database.getPlan();
         acview.init(makeCalendarEventList(plan), minDate, maxDate, Locale.getDefault(), this);
     }
@@ -84,24 +90,63 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
         BaseCalendarEvent baseCalendarEvent = (BaseCalendarEvent) event;
 
-        Intent intent = new Intent(getActivity(), EventActivity.class);
         if (baseCalendarEvent.getDescription() == null) {
             //new marker
+
+            Intent intent = new Intent(getActivity(), EventActivity.class);
             EventActivity.marker = new RecipeMarker(null, 1, baseCalendarEvent.getInstanceDay());
+            getActivity().startActivity(intent);
 
         } else {
             //show marker, editable
-
+            RecipeMarker marker = new RecipeMarker(null, 1, baseCalendarEvent.getInstanceDay());
             for (RecipeMarker recipeMarker: Database.getPlan().markers) {
                 if (recipeMarker.id.equals(baseCalendarEvent.getDescription())) {
 
-                    EventActivity.marker = recipeMarker;
+                    //EventActivity.marker = recipeMarker;
+                    marker = recipeMarker;
                     break;
                 }
             }
-        }
 
-        getActivity().startActivity(intent);
+            final RecipeMarker recipeMarker = marker;
+            //new DialogEventOptions(FragmentPlaner.this, marker);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+            alertDialogBuilder.setTitle(getActivity().getResources().getString(R.string.EventOptions));
+            alertDialogBuilder.setPositiveButton(R.string.deleteMarker,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Database.deleteMarker(recipeMarker);
+                            refresh();
+
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton(R.string.editMarker,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getActivity(), EventActivity.class);
+                            EventActivity.marker = recipeMarker;
+                            getActivity().startActivity(intent);
+                        }
+                    });
+            alertDialogBuilder.setNeutralButton(R.string.showRecipe,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getActivity(), RecipeActivity.class);
+                            RecipeActivity.recipe = Database.findRecipe(recipeMarker.recipeId);
+                            getActivity().startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.create().show();
+
+            //getActivity().startActivity(intent);
+
+        }
 
     }
 
