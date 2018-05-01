@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         fb.setLoad(true);
 
         loadData();
-        createListener();
     }
 
     public void loadData() {
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }).start();
 
-                                createListener();
+                                //createListener();
                             }
 
                             @Override

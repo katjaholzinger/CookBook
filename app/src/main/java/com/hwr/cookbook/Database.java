@@ -75,16 +75,12 @@ public class Database {
         FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
     }
 
-    static public void setNewMarkerInPlan(String userID, String planID, RecipeMarker marker) {
-        Log.d("Database", "Adding new marker to plan " + planID + " ...");
-        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("markers").push().getKey();
-        marker.id = id;
+    static public void setNewMarkerInPlan(RecipeMarker marker) {
+        Log.d("Database", "Adding new marker to plan " + plan.id + " ...");
+        plan.markers.add(marker);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
 
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("markers").child(String.valueOf(marker.id)).setValue(marker);
-        Log.d("PLanlist", ""+ marker.getCalendar().toString());
 
-        //TOdo Warum kommt NUllPointerException?!
-        //planList.get(0).Markers.add(marker);
     }
 
     static public void logout() {
@@ -151,15 +147,10 @@ public class Database {
 
         try {
             //Workarround: Nur einen Plan vorerst
-            plan = planList.get(0);
+            setPlan(planList.get(0));
         } catch (Exception e) {
             Log.d("Database", e.getMessage());
         }
-        /*
-        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).push().getKey();
-        plan.id = id;
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(id).setValue(plan);
-        */
     }
 
     public static Book findDefaultBook(Context ctx) {
@@ -176,6 +167,7 @@ public class Database {
         for (int i = 0; i<recipeList.size(); i++) {
 
             if (recipeList.get(i).id.equals(recipe.id)) {
+
                 recipeList.set(i, recipe);
             }
         }

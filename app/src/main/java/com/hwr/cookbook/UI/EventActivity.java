@@ -39,7 +39,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_event);
 
         createSpinnerAdapter();
-
+    marker = new RecipeMarker();
         DatePicker datePicker = findViewById(R.id.DatePicker);
         if (marker.getCalendar() != null) {
             datePicker.updateDate(
@@ -132,9 +132,6 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         EditText persons = this.findViewById(R.id.personsInput);
         marker.persons = Integer.parseInt(persons.getText().toString());
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String planId = Database.getPlan().id;
-
         /*
         if (plan.Markers == null) {
             plan.Markers = new ArrayList<RecipeMarker>();
@@ -144,7 +141,7 @@ public class EventActivity extends AppCompatActivity implements View.OnClickList
         */
 
         // Database.setNewPlan(userId, plan);
-        Database.setNewMarkerInPlan(userId, planId , marker);
+        Database.setNewMarkerInPlan(marker);
         this.finish();
     }
 }

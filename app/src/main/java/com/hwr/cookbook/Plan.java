@@ -16,7 +16,7 @@ public class Plan {
 
     public String name;
     public String id;
-    public ArrayList<RecipeMarker> markers;
+    public ArrayList<RecipeMarker> markers = new ArrayList<RecipeMarker>();
 
 
 
