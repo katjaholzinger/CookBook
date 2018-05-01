@@ -1,5 +1,6 @@
 package com.hwr.cookbook.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hwr.cookbook.Book;
@@ -29,12 +29,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas on 29.03.2018.
- *
  */
 
 public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
     public static Recipe recipe = null;
     private boolean isEditAble;
+    private boolean isFABOpen;
 
 
     public RecipeActivity() {
@@ -52,14 +52,15 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void createLayouts() {
 
-        if (isEditAble){
-            recipe=new Recipe();
+        if (isEditAble) {
+            recipe = new Recipe();
             setContentView(R.layout.activity_recipe_editable);
             addEditButtons();
         } else {
             setContentView(R.layout.activity_recipe_show);
             setRecipe();
             addPortionsButtons();
+            createFloatActionButton();
         }
 
         // set Toolbar
@@ -69,7 +70,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void addEditButtons() {
         ImageButton addIngredient = findViewById(R.id.ButtonAddIngredient);
-        FloatingActionButton saveButton = findViewById(R.id.fab);
+        FloatingActionButton saveButton = findViewById(R.id.fabSave);
 
         saveButton.setOnClickListener(this);
         addIngredient.setOnClickListener(this);
@@ -93,10 +94,10 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void addPortionsButtons(){
+    private void addPortionsButtons() {
         Button buttonDec = findViewById(R.id.buttonDecrement);
         Button buttonInc = findViewById(R.id.buttonIncrement);
-        FloatingActionButton toCalendarButton = findViewById(R.id.fab_to_calendar);
+        FloatingActionButton toCalendarButton = findViewById(R.id.fabToCalendar);
 
 
         TextView textViewPortions = this.findViewById(R.id.Portions);
@@ -107,8 +108,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         buttonInc.setOnClickListener(this);
     }
 
-    private void changePortions(int portions){
-        if (portions>=1){
+    private void changePortions(int portions) {
+        if (portions >= 1) {
             recipe.defaultPortions = portions;
             TextView viewNumber = this.findViewById(R.id.Portions);
             viewNumber.setText(String.valueOf(recipe.defaultPortions));
@@ -127,10 +128,10 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         ArrayList ingredients = recipe.ingredients;
 
 
-        for (final Ingredient ingredient: recipe.toIngredientArray()){
+        for (final Ingredient ingredient : recipe.toIngredientArray()) {
             TextView textView = new TextView(this);
 
-            String text = String.format("%s (%s %s)", ingredient.name, ingredient.amount*recipe.defaultPortions, ingredient.unit);
+            String text = String.format("%s (%s %s)", ingredient.name, ingredient.amount * recipe.defaultPortions, ingredient.unit);
             textView.setText(text);
 
             if (isEditAble) {
@@ -148,8 +149,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
-    public void addToList(Ingredient ing){
+    public void addToList(Ingredient ing) {
         recipe.ingredients.add(ing);
         updateIngredientsView();
     }
@@ -159,19 +159,33 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonDecrement:
-                changePortions(recipe.defaultPortions -1);
+                changePortions(recipe.defaultPortions - 1);
                 break;
             case R.id.buttonIncrement:
-                changePortions(recipe.defaultPortions +1);
+                changePortions(recipe.defaultPortions + 1);
                 break;
-            case R.id.fab:
+            case R.id.fabSave:
                 pushRecipe();
                 break;
-            case R.id.fab_to_calendar:
+            case R.id.fabToCalendar:
                 makeMarker();
+                closeFABMenu();
                 break;
             case R.id.ButtonAddIngredient:
                 new DialogIngredient(this, null);
+                break;
+            case R.id.fab:
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
+                break;
+            case R.id.editRecipeFab:
+                closeFABMenu();
+                setContentView(R.layout.activity_recipe_editable);
+                setRecipe();
+                addEditButtons();
                 break;
             default:
                 break;
@@ -179,7 +193,6 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void makeMarker() {
-
         Intent intent = new Intent(this, EventActivity.class);
         EventActivity.marker = new RecipeMarker(recipe.id, 1, null);
         this.startActivity(intent);
@@ -188,21 +201,51 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private void pushRecipe() {
 
         EditText title = this.findViewById(R.id.RecipeTitle);
-        recipe.name=title.getText().toString();
+        recipe.name = title.getText().toString();
 
         EditText description = this.findViewById(R.id.Description);
-        recipe.description=description.getText().toString();
+        recipe.description = description.getText().toString();
 
         RatingBar ratingBar = this.findViewById(R.id.RecipeRatingBar);
         recipe.rating = ratingBar.getRating();
 
         recipe.normalizeIngredients(recipe.defaultPortions);
-        Database db = new Database();
-        Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid() , recipe);
+        Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), recipe);
         Book book = Database.findDefaultBook(this);
         Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe.id);
         this.finish();
     }
+
+    public void createFloatActionButton() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
+        FloatingActionButton fab1 = findViewById(R.id.editRecipeFab);
+        fab1.setOnClickListener(this);
+
+        FloatingActionButton fab2 = findViewById(R.id.fabToCalendar);
+        fab2.setOnClickListener(this);
+    }
+
+    private void showFABMenu() {
+        isFABOpen = true;
+        this.findViewById(R.id.layoutToCalendar).animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        this.findViewById(R.id.editRecipeLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+
+        this.findViewById(R.id.editRecipeText).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.textToCalendar).setVisibility(View.VISIBLE);
+    }
+
+    private void closeFABMenu() {
+        isFABOpen = false;
+        this.findViewById(R.id.editRecipeLayout).animate().translationY(0);
+        this.findViewById(R.id.layoutToCalendar).animate().translationY(0);
+
+        this.findViewById(R.id.editRecipeText).setVisibility(View.GONE);
+        this.findViewById(R.id.textToCalendar).setVisibility(View.GONE);
+    }
+
+
 }
 
 

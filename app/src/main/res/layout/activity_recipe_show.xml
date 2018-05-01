@@ -1,18 +1,17 @@
-<RelativeLayout
-    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-    android:id="@+id/main_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
     tools:context=".UI.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:id="@+id/appBarLayout">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,8 +20,7 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -37,17 +35,17 @@
             android:id="@+id/recipeRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <ImageView
                 android:id="@+id/ImageIcon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true" />
 
 
             <TextView
@@ -67,9 +65,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/RecipeTitle"
+                android:clickable="false"
                 android:numStars="5"
-                android:rating="3"
-                android:clickable="false"/>
+                android:rating="3" />
 
 
             <TextView
@@ -77,9 +75,8 @@
                 style="@style/HeadingTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/portions"
                 android:layout_below="@+id/RecipeRatingBar"
-                />
+                android:text="@string/portions" />
 
 
             <Button
@@ -95,60 +92,119 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/portionsText"
                 android:layout_toEndOf="@+id/buttonDecrement"
-                android:layout_toRightOf="@+id/buttonDecrement"/>
+                android:layout_toRightOf="@+id/buttonDecrement" />
 
             <Button
                 android:id="@+id/buttonIncrement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Increment"
                 android:layout_below="@+id/portionsText"
                 android:layout_toEndOf="@+id/Portions"
-                android:layout_toRightOf="@+id/Portions"/>
+                android:layout_toRightOf="@+id/Portions"
+                android:text="@string/Increment" />
 
             <TextView
                 android:id="@+id/IngredientsTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ingredients"
-                android:layout_below="@+id/buttonIncrement"/>
+                android:layout_below="@+id/buttonIncrement"
+                android:text="@string/ingredients" />
 
             <LinearLayout
                 android:id="@+id/Ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/IngredientsTitle"/>
+                android:layout_below="@+id/IngredientsTitle"
+                android:orientation="vertical" />
 
             <TextView
                 android:id="@+id/DescriptionTitle"
                 style="@style/HeadingTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"
-                android:layout_below="@+id/Ingredients"/>
+                android:layout_below="@+id/Ingredients"
+                android:text="@string/description" />
 
             <TextView
                 android:id="@+id/Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/DescriptionTitle"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
+                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
 
 
         </RelativeLayout>
 
+
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_to_calendar"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/editRecipeLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        />
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp">
 
+        <TextView
+            android:id="@+id/editRecipeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/edit"
+            android:visibility="invisible" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/editRecipeFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            app:backgroundTint="@color/gray_light"
+            app:srcCompat="@drawable/ic_edit_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutToCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/textToCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_recipe_to_calendar"
+            android:visibility="invisible" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabToCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            app:backgroundTint="@color/gray_light"
+            app:srcCompat="@drawable/ic_date_range_black_24dp" />
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:background="@color/colorAccent"
+        android:padding="15dp"
+        app:srcCompat="@drawable/ic_menu_24dp" />
 </RelativeLayout>
