@@ -138,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
         plansRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Plan book = dataSnapshot.getValue(Plan.class);
+                Plan plan = dataSnapshot.getValue(Plan.class);
                 ArrayList<Plan> planArrayList = Database.getPlanList();
-                if (book.Markers != null) {
-                    Log.d("PlanChildAdded", book.Markers.get(0).name);
+                if (plan.markers != null) {
+                    Log.d("PlanChildAdded", plan.markers.get(0).name);
                 }
-                planArrayList.add(book);
+                planArrayList.add(plan);
                 Database.setPlanList(planArrayList);
             }
 

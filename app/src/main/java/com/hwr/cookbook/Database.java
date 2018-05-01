@@ -77,10 +77,10 @@ public class Database {
 
     static public void setNewMarkerInPlan(String userID, String planID, RecipeMarker marker) {
         Log.d("Database", "Adding new marker to plan " + planID + " ...");
-        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").push().getKey();
+        String id = FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("markers").push().getKey();
         marker.id = id;
 
-        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("events").child(String.valueOf(marker.id)).setValue(marker);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(userID).child(planID).child("markers").child(String.valueOf(marker.id)).setValue(marker);
         Log.d("PLanlist", ""+ marker.getCalendar().toString());
 
         //TOdo Warum kommt NUllPointerException?!

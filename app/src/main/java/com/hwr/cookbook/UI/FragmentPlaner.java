@@ -92,7 +92,7 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         } else {
             //show marker, editable
 
-            for (RecipeMarker rm: Database.getPlan().Markers) {
+            for (RecipeMarker rm: Database.getPlan().markers) {
                 if (rm.id == baseCalendarEvent.getDescription()) {
 
                     EventActivity.marker = rm;
@@ -112,7 +112,7 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
     private void mockPlan(Plan plan) {
 
-        plan.Markers = new ArrayList<RecipeMarker>();
+        plan.markers = new ArrayList<RecipeMarker>();
 
 
         ArrayList<Book> books = TestBook.generateTestBook(false);
@@ -124,13 +124,13 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
             book = books.get(0);
         }
         RecipeMarker marker1 = new RecipeMarker ( book.getFullRecipes().get(0).id, 5, today);
-        plan.Markers.add(marker1);
+        plan.markers.add(marker1);
         //Database.setNewMarkerInPlan(FirebaseAuth.getInstance().getCurrentUser().getUid(), plan.id, marker1);
 
         Calendar newCal = Calendar.getInstance();
         newCal.add(Calendar.DAY_OF_MONTH, 1);
         RecipeMarker marker2 = new RecipeMarker(book.getFullRecipes().get(1).id, 5, newCal);
-        plan.Markers.add(marker2);
+        plan.markers.add(marker2);
 
 
     }
@@ -140,8 +140,8 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
         ArrayList<CalendarEvent> eventlist = new ArrayList<>();
         //ArrayList<RecipeMarker> markerList = new ArrayList<RecipeMarker>();
         if (plan != null) {
-            if (plan.Markers != null && plan.Markers.size() > 0) {
-                    for (RecipeMarker marker : plan.Markers) {
+            if (plan.markers != null && plan.markers.size() > 0) {
+                    for (RecipeMarker marker : plan.markers) {
                     marker.refreshCalendarByDate();
                     eventlist.add(marker);
                 }

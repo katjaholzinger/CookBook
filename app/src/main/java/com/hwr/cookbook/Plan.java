@@ -16,15 +16,15 @@ public class Plan {
 
     public String name;
     public String id;
-    public ArrayList<RecipeMarker> Markers;
+    public ArrayList<RecipeMarker> markers;
 
 
 
     public Plan () {
     }
 
-    public Plan (ArrayList<RecipeMarker> Markers) {
-        this.Markers = Markers;
+    public Plan (ArrayList<RecipeMarker> markers) {
+        this.markers = markers;
     }
 
 
