@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
     public static Recipe recipe = null;
     private boolean isEditAble;
+    private boolean newRecipe;
     private boolean isFABOpen;
 
 
@@ -46,6 +47,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         isEditAble = (recipe == null);
+        newRecipe = (recipe == null);
 
         createLayouts();
     }
@@ -185,6 +187,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.editRecipeFab:
+                isEditAble = true;
                 closeFABMenu();
                 setContentView(R.layout.activity_recipe_editable);
                 setRecipe();
@@ -213,9 +216,15 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         recipe.rating = ratingBar.getRating();
 
         recipe.normalizeIngredients(recipe.defaultPortions);
-        Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), recipe);
-        Book book = Database.findDefaultBook(this);
-        Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe.id);
+
+        if (newRecipe) {
+            Database.setNewRecipe(FirebaseAuth.getInstance().getCurrentUser().getUid(), recipe);
+            Book book = Database.findDefaultBook(this);
+            Database.addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), book, recipe.id);
+        }else{
+            Database.updateRecipe(recipe);
+        }
+
         this.finish();
     }
 
@@ -249,6 +258,9 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    public int getPortions() {
+        return recipe.defaultPortions;
+    }
 }
 
 

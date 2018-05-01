@@ -88,7 +88,7 @@ public class DialogIngredient extends AlertDialog.Builder {
         if (isModify) {
             String[] units = getContext().getResources().getStringArray(R.array.units_short_array);
             spinnerUnit.setSelection(Arrays.asList(units).indexOf(ingredient.unit), true);
-            editTextAmount.setText(String.valueOf(ingredient.amount));
+            editTextAmount.setText(String.valueOf(ingredient.amount*context.getPortions()));
             editTextName.setText(ingredient.name);
         } else {
             this.ingredient = new Ingredient();
@@ -100,6 +100,9 @@ public class DialogIngredient extends AlertDialog.Builder {
             ingredient.name = editTextName.getText().toString();
             ingredient.unit = spinnerUnit.getSelectedItem().toString();
             ingredient.amount = Float.parseFloat(editTextAmount.getText().toString().trim());
+
+            ingredient.amount = Float.parseFloat(editTextAmount.getText().toString().trim())/context.getPortions();
+
 
             if (isModify) {
                 context.updateIngredientsView();

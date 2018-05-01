@@ -39,7 +39,7 @@ public class FragmentBookmarks extends Fragment {
 
     private SwipeRefreshLayout srl;
 
-    private boolean isFABOpen= false;
+    private boolean isFABOpen = false;
 
 
     ExpandableListView expandableListView;
@@ -70,12 +70,11 @@ public class FragmentBookmarks extends Fragment {
     }
 
 
-
     private void createExpandableList() {
         expandableListView = getActivity().findViewById(R.id.list);
 
         expandableListDetail = ExpandableListDataPump.getData(books);
-        if (expandableListDetail != null ) {
+        if (expandableListDetail != null) {
             expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         } else {
             ArrayList<String> emptyList = new ArrayList<>();
@@ -113,7 +112,7 @@ public class FragmentBookmarks extends Fragment {
 
                 return false;
 
-           }
+            }
         });
 
         srl = getActivity().findViewById(R.id.swipeRefreshBookmarks);
@@ -121,6 +120,10 @@ public class FragmentBookmarks extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        setLoad(true);
+                        MainActivity ma = (MainActivity) getActivity();
+                        ma.loadData();
+
                         updateExpandableList(Database.getBookList());
                     }
                 }
@@ -187,6 +190,7 @@ public class FragmentBookmarks extends Fragment {
             }
         });
     }
+
     private void showFABMenu() {
         isFABOpen = true;
         getActivity().findViewById(R.id.addBookLayout).animate().translationY(-getResources().getDimension(R.dimen.standard_55));
@@ -207,6 +211,7 @@ public class FragmentBookmarks extends Fragment {
 
     public void updateExpandableList(ArrayList<Book> books) {
         setLoad(true);
+
         this.books = books;
         try {
 
@@ -215,8 +220,7 @@ public class FragmentBookmarks extends Fragment {
             expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
             expandableListAdapter = new BooksExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
             expandableListView.setAdapter(expandableListAdapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.d("FragmentBookmarks", "Erste aktualisierung schlägt fehl");
         }
         setLoad(false);

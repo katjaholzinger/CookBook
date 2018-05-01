@@ -219,7 +219,7 @@ public class Database {
     }
 
     public static void getAllRecipes() {
-//Datenkritisch da alle Rezepte runter geladen werden. Besser wäre es zufällig einige Knoten zu selektieren.
+    //Datenkritisch da alle Rezepte runter geladen werden. Besser wäre es zufällig einige Knoten zu selektieren.
         FirebaseDatabase.getInstance().getReference().child("recipes").orderByKey().
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

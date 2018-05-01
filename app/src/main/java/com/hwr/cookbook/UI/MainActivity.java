@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +25,6 @@ import com.hwr.cookbook.R;
 import com.hwr.cookbook.Recipe;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Thomas on 18.03.2018.
@@ -55,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         FragmentBookmarks fb = (FragmentBookmarks) pagerAdapter.getItem(1);
         fb.setLoad(true);
 
-        LoadData();
+        loadData();
         createListener();
     }
 
-    private void LoadData() {
+    public void loadData() {
 
         //Load Books at the first time
         FirebaseDatabase.getInstance().getReference().child("books").child(uID).addListenerForSingleValueEvent(new ValueEventListener() {
