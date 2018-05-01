@@ -79,8 +79,22 @@ public class Database {
         Log.d("Database", "Adding new marker to plan " + plan.id + " ...");
         plan.markers.add(marker);
         FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
+    }
 
+    public static void updateMarker(RecipeMarker recipeMarker) {
+        for (int i = 0; i<plan.markers.size(); i++) {
 
+            if (plan.markers.get(i).id.equals(recipeMarker.id)) {
+
+                plan.markers.set(i, recipeMarker);
+            }
+        }
+        FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
+    }
+
+    public static void deleteMarker(RecipeMarker recipeMarker) {
+        plan.markers.remove(recipeMarker);
+        FirebaseDatabase.getInstance().getReference().child("plans").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(plan.id).setValue(plan);
     }
 
     static public void logout() {

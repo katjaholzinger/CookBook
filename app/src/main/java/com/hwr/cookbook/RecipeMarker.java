@@ -26,13 +26,16 @@ public class RecipeMarker implements CalendarEvent{
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 
     public String recipeId;
-    public int persons = 0;
+    private int persons = 0;
     public String date;
     @Exclude
     private Calendar calendar;
     public String name;
     public String id;
 
+    public int getPersons() { return persons; }
+
+    public void setPersons(int persons) { this.persons = persons; }
 
     public RecipeMarker () {}
 
