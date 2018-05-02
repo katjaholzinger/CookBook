@@ -114,16 +114,15 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
             alertDialogBuilder.setTitle(getActivity().getResources().getString(R.string.EventOptions));
-            alertDialogBuilder.setPositiveButton(R.string.deleteMarker,
+            alertDialogBuilder.setNegativeButton(R.string.deleteMarker,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Database.deleteMarker(recipeMarker);
                             refresh();
-
                         }
                     });
-            alertDialogBuilder.setNegativeButton(R.string.editMarker,
+            alertDialogBuilder.setPositiveButton(R.string.editMarker,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
