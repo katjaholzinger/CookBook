@@ -224,8 +224,10 @@ public class Database {
     }
 
     public static void moveToOtherBook(Book oldBook, Book newBook, Recipe r) {
-    deleteRecipeFromBook(r, oldBook);
-    addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), newBook, r.id);
+        oldBook.recipes.remove(r.id);
+        FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(oldBook.id).setValue(oldBook);
+
+        addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(), newBook, r.id);
     }
 
     public static void getAllRecipes() {
