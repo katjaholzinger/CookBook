@@ -58,7 +58,7 @@
     <string name="RecipeGeneralSettings">Recipe Settings</string>
     <string name="move">Move</string>
     <string name="minPasswordLength">The password needs at least six characters.</string>
-    <string name="forgetPassword">Forget Password</string>
+    <string name="forgetPassword">Forgot Password</string>
     <string name="checkMail">Check your Mail.</string>
     <string name="enterMail">Please enter your Mail.</string>
     <string name="showRecipe">Show Recipe</string>
