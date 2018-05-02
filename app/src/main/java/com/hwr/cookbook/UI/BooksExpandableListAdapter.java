@@ -61,7 +61,6 @@ public class BooksExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-        Log.d("BookExpandableList", expandableListDetail.toString());
         try {
             return this.expandableListDetail.get(this.expandableListTitle.get(listPosition))
                     .size();

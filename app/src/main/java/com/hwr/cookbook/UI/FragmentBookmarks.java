@@ -253,6 +253,7 @@ public class FragmentBookmarks extends Fragment {
     }
 
     public void updateExpandableList(ArrayList<Book> books) {
+        Log.d("FragmentBookmarks", "Refresh List");
         setLoad(true);
 
         this.books = books;

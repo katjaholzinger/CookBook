@@ -277,12 +277,11 @@ public class FragmentDiscover extends Fragment {
         likeRecipe();
     }
 
-    //Todo Add Recipe to book
     private void likeRecipe() {
         Integer i = cardStackView.getTopIndex();
-        Recipe recipe = adapter.getItem(i);
-        Log.d("Fragment Discover", recipe.name);
+        Recipe recipe = adapter.getItem(i-1);
         Database.copForeignRecipeToBook(getActivity(), recipe);
+
     }
 
     private void reverse() {

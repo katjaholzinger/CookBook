@@ -43,7 +43,6 @@ public class Book {
 
                 if (recipe != null) {
                     recipeArrayList.add(recipe);
-                    Log.d("Book", "Add recipe");
                     recipe = null;
                 }
             }

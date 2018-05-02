@@ -128,7 +128,7 @@ public class Database {
     }
 
     public static Plan getPlan() {
-        return plan;
+        return planList.get(0);
     }
 
     public static void setPlan(Plan p) {
@@ -196,6 +196,7 @@ public class Database {
     public static void deleteRecipeFromBook (Recipe recipe, Book book) {
         book.recipes.remove(recipe.id);
         FirebaseDatabase.getInstance().getReference().child("books").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(book.id).setValue(book);
+        deleteRecipe(recipe);
     }
 
     public static void deleteBook(Book book) {
@@ -209,6 +210,7 @@ public class Database {
     }
 
     public static void copForeignRecipeToBook(Context ctx, Recipe recipe) {
+        Log.d("Database", "Add foreign recipe");
         String id = FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push().getKey();
         recipe.id = (id);
         FirebaseDatabase.getInstance().getReference().child("recipes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(id).setValue(recipe);
@@ -217,6 +219,8 @@ public class Database {
         Book defaultBook = findDefaultBook(ctx);
         addRecipeToBook(FirebaseAuth.getInstance().getCurrentUser().getUid(),defaultBook , recipe.id);
         defaultBook.recipes.add(recipe.id);
+        Log.d("Database", "Add foreign recipe to book");
+
     }
 
     public static void moveToOtherBook(Book oldBook, Book newBook, Recipe r) {

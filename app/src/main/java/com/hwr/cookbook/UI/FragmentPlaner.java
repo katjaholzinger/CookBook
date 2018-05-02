@@ -138,6 +138,7 @@ public class FragmentPlaner extends Fragment implements CalendarPickerController
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent = new Intent(getActivity(), RecipeActivity.class);
                             RecipeActivity.recipe = Database.findRecipe(recipeMarker.recipeId);
+                            intent.putExtra("PORTIONS", recipeMarker.getPersons());
                             getActivity().startActivity(intent);
                         }
                     });

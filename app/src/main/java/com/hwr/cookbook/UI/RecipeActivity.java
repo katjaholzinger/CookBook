@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private boolean isEditAble;
     private boolean newRecipe;
     private boolean isFABOpen;
+    private int portions = 0;
 
 
     public RecipeActivity() {
@@ -48,6 +50,13 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
         isEditAble = (recipe == null);
         newRecipe = (recipe == null);
+
+        try {
+            Intent intent = getIntent();
+            portions = intent.getIntExtra("PORTIONS", 0);
+        } catch (Exception e) {
+            Log.d("RecipeActivity", e.toString());
+        }
 
         createLayouts();
     }
@@ -102,7 +111,11 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         Button buttonInc = findViewById(R.id.buttonIncrement);
 
         TextView textViewPortions = this.findViewById(R.id.Portions);
-        textViewPortions.setText(String.valueOf(recipe.defaultPortions));
+        if (portions == 0) {
+            textViewPortions.setText(String.valueOf(recipe.defaultPortions));
+        } else {
+            textViewPortions.setText(Integer.toString(portions));
+        }
 
         buttonDec.setOnClickListener(this);
         buttonInc.setOnClickListener(this);
@@ -260,6 +273,11 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
     public int getPortions() {
         return recipe.defaultPortions;
+    }
+
+    public void setPortions(int portions) {
+        TextView textView = this.findViewById(R.id.Portions);
+        textView.setText(String.valueOf(portions));
     }
 }
 
