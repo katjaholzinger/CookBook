@@ -86,6 +86,9 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
 
         saveButton.setOnClickListener(this);
         addIngredient.setOnClickListener(this);
+
+        RatingBar ratingBar = findViewById(R.id.RecipeRatingBar);
+        ratingBar.setEnabled(true);
     }
 
     private void setRecipe() {
